@@ -8,7 +8,20 @@ import TabItem from '@theme/TabItem';
 
 # Getting Started
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Install Fair and launch your first job.
+
+## Sign Up & Activation
+
+To start using Fair please sign-up at [faircompute.com](https://faircompute.com). It is free.
+
+:::caution Activating Fair Account
+
+We're actively working on scaling up Fair infrastructure, but the maximum number of users
+on the platform is limited for now. The account needs to be activated. To get your activation -
+please join our discord channel and ask for help in [#activation](https://discord.gg/JqjZPwrdZe).
+A team member will help you to get the account activated.
+
+:::
 
 ## Installation
 
@@ -26,7 +39,24 @@ Install Fair Desktop application on the machine you want to run jobs on.
 </Tabs>
 <br/>
 
-Download the latest command line client.
+When launching the desktop app for the first time you'll be asked for credentials.
+Alternatively, credentials can be configured in the config file. Location depends
+on your operating system.
+<Tabs groupId="operating-systems">
+    <TabItem value="win" label="Windows">
+        Windows **ADD LINK**
+    </TabItem>
+    <TabItem value="mac" label="Mac">
+        <pre>/Users/[user_name]/Library/Application Support/rs.fair-compute/credentials.yml</pre>
+    </TabItem>
+    <TabItem value="linux" label="Linux">
+        Linux **ADD LINK**
+    </TabItem>
+</Tabs>
+<br/>
+
+Download the latest command line client. Command line client is used to communicate with
+the Fair server and send jobs to the provider application on one of your machines.
 <Tabs groupId="operating-systems">
     <TabItem value="win" label="Windows">
         Windows **ADD LINK**
@@ -40,7 +70,7 @@ Download the latest command line client.
 </Tabs>
 <br/>
 
-Install [Docker](https://www.docker.com/get-started/) if you're planning to use it.
+Install [Docker](https://www.docker.com/get-started/) if you're planning to use containers.
 Note that only Docker engine is required, desktop app is optional.
 
 :::info
@@ -52,10 +82,9 @@ Note that only Docker engine is required, desktop app is optional.
 
 ## Inspecting the Cluster
 
-**!!Authentication!!**
-
 Once you've authenticated and launched the client it is time to inspect the cluster.
-Use `fair cluster info` command for this purpose:
+Use `fair cluster info` command for this purpose. Ensure that you see details of all
+the machines that you have launched Fair desktop application on.
 
 ```shell
 $ fair cluster info
@@ -75,4 +104,4 @@ $ fair task -i python:slim -- python -uc "print('hello')"
 hello
 ```
 
-If you need to see a bit more information, add `-v` command.
+If you need to see a bit more details, add `-v` flag.
