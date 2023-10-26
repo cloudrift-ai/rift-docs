@@ -1,7 +1,7 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
 
-# Rust API and Client
+# REST API
 
-Currently there 
+Generated documentation is available [here](https://faircompute.com:8000/rapidoc)
