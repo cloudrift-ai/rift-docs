@@ -10,7 +10,9 @@ import TabItem from '@theme/TabItem';
 
 Install Fair and launch your first job.
 
-## Sign Up & Activation
+## Installation
+
+### 1. Sign Up & Activate Account
 
 To start using Fair please sign-up at [faircompute.com](https://faircompute.com). It is free.
 
@@ -23,7 +25,7 @@ A team member will help you to get the account activated.
 
 :::
 
-## Installation
+### 2. Install Fair Desktop App
 
 Install Fair Desktop application on the machine you want to run jobs on.
 <Tabs groupId="operating-systems">
@@ -38,6 +40,8 @@ Install Fair Desktop application on the machine you want to run jobs on.
   </TabItem>
 </Tabs>
 <br/>
+
+### 3. Configure Credentials
 
 To configure credentials launch the app, right-click on the tray icon and click
 change credentials. Alternatively, edit the config manually. Location depends
@@ -56,6 +60,8 @@ on your operating system.
 </Tabs>
 <br/>
 
+### 4. Download Latest Command Line Tool
+
 Download the latest command line client. Command line client is used to communicate with
 the Fair server and send jobs to the provider application on one of your machines.
 <Tabs groupId="operating-systems">
@@ -71,6 +77,8 @@ the Fair server and send jobs to the provider application on one of your machine
 </Tabs>
 <br/>
 
+### 5. Install Docker
+
 Install [Docker](https://www.docker.com/get-started/) if you're planning to use containers.
 Note that only Docker engine is required, desktop app is optional.
 
@@ -81,28 +89,24 @@ Note that only Docker engine is required, desktop app is optional.
 
 :::
 
-## Inspecting the Cluster
+## Using Fair
+
+### 1. Inspect the Cluster
 
 Once you've authenticated and launched the client it is time to inspect the cluster.
 Use `fair cluster info` command for this purpose. Ensure that you see details of all
 the machines that you have launched Fair desktop application on.
 
 ```shell
-$ fair cluster info
-+--------------------------------------+--------+--------+--------------+---------+-----+---------+
-| Id                                   | Status | Docker | CPU          | RAM     | GPU | Version |
-+--------------------------------------+--------+--------+--------------+---------+-----+---------+
-| 9B9FAF5C-0C3C-591B-85D5-F160CB248970 | Ready  | true   | Apple M2 Max | Unknown | N/A | 0.18.6  |
-+--------------------------------------+--------+--------+--------------+---------+-----+---------+
+fair cluster info
 ```
 
-## Running your First Task
+### 2. Run your First Task
 
 To run the task on the cluster you can leverage `fair task` command:
 
-```bash
-$ fair task -i python:slim -- python -uc "print('hello')"
-hello
+```shell
+fair task -i python:slim -- python -uc "print('hello')"
 ```
 
 If you need to see more details about program execution, pass `-vv` flag.
