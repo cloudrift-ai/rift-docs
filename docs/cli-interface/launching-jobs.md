@@ -19,15 +19,20 @@ The workflow is roughly the following:
 
 Here is an example on how to start a job:
 ```shell
-$ fair task -i python:slim python -c "print('Hello Fair Compute')"
-Hello Fair Compute
+fair job -i python:slim python -c "print('Hello Fair Compute')"
 ```
+
+Job output, i.e. `Hello Fair Compute` should be printed to the console.
+To start job in detach mode use `-d` flag. In this case job id will be printed
+which later can be used to inspect the job.
 
 ## Get Job Information
 
-To get information about the job use the following command:
+To get information about the job use the `fair job info <job_id>` command.
+Here is an example of how to start a job in detached mode and check its status
 ```shell
-$ fair job info <JOB_ID>
+JOB_ID=`fair job -d -i alpine -- sleep 5`
+fair job info $JOB_ID
 ```
 
 Note that when job expires, job status will be `EXPIRED` for some time.
@@ -42,20 +47,19 @@ job is being scheduled and executed.
 
 ```shell
 # start with an empty cluster
-$ fair cluster info
+fair cluster info
 
 # schedule a job
-$ fair job -i python:slim python -c "import time; print('Start'); time.sleep(10); print('Finish')"
+JOB_ID=`fair job -i python:slim python -c "import time; print('Start'); time.sleep(10); print('Finish')"`
 
 # status should be queued
-$ fair job info ...
+fair job info $JOB_ID
 
-# start fair desktop app locally in another terminal
-$ fair-deskop
-
-# now the job should be in running status
-$ fair job info ...
+# after a few seconds the job should be in running status
+sleep 5
+fair job info $JOB_ID
 
 # after 10 seconds job is in complete state
-$ fair job info ...
+sleep 10
+fair job info $JOB_ID
 ```
