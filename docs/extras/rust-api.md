@@ -1,7 +1,9 @@
 ---
-sidebar_position: 3
+sidebar_position: 1
 ---
 
-# REST API
+# Rust API and Client
 
-Generated documentation is available [here](https://faircompute.com:8000/rapidoc)
+Fair is developed using Rust, so Rust protocol library (ADD LINK) is serving as the
+source of truth. We don't have dedicated Rust documentation, so please consult
+the source code for now.
