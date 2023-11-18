@@ -27,16 +27,26 @@ A team member will help you to get the account activated.
 
 ### 2. Install Fair Desktop App
 
-Install Fair Desktop application on the machine you want to run jobs on.
+Install Fair Desktop application onto the machine you want to use to run jobs. Use fair CLI to schedule jobs.
 <Tabs groupId="operating-systems">
   <TabItem value="win" label="Windows">
-    Windows **ADD LINK**
+    <a href="https://storage.googleapis.com/fair-compute-releases/stable/fair-desktop/windows/x86_64/fair-desktop-x86_64-windows-0.19.0.msi">Download Fair Desktop Installer</a>
+    <br/>
+    <a href="https://storage.googleapis.com/fair-compute-releases/stable/fair/windows/x86_64/fair-x86_64-windows-0.19.0.zip">Download Fair CLI</a>
   </TabItem>
   <TabItem value="mac" label="Mac">
-    Mac **ADD LINK**
+
+  ```shell
+  curl https://faircompute.com/install-fair.sh | sh
+  ```
+
   </TabItem>
   <TabItem value="linux" label="Linux">
-    Linux **ADD LINK**
+
+  ```shell
+  curl https://faircompute.com/install-fair.sh | sh
+  ```
+
   </TabItem>
 </Tabs>
 <br/>
@@ -48,7 +58,6 @@ change credentials. Alternatively, edit the config manually. Location depends
 on your operating system.
 <Tabs groupId="operating-systems">
     <TabItem value="win" label="Windows">
-        Windows **ADD LINK**
         <pre>C:\Users\[user_name]\AppData\Roaming\Fair Compute\credentials.yml</pre>
     </TabItem>
     <TabItem value="mac" label="Mac">
@@ -60,24 +69,7 @@ on your operating system.
 </Tabs>
 <br/>
 
-### 4. Download Latest Command Line Tool
-
-Download the latest command line client. Command line client is used to communicate with
-the Fair server and send jobs to the provider application on one of your machines.
-<Tabs groupId="operating-systems">
-    <TabItem value="win" label="Windows">
-        Windows **ADD LINK**
-    </TabItem>
-    <TabItem value="mac" label="Mac">
-        Mac **ADD LINK**
-    </TabItem>
-    <TabItem value="linux" label="Linux">
-        Linux **ADD LINK**
-    </TabItem>
-</Tabs>
-<br/>
-
-### 5. Install Docker
+### 4. Install Docker
 
 Install [Docker](https://www.docker.com/get-started/) if you're planning to use containers.
 Note that only Docker engine is required, desktop app is optional.
