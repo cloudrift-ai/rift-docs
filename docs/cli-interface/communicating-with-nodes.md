@@ -57,7 +57,7 @@ fair node $NODE_ID run -r nvidia -i ubuntu nvidia-smi -L
 
 Another commonly used feature is port mapping. For example, if you're developing
 a web service you might need that. To expose port supply `-p <port>`
-or `-p <host_port>:<publish_port>` argument. Please refer to [Serving Stable Diffusion](/docs/tutorials/serving-stable-diffusion)
+or `-p <host_port>:<publish_port>` argument. Please refer to [Serving Stable Diffusion](/docs/docs/tutorials/serving-stable-diffusion)
 tutorial for a more in-depth overview.
 
 ## Listing Containers on the Node

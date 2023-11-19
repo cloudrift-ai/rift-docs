@@ -14,7 +14,7 @@ const config = {
   url: 'https://faircompute.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub docs deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/docs/',
 
   // GitHub docs deployment config.
   // If you aren't using GitHub docs, you don't need these.
