@@ -12,7 +12,7 @@ Install Fair and launch your first job.
 
 ## Installation
 
-### 1. Sign Up & Activate Account
+### 1. Sign Up & Activate the Account
 
 To start using Fair please sign-up at [faircompute.com](https://faircompute.com). It is free.
 
@@ -53,15 +53,15 @@ Install Fair Desktop application onto the machine you want to use to run jobs. U
 
 ### 3. Configure Credentials
 
-To configure credentials launch the app, right-click on the tray icon and click
+To configure credentials launch the app, <u>right-click on the tray icon</u> and click
 change credentials. Alternatively, edit the config manually. Location depends
 on your operating system.
 <Tabs groupId="operating-systems">
     <TabItem value="win" label="Windows">
-        <pre>C:\Users\[user_name]\AppData\Roaming\Fair Compute\credentials.yml</pre>
+        <pre>%APPDATA%\Roaming\Fair Compute\credentials.yml</pre>
     </TabItem>
     <TabItem value="mac" label="Mac">
-        <pre>/Users/[user_name]/Library/Application Support/rs.fair-compute/credentials.yml</pre>
+        <pre>~/Library/Application Support/rs.fair-compute/credentials.yml</pre>
     </TabItem>
     <TabItem value="linux" label="Linux">
         <pre>~/.config/faircompute/credentials.yml</pre>
@@ -98,7 +98,7 @@ fair cluster info
 To run the task on the cluster you can leverage `fair task` command:
 
 ```shell
-fair task -i python:slim -- python -uc "print('hello')"
+fair task -i alpine -- echo "Hello Fair Compute"
 ```
 
 If you need to see more details about program execution, pass `-vv` flag.
