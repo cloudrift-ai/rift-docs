@@ -124,7 +124,7 @@ Also, it is possible to make the system more available. For example,
 you can leverage Fair and your computer when it is available and
 use slow CPU inference on HuggingFace when your computer is busy.
 
-You can use the FairCompute [demo space](https://huggingface.co/spaces/faircompute/stable-diffusion-v1-5/blob/main/app.py)
+You can use the FairCompute [demo space](https://huggingface.co/spaces/faircompute/stable-diffusion/blob/main/app.py)
 as a starting point. No code modifications are needed to the space,
 except that we need to modify the `infer` function to send requests
 to Fair which we will discuss in the next section.
@@ -132,7 +132,7 @@ to Fair which we will discuss in the next section.
 ## Communicating with Fair Compute
 
 Let's take a look at the `text_to_image` function in the
-[text_to_image.py](https://huggingface.co/spaces/faircompute/stable-diffusion-v1-5/blob/main/text_to_image.py).
+[text_to_image.py](https://huggingface.co/spaces/faircompute/stable-diffusion/blob/main/text_to_image.py).
 This function is responsible for sending prompts to Fair and retrieving generated images.
 
 However, first we need to start the Fair server, so the function first checks whether
