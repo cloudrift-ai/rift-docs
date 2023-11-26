@@ -53,9 +53,15 @@ Install Fair Desktop application onto the machine you want to use to run jobs. U
 
 ### 3. Configure Credentials
 
-To configure credentials launch the app, <u>right-click on the tray icon</u> and click
-change credentials. Alternatively, edit the config manually. Location depends
-on your operating system.
+Configure credentials using Fair command line tool by running
+```shell
+fair configure
+```
+
+You can also configure credentials using Fair desktop app.
+To configure credentials, launch the app, <u>right-click on the tray icon</u> and click <u>change credentials</u>.
+
+Lastly, you can edit the config manually. Location depends on your operating system.
 <Tabs groupId="operating-systems">
     <TabItem value="win" label="Windows">
         <pre>%APPDATA%\Roaming\Fair Compute\credentials.yml</pre>
