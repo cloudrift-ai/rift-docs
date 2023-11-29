@@ -7,23 +7,20 @@ sidebar_position: 1
 Job is a unit of work that you want to send to the cluster and let
 Fair decide which node to execute it on.
 
-The workflow is roughly the following:
-1. Create job description and send it to Fair.
+Here is what is happening when you execute a job on Fair:
+1. You create a job description and send it to Fair.
 2. Job is queued until a node that can handle the job is found.
-3. Node retrieves a job and starts execution. When job is assigned,
-   it behaves as though you've sent it directly to the node using `fair node run`
-   command. See [Communicating with Nodes](./communicating-with-nodes)
-   section to get more information on how to start jobs directly on the nodes.
+3. Node retrieves a job and starts execution.
 4. If no compatible node was found for a set period of time, job is considered
    EXPIRED and is removed from the queue.
 
-Here is an example on how to start a job:
+Here is an example of running a simple Python program:
 ```shell
-fair job -i python:slim python -c "print('Hello Fair Compute')"
+fair job -i python:slim -- python -c "print('Hello Fair Compute')"
 ```
 
 Job output, i.e. `Hello Fair Compute` should be printed to the console.
-To start job in detach mode use `-d` flag. In this case job id will be printed
+To start job in a detached mode use `-d` flag. In this case job id will be printed
 which later can be used to inspect the job.
 
 ## Get Job Information
@@ -50,16 +47,16 @@ job is being scheduled and executed.
 fair cluster info
 
 # schedule a job
-JOB_ID=`fair job -i python:slim python -c "import time; print('Start'); time.sleep(10); print('Finish')"`
+JOB_ID=`fair job -d -i python:slim -- python -c "import time; print('Start'); time.sleep(5); print('Finish')"`
 
-# status should be queued
+# status should be queued or processing
 fair job info $JOB_ID
 
-# after a few seconds the job should be in running status
+# after a little bit - job should be scheduled and the status should be processing
+sleep 1
+fair job info $JOB_ID
+
+# after 5 seconds job is in complete state
 sleep 5
-fair job info $JOB_ID
-
-# after 10 seconds job is in complete state
-sleep 10
 fair job info $JOB_ID
 ```

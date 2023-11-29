@@ -9,14 +9,22 @@ on HuggingFace and run inference on your computer using Fair. This way
 you can leverage your GPU to run inference and avoid paying for expensive
 cloud GPU instances.
 
+We're going to do the following:
+1. Prepare a Docker image that will run an inference server.
+   Inference server will accept a text prompt and return an image.
+2. Upload created Docker image to some container registry such that Fair can access it.
+3. Create a HuggingFace space that will host the UI for our demo.
+4. Leverage Fair Python API to launch the inference server on your own cluster
+   if one is not already running.
+
 ## Preparing the Docker Image
 
 For this tutorial we'll be using OctoAI tools to streamline
-the process of creating a Docker image with our service.
+the process of creating a Docker image with our inference server.
 Alternatively, https://replicate.com can be used to achieve
 similar results.
 
-A full tutorial can be found at their [website](https://docs.octoai.cloud/docs/containerize-your-code-with-our-cli)
+A full tutorial can be found at OctoML [website](https://docs.octoai.cloud/docs/containerize-your-code-with-our-cli)
 and the code for this example can be found at https://github.com/faircompute/diffusion-octo.
 
 Here is a short explanation of the workflow:

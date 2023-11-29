@@ -52,7 +52,7 @@ that you have in your computer. We need to use nvidia runtime to make use of the
 NVidia GPU. It can be specified using the `-r` flag. Try the following command
 to run `nvidia-smi` tool on your node and get the GPU information.
 ```shell
-fair node $NODE_ID run -r nvidia -i ubuntu nvidia-smi -L
+fair node $NODE_ID run -r nvidia -i ubuntu -- nvidia-smi -L
 ```
 
 Another commonly used feature is port mapping. For example, if you're developing
@@ -75,7 +75,7 @@ stopped. Note that Fair periodically cleans up containers on the node.
 To retrieve container logs use `fair node <node_id> logs <container_id>`. Here is an example
 of how to start a job and retrieve logs from it afterward.
 ```shell
-CONTAINER_ID=`fair node $NODE_ID run -d -i alpine -- echo "Hello World"
+CONTAINER_ID=`fair node $NODE_ID run -d -i alpine -- echo "Hello World"`
 fair node $NODE_ID logs $CONTAINER_ID
 ```
 
