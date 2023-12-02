@@ -172,6 +172,8 @@ def start_server():
 
     client.run(node=TARGET_NODE,
                image=DOCKER_IMAGE,
+               # specify "nvidia" runtime to leverage GPUs on the system
+               runtime="nvidia",
                ports=[(5000, 8080)],
                detach=True)
 
