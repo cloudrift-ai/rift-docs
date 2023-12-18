@@ -265,4 +265,4 @@ received Fair will start the server again.
 
 Another option is to just manually terminate the server using `fair node <node_id> kill <container_id>` command.
 To get the container ID you can use `fair node <node_id> list` command. Check out the
-[CLI documentation](/docs/docs/cli-interface/communicating-with-nodes) for more information.
+[CLI documentation](/docs/docs/cli-interface/launching-jobs) for more information.
