@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Communicating with Nodes
+# Launching Jobs
 
 Fair command interface is inspired by [Docker](https://www.docker.com/).
 Most of the time running a Docker command in using fair command line too will work.
@@ -20,7 +20,7 @@ the nodes that we have. You can do it with Fair by invoking the following comman
 fair cluster info
 ```
 
-## Launching a Container
+## Running a Container
 
 To run a task on a container `fair docker run <image> <command...>` command is used (similar to `docker run`).
 It is a shortcut to `fair docker --node any run ...` and thus by default it runs
