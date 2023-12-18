@@ -106,12 +106,20 @@ the machines that you have launched Fair desktop application on.
 fair cluster info
 ```
 
+If cluster is empty, it means that no providers are running. You can start a provider
+on a machine using `fair-desktop` command:
+```shell
+fair-desktop
+```
+
+Afterward `fair cluster info` command should show that you have at least one node in the cluster.
+
 ### 2. Run your First Task
 
-To run the task on the cluster you can leverage `fair job` command:
+To run the task on the cluster you can leverage `fair task` command:
 
 ```shell
-fair job -i alpine -- echo "Hello Fair Compute"
+fair docker run alpine echo "Hello Fair Compute"
 ```
 
 If you need to see more details about program execution, pass `-vv` flag.
