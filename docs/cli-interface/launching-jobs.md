@@ -162,7 +162,7 @@ stopped. Note that Fair periodically cleans up containers on the node.
 To retrieve container logs use `fair docker -n <node_id> logs <container_id>`. Here is an example
 of how to start a job and retrieve logs from it afterward.
 ```shell
-CONTAINER_ID=`fair docker -n $NODE_ID run -d alpine echo "Hello World"
+CONTAINER_ID=`fair docker -n $NODE_ID run -d alpine echo "Hello World"`
 fair docker -n $NODE_ID logs $CONTAINER_ID
 ```
 
