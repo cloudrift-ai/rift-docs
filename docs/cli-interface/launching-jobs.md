@@ -139,7 +139,7 @@ fair docker kill $CONTAINER_ID
 :::info
 
 This tutorial example is trying to access the node using its public IP. If the node is not accessible from the
-internet, the example won't work. Please refer to [Serving Stable Diffusion](/docs/docs/tutorials/serving-stable-diffusion)
+internet, the example won't work. Please refer to [Serving Stable Diffusion](/docs/docs/tutorials/stable-diffusion-on-hugging-face)
 tutorial to see how tunneling can be used to work around this problem.
 
 :::
