@@ -21,6 +21,7 @@ i.e. is behind NAT or firewall.
 </div>
 
 We're going to do the following:
+
 1. Prepare a Docker image that will run an inference server.
    Inference server will accept a text prompt and return an image.
 2. Upload created Docker image to some container registry such that Fair can access it.
@@ -30,7 +31,8 @@ We're going to do the following:
 
 ## Preparing the Docker Image
 
-The docker image used to serve Stable Diffusion (SDXL Turbo) is based on [docker-diffusers-api](https://github.com/kiri-art/docker-diffusers-api).
+The docker image used to serve Stable Diffusion (DreamShaper V8) is based on
+[docker-diffusers-api](https://github.com/kiri-art/docker-diffusers-api).
 
 Specifically, [docker-diffusers-api-build-download](https://github.com/kiri-art/docker-diffusers-api-build-download)
 base image has been used with the following command to build the image:
@@ -51,6 +53,7 @@ Often a free tier is available.
 
 If you're using Docker Hub, then once you configure your account you
 can simply push it using the command:
+
 ```shell
 docker push <image_repository>/<image_name>:latest
 ```
@@ -75,12 +78,14 @@ which we will discuss in following sections.
 
 To start necessary services we will be using Fair Python API. You can install it via `pip install faircompute`.
 Then create a client by providing your email and the password that you've used during registration.
+
 ```python
 SERVER_ADDRESS = "https://faircompute.com:8000"
 
+
 def create_fair_client():
     return FairClient(server_address=SERVER_ADDRESS,
-                      user_email=os.getenv('FAIRCOMPUTE_EMAIL', "debug-usr"),
+                      user_email=os.getenv('FAIRCOMPUTE_EMAIL', "debug@usr.com"),
                       user_password=os.environ.get('FAIRCOMPUTE_PASSWORD', "debug-pwd"))
 ```
 
@@ -93,14 +98,15 @@ using `fair cluster info` command.
 The `ports` argument specifies the port mapping from the container to the host. We will be using port 5000
 to communicate to the container, while the container will be listening on port 8000. The `detach` argument
 indicates that we want to run the server in the background and don't want to block the client.
+
 ```python
 INFERENCE_NODE = "<id of the node for running inference>"
 INFERENCE_DOCKER_IMAGE = "faircompute/diffusers-api-dreamshaper-8"
 
+
 def start_inference_server(fc: FairClient):
     fc.run(node=INFERENCE_NODE,
            image=INFERENCE_DOCKER_IMAGE,
-           runtime="nvidia",
            ports=[(5001, 8000)],
            detach=True)
 ```
@@ -122,6 +128,8 @@ your tunneling node.
 
 ```python
 TUNNEL_NODE = "<id of the node for running tunnel>"
+TUNNEL_DOCKER_IMAGE = "rapiz1/rathole"
+
 
 def start_tunnel(fc: FairClient):
     # generate fixed random authentication token based off some secret
@@ -179,6 +187,7 @@ of the tunneling server by inspecting the `host_address` field of the node info 
 class ServerNotReadyException(Exception):
     pass
 
+
 def create_endpoint_client(fc, retries, timeout=1.0, delay=2.0):
     # use tunneling node IP for communicating with the endpoint
     server_address = next(info['host_address'] for info in fc.get_nodes() if info['node_id'] == TUNNEL_NODE)
@@ -231,6 +240,7 @@ class EndpointClient:
 ## Starting All Services
 
 Finally, we can put it all together, i.e.
+
 1. Connect to Fair.
 2. Start inference server.
 3. Open a tunnel to the inference server.
@@ -248,10 +258,10 @@ def text_to_image(text):
 
     try:
         # client is configured, try to do inference right away
-        if endpoint_client is not None:  
-            return endpoint_client.infer(text) 
-        # client is not configured, try connecting to the inference server, maybe it is running
-        else: 
+        if endpoint_client is not None:
+            return endpoint_client.infer(text)
+            # client is not configured, try connecting to the inference server, maybe it is running
+        else:
             endpoint_client = create_endpoint_client(fair_client, 1)
     except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError, requests.exceptions.Timeout):
         # inference server is not ready, start all services
@@ -268,9 +278,9 @@ That's it. Now you can use your hardware to run inference and avoid paying for e
 
 For simplicity, we've omitted the code for terminating the server. If you want to do so, better to incorporate
 that logic in the inference endpoint itself that we've created in the first section. For example, if no requests
-have been received for a set period  of time, the inference server will self-destruct. The next time request is
+have been received for a set period of time, the inference server will self-destruct. The next time request is
 received Fair will start the server again.
 
 Another option is to just manually terminate the server using `fair node <node_id> kill <container_id>` command.
 To get the container ID you can use `fair node <node_id> list` command. Check out the
-[CLI documentation](/docs/docs/cli-interface/launching-jobs) for more information.
+[CLI documentation](/docs/cli-interface/launching-jobs) for more information.

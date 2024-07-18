@@ -14,7 +14,7 @@ const config = {
   url: 'https://faircompute.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub docs deployment, it is often '/<projectName>/'
-  baseUrl: '/docs/',
+  baseUrl: '/',
 
   // GitHub docs deployment config.
   // If you aren't using GitHub docs, you don't need these.
@@ -67,7 +67,7 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Guides',
+            label: 'Docs Home',
           },
           {
             // FIXME: find a way to parse base URL and change port
@@ -82,6 +82,21 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
+
+  plugins: [
+    [
+      'docusaurus-plugin-dotenv',
+      {
+        path: "../../.env", // The path to your environment variables.
+        safe: false, // If false ignore safe-mode, if true load './.env.example', if a string load that file as the sample
+        systemvars: false, // Set to true if you would rather load all system variables as well (useful for CI purposes)
+        silent: false, //  If true, all warnings will be suppressed
+        expand: false, // Allows your variables to be "expanded" for reusability within your .env file
+        defaults: false, //  Adds support for dotenv-defaults. If set to true, uses ./.env.defaults
+        ignoreStub: true
+      }
+    ]
+  ],
 };
 
 module.exports = config;

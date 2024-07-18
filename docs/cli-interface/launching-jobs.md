@@ -5,36 +5,49 @@ sidebar_position: 1
 # Launching Jobs
 
 Fair command interface is inspired by [Docker](https://www.docker.com/).
-Most of the time running a Docker command in using fair command line too will work.
-You can start containers, list containers on the node, inspect logs, kill them, etc.
+Most of the time running a Docker command using fair command line tool will work.
+You can start containers, list containers on the machine, inspect logs, kill them, etc.
 
 However, Fair tool manages the entire cluster, and thus you can run multiple jobs
-at once or inspect multiple nodes. There are also additional commands designed
+at once or inspect multiple executors. There are also additional commands designed
 specifically for cluster management.
 
-## Listing Nodes in the Cluster
+## Listing Executors in the Cluster
 
 Before launching any jobs it is good to inspect the cluster, i.e. see summary of all
-the nodes that we have. You can do it with Fair by invoking the following command:
+the executors that we have. You can do it with Fair by invoking the following command:
+
 ```shell
 fair cluster info
 ```
 
+:::info What is an Executor?
+
+You're adding your machine to the cluster when you're running `fair-desktop` or service on your machine.
+However, big servers might have more CPUs, GPUs, and other resources necessary to run user jobs.
+Thus, we allow them to be split into multiple executors.
+An executor is an isolated job runner with limited access to node HW.
+
+:::
+
 ## Running a Container
 
-To run a task on a container `fair docker run <image> <command...>` command is used (similar to `docker run`).
-It is a shortcut to `fair docker --node any run ...` and thus by default it runs
-the job on an arbitrary node. To run the job on a specific node use `fair docker -n <node_id> run ...` command.
+To run a task on a container `fair docker run` command is used (similar to `docker run`).
+The difference with Docker is that we can additionally specify the executor on which we want
+to run the job via `-e <executor_name>` argument. By default, Fair will run the job on an arbitrary
+executor.
 
-It does the following:
-1. Starts a container on the specified node.
+Specifically, `fair docker run` command does the following:
+
+1. Starts a container on the specified executor.
 2. Starts a process in the container.
 3. Attaches to `stdin, stdout, stderr` of the process.
-   The content of `stdout` and `stderr` will be continuously sent to the server 
+   The content of `stdout` and `stderr` will be continuously sent to the server
    such that you can interactively see process output, `stdin` will be continuously
    polled and can be used to send input to the process.
 
-For example, try the following command 
+For example, try the following command
+
 ```shell
 fair docker run python:slim -- python -c "print('Hello Fair Compute')"
 ```
@@ -54,37 +67,55 @@ flag when you want to memorize the container ID for some future commands.
 CONTAINER_ID=`fair docker run -d alpine sleep 10`
 ```
 
+### Running on a Specific Executor
+
+To run the job on a specific executor use `-e <executor_name>` option. The technique described
+below can be used to run several jobs on the same executor.
+
+First, let's get the name of the executor. For this we can leverage `FAIR_EXECUTOR_NAME` environment variable.
+
+```shell
+EXECUTOR_NAME=`fair docker run alpine printenv FAIR_EXECUTOR_NAME`
+```
+
+Now, let's ensure that we're running on the same executor.
+
+```shell
+fair docker -e $EXECUTOR_NAME run alpine -- printenv FAIR_EXECUTOR_NAME
+```
+
 ### Launching Several Jobs at Once
 
-By default, Fair is running job on an arbitrary node which is equivalent
-to specifying `-n any` option to `fair docker run` command. You can specify the 
-node by supplying the node id instead of the keyword `any`. You can also
-run the job on all nodes at once by using `-n all` option.
+To launch jobs on all executors at once use `-e all` option. Running a command on all
+executors is useful for inspecting the cluster.
 
-For example, let's print system information of all nodes we have in the cluster:
+For example, let's print system information of all executors we have in the cluster:
+
 ```shell
-fair docker -n all run alpine -- uname -a
+fair docker -e all run alpine -- uname -a
 ```
 
-Another useful command to run on the cluster is `printenv FAIR_NODE_ID`. When launching
-a job, Fair sets `FAIR_NODE_ID` environment variable such that job knows the id of the 
-node where it runs.
+However, the aforementioned command is not very useful because it is hard to tell
+which executor is which. To fix that we can add `printenv FAIR_EXECUTOR_NAME` before printing
+system information. Let's use it to print system information of the executors in the cluster
+alongside the executor id:
 
-Let's use it to print system information of the nodes in the cluster alongside the node id:
 ```shell
-fair docker -n all run alpine -- sh -c 'printf "$FAIR_NODE_ID:\n  "; uname -a'
+fair docker -e all run alpine -- sh -c 'printf "$FAIR_EXECUTOR_NAME:\n  "; uname -a'
 ```
+
+Now we have see system information for each executor in the cluster.
 
 ### Launching a Container with GPU Support
 
 The biggest value of Fair is that it allows you to leverage the powerful GPU
-that you have in your computer. We need to use nvidia runtime to make use of the 
-NVidia GPU. It can be specified using the `-r` flag.
+that you have in your computer.
 
-Using the aforementioned trick with `FAIR_NODE_ID`, let's print a GPU that each of our
-nodes has:
+To check that GPU is available on the executor run the following command supplying
+`-e <EXECUTOR_NAME>` argument to run the command on a specific executor if necessary:
+
 ```shell
-fair docker -n all run -r nvidia -- ubuntu sh -c 'printf "$FAIR_NODE_ID:\n  "; nvidia-smi -L'
+fair docker run -- ubuntu nvidia-smi -L
 ```
 
 ### Supplying Files
@@ -105,7 +136,6 @@ volume onto remote machine over the network.
 
 :::
 
-
 ### Exposing Ports
 
 Another commonly used feature is port mapping. For example, if you're developing
@@ -114,9 +144,9 @@ or `-p <host_port>:<publish_port>` argument. Here is an example of serving a min
 web server.
 
 ```shell
-# memorize id of the node
-NODE_ID=`fair docker run alpine printenv FAIR_NODE_ID`
-echo $NODE_ID
+# memorize id of the executor
+EXECUTOR_NAME=`fair docker run alpine printenv FAIR_EXECUTOR_NAME`
+echo $EXECUTOR_NAME
 
 # run trivial web server
 echo "Trivial Web Server" > /tmp/index.html
@@ -125,12 +155,12 @@ CONTAINER_ID=`fair docker run -d -p 8080:8080 \
               busybox -- httpd -f -h /www -p 8080`
 echo $CONTAINER_ID
 
-# get IP of the node where server is running
-NODE_IP=`./fair docker -n $NODE_ID run curlimages/curl -- curl -sS icanhazip.com`
-echo $NODE_IP
+# get IP of the executor where server is running
+EXECUTOR_IP=`./fair docker -e $EXECUTOR_NAME run curlimages/curl -- curl -sS icanhazip.com`
+echo $EXECUTOR_IP
 
 # check that the server is working
-curl http://$NODE_IP:8080/
+curl http://$EXECUTOR_IP:8080/
 
 # kill the server
 fair docker kill $CONTAINER_ID
@@ -138,32 +168,36 @@ fair docker kill $CONTAINER_ID
 
 :::info
 
-This tutorial example is trying to access the node using its public IP. If the node is not accessible from the
-internet, the example won't work. Please refer to [Serving Stable Diffusion](/docs/docs/tutorials/stable-diffusion-on-hugging-face)
+This tutorial example is trying to access the executor using its public IP. If the executor is not accessible from the
+internet, the example won't work. Please refer
+to [Serving Stable Diffusion](/docs/tutorials/stable-diffusion-on-hugging-face)
 tutorial to see how tunneling can be used to work around this problem.
 
 :::
 
-## Listing Containers on the Node
+## Listing Containers on the Executor
 
-To list all running containers on the node use the following command:
+To list all running containers on the executor use the following command:
+
 ```shell
 fair docker ps
 ```
 
-This will print all container on all the nodes because by default Fair adds `-n all`
+This will print all container on all the executors because by default Fair adds `-e all`
 to `fair docker ps` command.
 
 Use `-a` flag to list all containers, including the ones that have already been
-stopped. Note that Fair periodically cleans up containers on the node.
+stopped. Note that Fair periodically cleans up containers on the executor.
 
 ## Retrieving Container Logs
 
-To retrieve container logs use `fair docker -n <node_id> logs <container_id>`. Here is an example
+To retrieve container logs use `fair docker -e <executor_id> logs <container_id>`. Here is an example
 of how to start a job and retrieve logs from it afterward.
+
 ```shell
-CONTAINER_ID=`fair docker -n $NODE_ID run -d alpine echo "Hello World"`
-fair docker -n $NODE_ID logs $CONTAINER_ID
+EXECUTOR_NAME=`fair docker run alpine printenv FAIR_EXECUTOR_NAME`
+CONTAINER_ID=`fair docker -e $EXECUTOR_NAME run -d alpine echo "Hello World"`
+fair docker -e $EXECUTOR_NAME logs $CONTAINER_ID
 ```
 
 You can retrieve logs even if the task has finished. However, task containers and all the associated
@@ -171,11 +205,13 @@ information is removed after a few minutes.
 
 ## Stopping the Container
 
-To stop (kill) the container on the node use `fair docker -n <node_id> kill <container_id>`.
+To stop (kill) the container on the executor use `fair docker -e <executor_id> kill <container_id>`.
 Here is an example of starting some long-running command and terminating it.
+
 ```shell
-CONTAINER_ID=`fair -n $NODE_ID docker run -d alpine sleep 30`
-fair docker -n $NODE_ID kill $CONTAINER_ID
+EXECUTOR_NAME=`fair docker run alpine printenv FAIR_EXECUTOR_NAME`
+CONTAINER_ID=`fair -e $EXECUTOR_NAME docker run -d alpine sleep 30`
+fair docker -e $EXECUTOR_NAME kill $CONTAINER_ID
 ```
 
 ## End-to-end Example
@@ -188,22 +224,22 @@ and finally terminate it.
 # check the cluster
 fair cluster info
 
-# get id of some node in the cluster
-NODE_ID=`fair docker run alpine printenv FAIR_NODE_ID`
+# get id of some executor in the cluster
+EXECUTOR_NAME=`fair docker run alpine printenv FAIR_EXECUTOR_NAME`
 
 # run a task that will be printing countdown to console for two minutes, run in background
-CONTAINER_ID=`fair docker -n $NODE_ID run -d python:slim --\
+CONTAINER_ID=`fair docker -e $EXECUTOR_NAME run -d python:slim --\
   python -uc "import time; [(print(f'{120-i} seconds left'), time.sleep(1)) for i in range(120)]"`
 
 # inspect running tasks
-fair docker -n $NODE_ID ps
+fair docker -e $EXECUTOR_NAME ps
 
 # check logs of the task we've started
-fair docker -n $NODE_ID logs $CONTAINER_ID
+fair docker -e $EXECUTOR_NAME logs $CONTAINER_ID
 
 # stop the task
-fair docker -n $NODE_ID kill $CONTAINER_ID
+fair docker -e $EXECUTOR_NAME kill $CONTAINER_ID
 
 # ensure that no tasks are running
-fair docker -n $NODE_ID ps
+fair docker -e $EXECUTOR_NAME ps
 ```

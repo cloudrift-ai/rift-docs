@@ -1,0 +1,125 @@
+---
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+# Getting Started
+
+Fair Compute platform is a web service and a collection of tools that allows
+you to turn your computers into a cluster that you can use for sharing with
+other developers or for deployment.
+
+If you're already using the cloud, you can leverage Fair to add some extra
+compute to your backend during crunch times and save money since desktop
+hardware is considerably cheaper than its cloud counterpart, and you likely
+have some idle machines sitting in your office or at home.
+
+In this tutorial, we will install Fair and launch our first job.
+
+## Installation
+
+### 1. Sign Up & Activate the Account
+
+To start using Fair please sign up at [faircompute.com](https://faircompute.com). It is free.
+You can find invitation codes in our [Discord](https://discord.gg/JqjZPwrdZe).
+
+### 2. Install Fair Desktop App
+
+Install Fair Desktop application onto the machine you want to use to run jobs. Use fair CLI to schedule jobs.
+<Tabs groupId="operating-systems">
+    <TabItem value="win" label="Windows">
+        <a href="https://faircompute.com:8000/internal/release/fair-desktop-full/stable/windows-x86_64/latest/redirect">Download
+            Windows Installer</a>
+    </TabItem>
+    <TabItem value="mac" label="Mac">
+        <pre>
+            <code>
+                curl https://faircompute.com/install-fair.sh | sh
+            </code>
+        </pre>
+    </TabItem>
+    <TabItem value="linux" label="Linux">
+        <pre>
+            <code>
+                curl https://faircompute.com/install-fair.sh | sh
+            </code>
+        </pre>
+    </TabItem>
+</Tabs>
+<br/>
+
+:::info Access Control
+
+By default, nobody has access to your machines, except for you. To allow others to run jobs on your machines,
+you will need to create a cluster and give access to other users. You can find more information about this
+in [Managing Clusters](/docs/cli-interface/managing-clusters) section.
+
+For extra piece of mind, you can shutdown the fair-desktop application. This will prevent any jobs from running
+on your machine. Even if fair-desktop app is not running - you can still use CLI to schedule jobs and manage
+other machines that you have access to.
+
+:::
+
+
+### 3. Configure Credentials
+
+Configure credentials using Fair command line tool by running
+```shell
+fair configure
+```
+
+You can also configure credentials using Fair desktop app.
+To configure credentials, launch the app, <u>right-click on the tray icon</u> and click <u>change credentials</u>.
+
+Lastly, you can edit the config manually. Location depends on your operating system.
+<Tabs groupId="operating-systems">
+    <TabItem value="win" label="Windows">
+        <pre>%APPDATA%\Fair Compute\config\credentials.yml</pre>
+        To open the file, press <b>Win + R</b> and paste the path or type it in the file explorer address bar.
+    </TabItem>
+    <TabItem value="mac" label="Mac">
+        <pre>~/Library/Application Support/rs.fair-compute/credentials.yml</pre>
+    </TabItem>
+    <TabItem value="linux" label="Linux">
+        <pre>~/.config/faircompute/credentials.yml</pre>
+    </TabItem>
+</Tabs>
+<br/>
+
+### 4. Install Docker
+
+Install [Docker](https://www.docker.com/get-started/) if you're planning to use containers.
+Note that only Docker engine is required, desktop app is optional.
+
+## Using Fair
+
+### 1. Inspect the Cluster
+
+Once you've authenticated and launched the client it is time to inspect the cluster.
+Use `fair cluster info` command for this purpose. Ensure that you see details of all
+the machines that you have launched Fair desktop application on.
+
+```shell
+fair cluster info
+```
+
+If cluster is empty, it means that no providers are running. You can start a provider
+on a machine using `fair-desktop` command:
+```shell
+fair-desktop
+```
+
+Afterward `fair cluster info` command should show that you have at least one node in the cluster.
+
+### 2. Run your First Task
+
+To run the task on the cluster you can leverage `fair task` command:
+
+```shell
+fair docker run alpine echo "Hello Fair Compute"
+```
+
+If you need to see more details about program execution, pass `-vv` flag.
