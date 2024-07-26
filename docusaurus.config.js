@@ -36,8 +36,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Serve the docs at the site's root
-          routeBasePath: '/',
+
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl: 'https://github.com/faircompute/fair-docs',
