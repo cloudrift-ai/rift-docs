@@ -1,0 +1,116 @@
+---
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Fair Datacenter Services
+
+Fair Datacenter Service is a system service that connects to the Fair platform allowing
+you to manage and lease your datacenter computational resources. Together with Fair CLI,
+Rest API, and developer tools, it provides a comprehensive solution for managing your datacenter.
+
+## Sign Up & Activate the Account
+
+To start using Fair please sign-up at [faircompute.com](https://faircompute.com).
+
+## Configuring Rentable Machines
+
+### 1. Install Docker engine
+
+Up-to-date instructions can be found on [Docker Website](https://docs.docker.com/engine/install/debian/).
+
+### 2. Install Fair system service
+
+On a machine(s) that you want to lease, install Fair System Service. Any Linux distribution is supported,
+but we typically test on Ubuntu 22.04.
+
+```shell
+curl https://faircompute.com/install-fair-service.sh | sudo sh
+```
+
+### 3. Install Fair CLI (Optional)
+
+Install Fair CLI to configure the system service.
+
+```shell
+curl https://faircompute.com/install-fair.sh | sh
+```
+
+### 4. Configure credentials
+
+Configure credentials using Fair command line tool by running
+
+```shell
+fair configure
+```
+
+You can edit the config manually, it is located in <pre>~/.config/faircompute/credentials.yml</pre>
+
+### 5. Restart system service and check status
+
+Restart Fair System Service and check status of the service and Docker Engine.
+
+```shell
+sudo systemctl restart fair
+sudo systemctl status fair
+sudo systemctl status docker
+```
+
+## Testing Fair Setup
+
+### 1. Install Fair CLI
+
+Install Fair CLI on your local machine. Installation instructions vary depending on your OS.
+
+<Tabs groupId="operating-systems">
+  <TabItem value="win" label="Windows">
+    <a href="https://faircompute.com/install/fair/on/windows">Download Windows Installer</a>
+  </TabItem>
+  <TabItem value="mac" label="Mac">
+
+  ```shell
+  curl https://faircompute.com/install-fair.sh | sh
+  ```
+
+  </TabItem>
+  <TabItem value="linux" label="Linux">
+
+  ```shell
+  curl https://faircompute.com/install-fair.sh | sh
+  ```
+
+  </TabItem>
+</Tabs>
+
+### 2. Configure credentials
+
+Configure your credentials using Fair command line tool by running:
+
+```shell
+fair configure
+```
+
+### 3. Inspect the cluster
+
+Inspect the cluster. You should see all machines that you've installed
+Fair Service on:
+
+```shell
+fair cluster info
+```
+
+### 4. Run your first job
+
+Run your first job. For example, to run a simple echo command:
+
+```shell
+fair docker run --rm alpine echo "Hello Fair Compute"
+```
+
+## Next Steps
+
+For more information on how to use Fair platform to lease your computational resources
+please send a request to <a href="mailto:dc@faircompute.com">dc@faircompute.com</a>.
+We support a variety of integrations, e.g. marketplace, white-label website, custom integration, and more.

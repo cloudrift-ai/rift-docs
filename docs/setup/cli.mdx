@@ -1,0 +1,75 @@
+---
+sidebar_position: 1
+---
+
+# Fair CLI
+
+Fair CLI is a command line tool for managing cluster, running and inspecting jobs.
+
+## Installing Fair CLI
+
+### 1. Install Fair CLI
+
+Install Fair CLI application onto your machine:
+<Tabs groupId="operating-systems">
+  <TabItem value="win" label="Windows">
+    <a href="https://faircompute.com/install/fair/on/windows">Download Windows Installer</a>
+  </TabItem>
+  <TabItem value="mac" label="Mac">
+
+  ```shell
+  curl https://faircompute.com/install-fair.sh | sh
+  ```
+
+  </TabItem>
+  <TabItem value="linux" label="Linux">
+
+  ```shell
+  curl https://faircompute.com/install-fair.sh | sh
+  ```
+
+  </TabItem>
+</Tabs>
+
+### 2. Configure credentials
+
+Configure credentials using Fair command line tool by running
+```shell
+fair configure
+```
+
+You can edit the config manually. Location depends on your operating system.
+<Tabs groupId="operating-systems">
+    <TabItem value="win" label="Windows">
+        <pre>%APPDATA%\Roaming\Fair Compute\credentials.yml</pre>
+    </TabItem>
+    <TabItem value="mac" label="Mac">
+        <pre>~/Library/Application Support/rs.fair-compute/credentials.yml</pre>
+    </TabItem>
+    <TabItem value="linux" label="Linux">
+        <pre>~/.config/faircompute/credentials.yml</pre>
+    </TabItem>
+</Tabs>
+<br/>
+
+## Using Fair
+
+### 1. Inspect the cluster
+
+Once you've authenticated and launched the client it is time to inspect the cluster.
+Use `fair cluster info` command for this purpose. Ensure that you see details of all
+the machines that you have rented or launched Fair desktop application on.
+
+```shell
+fair cluster info
+```
+
+### 2. Run your first job
+
+To run the job on the cluster you can leverage `fair docker run` command:
+
+```shell
+fair docker run alpine echo "Hello Fair Compute"
+```
+
+If you need to see more details about program execution, pass `-vv` flag.

@@ -1,0 +1,104 @@
+---
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Fair Desktop App & CLI
+
+Fair Desktop app is a desktop application that allows you to run workloads on your own machines.
+
+## Sign Up
+
+To start using Fair please sign-up at [faircompute.com](https://faircompute.com). It is free.
+
+## Install Fair Desktop App
+
+### 1. Run the installer
+
+Install Fair Desktop application onto the machine you want to use to run jobs. Use fair CLI to schedule jobs.
+<Tabs groupId="operating-systems">
+  <TabItem value="win" label="Windows">
+    <a href="https://faircompute.com/install/fair/on/windows">Download Windows Installer</a>
+  </TabItem>
+  <TabItem value="mac" label="Mac">
+
+  ```shell
+  curl https://faircompute.com/install-fair.sh | sh
+  ```
+
+  </TabItem>
+  <TabItem value="linux" label="Linux">
+
+  ```shell
+  curl https://faircompute.com/install-fair.sh | sh
+  ```
+
+  </TabItem>
+</Tabs>
+
+### 2. Configure credentials
+
+Configure credentials using Fair command line tool by running
+```shell
+fair configure
+```
+
+You can also configure credentials using Fair desktop app.
+To configure credentials, launch the app, <u>right-click on the tray icon</u> and click <u>change credentials</u>.
+
+Lastly, you can edit the config manually. Location depends on your operating system.
+<Tabs groupId="operating-systems">
+    <TabItem value="win" label="Windows">
+        <pre>%APPDATA%\Roaming\Fair Compute\credentials.yml</pre>
+    </TabItem>
+    <TabItem value="mac" label="Mac">
+        <pre>~/Library/Application Support/rs.fair-compute/credentials.yml</pre>
+    </TabItem>
+    <TabItem value="linux" label="Linux">
+        <pre>~/.config/faircompute/credentials.yml</pre>
+    </TabItem>
+</Tabs>
+
+### 3. Install Docker
+
+Install [Docker](https://www.docker.com/get-started/) if you're planning to use containers.
+Note that only Docker engine is required, desktop app is optional.
+
+:::info
+
+  Fair needs to communicate with Docker engine. On Windows this is done via tcp connection.
+  In Docker Settings -> General, ensure that **"Expose daemon on tcp://localhost:2375 without TLS"** is checked.
+
+:::
+
+## Using Fair
+
+### 1. Inspect the cluster
+
+Once you've authenticated and launched the client it is time to inspect the cluster.
+Use `fair cluster info` command for this purpose. Ensure that you see details of all
+the machines that you have launched Fair desktop application on.
+
+```shell
+fair cluster info
+```
+
+If cluster is empty, it means that no providers are running. You can start a provider
+on a machine using `fair-desktop` command:
+```shell
+fair-desktop
+```
+
+Afterward `fair cluster info` command should show that you have at least one node in the cluster.
+
+### 2. Run your first job
+
+To run the task on the cluster you can leverage `fair docker run` command:
+
+```shell
+fair docker run alpine echo "Hello Fair Compute"
+```
+
+If you need to see more details about program execution, pass `-vv` flag.
