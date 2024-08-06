@@ -19,10 +19,9 @@ run the following Docker command to pull and start the docker
 container for ollama. 
 
 ```bash
-fair docker run -d \      
+fair docker run \      
   --name ollama \
   -p 11434:11434 \
-  -v ollama_volume:/root/.ollama \
   ollama/ollama:latest
 
 ```
@@ -32,12 +31,10 @@ without the need to specify the specific machine ID.
 
 Here's what this command does:
 1. fair docker run: Pulls image and starts the container.
-2. --name ollama : Specifies the name for the image.
+2. --name ollama : Specifies the name for the container.
 3. -p 11434:11434: Maps port 11434 on your server to port 11434 on the container,
 allowing you to access the Ollama.
-4. -v ollama_volume:/root/.ollama : Specify the path of directory for downloading 
-all the related files needed to run ollama. 
-5. ollama/ollama:latest : Specifies the docker image to be run.
+4. ollama/ollama:latest : Specifies the docker image to be run.
 
 After running this command, you'll see output similar to the following:
 
@@ -96,6 +93,33 @@ success
 >>> Send a message (/? for help)
 ```
 
+## Use API to make inferences with LLMs using OLlama
+
+You can also use API calls to pull and chat with the model.
+Here's how you do it :
+
+Pull the model using the following command:
+
+```shell
+curl http://localhost:11434/api/pull -d '{ 
+  "name": "llama3"
+}'
+```
+
+## Interact with model making API calls
+
+Run the following command specifying the name of 
+the model pulled as well as the prompt for the 
+model to generate response
+
+```shell
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3",
+  "prompt": "Explain large language models"
+}'  
+```
+
 That's it. Now you can use run Ollama locally and 
 avoid paying for expensive cloud GPU instances using
 Fair Compute Platform.
+
