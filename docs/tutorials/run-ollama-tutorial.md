@@ -39,7 +39,7 @@ allowing you to access the Ollama.
 After running this command, you'll see output similar to the following:
 
 ```bash
-# b3501dc206e22f10e69e3c597d7a912423aa84dc665c0fc749b9c5a40c32632b
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICVVUCIu1WHLAWRDazpJrpnKg4G3IQPzrockSXpegDHH
 ```
 
 ## Ensure Ollama is up and running
@@ -50,7 +50,7 @@ to make sure that the model is up and running using the following
 command :
 
 ```bash
-curl <node-IP-address>/11434
+curl <node-IP-address>:11434
 ```
 
 Replace the node-IP-address with the IP address received while renting the
@@ -138,7 +138,7 @@ following Docker command to pull and start the Docker container for Ollama:
 
 ```bash
 Copy code
-fair docker run \      
+fair docker run -d\      
   --name ollama \
   -p 11434:11434 \
   ollama/ollama:latest
