@@ -18,7 +18,7 @@ following Docker command to pull and start the Docker container for Ollama:
 ```bash
 fair docker run -d\      
   --name ollama \
-  -p 11434:11434 \
+  -p='11434:11434' \
   ollama/ollama:latest
 
 ```
@@ -30,7 +30,7 @@ Here's what this command does:
 
 fair docker run: Pulls the image and starts the container.
 --name ollama: Specifies the name for the container.
--p 11434:11434: Maps port 11434 on your server to port 11434 on the container, 
+-p='11434:11434': Maps port 11434 on your server to port 11434 on the container, 
 allowing you to access Ollama.
 ollama/ollama
 : Specifies the Docker image to be run.
