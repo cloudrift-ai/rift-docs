@@ -18,7 +18,7 @@ following Docker command to pull and start the Docker container for Ollama:
 ```bash
 fair docker run -d\      
   --name ollama \
-  -p=11434:11434 \
+  -p='11434:11434' \
   ollama/ollama:latest
 
 ```
