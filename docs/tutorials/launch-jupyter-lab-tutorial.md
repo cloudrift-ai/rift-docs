@@ -13,7 +13,7 @@ run the following Docker command to start the Jupyter
 Notebook server. 
 
 ```bash
-fair docker run -p 8888:8888 jupyter/datascience-notebook
+fair docker run -p='8888:8888' jupyter/datascience-notebook
 
 # Entered start.sh with args: jupyter lab
 ```
@@ -23,7 +23,7 @@ without the need to specify the specific machine ID.
 
 Here's what this command does:
 1. fair docker run: Pulls image and starts the container.
-2. -it -p 8888:8888: Maps port 8888 on your server to port 8888 on the container,
+2. -p='8888:8888': Maps port 8888 on your server to port 8888 on the container,
 allowing you to access the Jupyter Notebook server.
 3. jupyter/datascience-notebook: Specifies the Docker image to use.
 
