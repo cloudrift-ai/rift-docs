@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Run Ollama locally 
+# LLM Inference with Ollama 
 
 <div>
 <img src={require("/static/img/llama.png").default} alt="Ollama"/>
@@ -18,7 +18,7 @@ following Docker command to pull and start the Docker container for Ollama:
 ```bash
 fair docker run -d\      
   --name ollama \
-  -p 11434:11434 \
+  -p=11434:11434 \
   ollama/ollama:latest
 
 ```
@@ -28,12 +28,12 @@ available without the need to specify the specific machine ID.
 
 Here's what this command does:
 
-fair docker run: Pulls the image and starts the container.
---name ollama: Specifies the name for the container.
--p 11434:11434: Maps port 11434 on your server to port 11434 on the container, 
+1. fair docker run: Pulls the image and starts the container.
+2. --name ollama: Specifies the name for the container.
+3. -p 11434:11434: Maps port 11434 on your server to port 11434 on the container, 
 allowing you to access Ollama.
-ollama/ollama
-: Specifies the Docker image to be run.
+4. ollama/ollama : Specifies the Docker image to be run.
+
 After running this command, you'll see output similar to the following:
 
 ```bash

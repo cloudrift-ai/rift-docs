@@ -13,9 +13,8 @@ run the following Docker command to start the Jupyter
 Notebook server. 
 
 ```bash
-fair docker run -p 8888:8888 jupyter/datascience-notebook
+fair docker run -p=8888:8888 jupyter/datascience-notebook
 
-# Entered start.sh with args: jupyter lab
 ```
 
 The fair docker command will automatically select the rented machine available
