@@ -6,11 +6,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import DownloadWindowsInstaller from '@site/src/components/DownloadWindowsInstaller';
 
-# Fair Datacenter Services
+# Fair Datacenter Service
 
 Fair Datacenter Service is a system service that connects to the Fair platform allowing
 you to manage and lease your datacenter computational resources. Together with Fair CLI,
-Rest API, and developer tools, it provides a comprehensive solution for managing your datacenter.
+Rest API, and other developer tools, it provides a comprehensive solution for managing your datacenter.
 
 ## Sign Up & Activate the Account
 
@@ -22,16 +22,19 @@ To start using Fair please sign-up at [faircompute.com](https://faircompute.com)
 
 Up-to-date instructions can be found on [Docker Website](https://docs.docker.com/engine/install/debian/).
 
-### 2. Install Fair system service
+### 2. Install NVidia Container Toolkit (if you have NVidia GPUs)
 
-On a machine(s) that you want to lease, install Fair System Service. Any Linux distribution is supported,
-but we typically test on Ubuntu 22.04.
+Up-to-date instructions can be found on [NVidia Website](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+
+### 3. Install Fair system service
+
+Any Linux distribution is supported, but we typically test on Ubuntu 22.04.
 
 ```shell
 curl https://faircompute.com/install-fair-service.sh | sudo sh
 ```
 
-### 3. Install Fair CLI (Optional)
+### 4. Install Fair CLI (Optional)
 
 Install Fair CLI to configure the system service.
 
@@ -39,17 +42,19 @@ Install Fair CLI to configure the system service.
 curl https://faircompute.com/install-fair.sh | sh
 ```
 
-### 4. Configure credentials
+### 5. Configure credentials
 
 Configure credentials using Fair command line tool by running
 
 ```shell
-fair configure
+sudo fair configure
 ```
 
-You can edit the config manually, it is located in <pre>~/.config/faircompute/credentials.yml</pre>
+Note that we're running fair system service as root, so we need to configure it as root.
 
-### 5. Restart system service and check status
+You can also edit the config manually, it is located in `/root/.config/faircompute/credentials.yml`
+
+### 6. Restart system service and check status
 
 Restart Fair System Service and check status of the service and Docker Engine.
 
@@ -95,8 +100,7 @@ fair configure
 
 ### 3. Inspect the cluster
 
-Inspect the cluster. You should see all machines that you've installed
-Fair Service on:
+Inspect the cluster. You should see all machines that you've installed Fair Service on:
 
 ```shell
 fair cluster info
