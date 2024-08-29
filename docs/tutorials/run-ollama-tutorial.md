@@ -2,16 +2,17 @@
 sidebar_position: 2
 ---
 
-# LLM/LLVM Inference with Ollama 
+# LLM (and Vision) Inference with Ollama 
 
 <div>
 <img src={require("/static/img/llama.png").default} alt="Ollama"/>
 </div>
 
 
-In this tutorial, we will see how to run Ollama using the Fair Compute platform.
+In this tutorial, we will explore how to run LLM inference with Ollama using the Fair Compute platform.
 
 ## Pull and Run the Ollama Image
+
 Once you have rented a GPU and connected to the Fair server, run the 
 following Docker command to pull and start the Docker container for Ollama:
 
@@ -54,6 +55,14 @@ You can add the port number ahead of your GPU URL, and you will see
 "Ollama is running" on your system. You can also make a curl request
 to ensure that the model is up and running using the following command:
 
+:::info
+
+**cURL** is not available on Windows by default. Instead, you can simply type in
+the address in the browser window or install [Git BASH](https://gitforwindows.org/)
+to have typical Linux command line tools available for you.
+
+:::
+
 ```bash
 curl {node-IP-address}:11434
 ```
@@ -65,7 +74,7 @@ Fair Compute GPU, or you can run the following command to get the IP address of 
 fair cluster info
 ```
 
-## Run LLM Inference Using Ollama Container
+## Chat with LLama
 
 To interact with Ollama container run the following command:
 
