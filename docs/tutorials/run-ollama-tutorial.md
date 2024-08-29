@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# LLM Inference with Ollama 
+# LLM/LLVM Inference with Ollama 
 
 <div>
 <img src={require("/static/img/llama.png").default} alt="Ollama"/>
@@ -16,31 +16,40 @@ Once you have rented a GPU and connected to the Fair server, run the
 following Docker command to pull and start the Docker container for Ollama:
 
 ```bash
-fair docker run -d\      
-  --name ollama \
-  -p='11434:11434' \
-  ollama/ollama:latest
-
+fair docker run -n ollama -p=11434 -d --rm ollama/ollama:latest
 ```
 
-The fair docker run command will automatically select the rented machine 
-available without the need to specify the specific machine ID.
+The fair docker run command will automatically select the executor (machine)
+in your fair cluster and start the Ollama container. If you have multiple executors
+in your cluster, you can specify the executor using `-x <executor-name>`
+command line parameter. Names of the executors in your cluster
+can be found by running `fair cluster info`.
 
 Here's what this command does:
 
-1. fair docker run: Pulls the image and starts the container.
-2. --name ollama: Specifies the name for the container.
-3. -p 11434:11434: Maps port 11434 on your server to port 11434 on the container, 
-allowing you to access Ollama.
-4. ollama/ollama : Specifies the Docker image to be run.
+1. `fair docker run`: Pulls the image and starts the container.
+2. `-n ollama` (optional): Specifies the name for the container
+allowing you to reference it by this name in other commands,
+e.g. `fair docker exec` used below to interact with the container.
+3. `-p 11434`: Maps port 11434 on your server to port 11434 on the container, allowing users to access Ollama.
+4. `-d` (optional): Runs the container in the background.
+5. `--rm` (optional): Removes the container when it stops .
+6. `ollama/ollama` : Specifies the Docker image to be run.
 
 After running this command, you'll see output similar to the following:
 
 ```bash
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICVVUCIu1WHLAWRDazpJrpnKg4G3IQPzrockSXpegDHH
+$ fair docker -x de442328-6612-11ef-899d-c35ace334926 run -n ollama -p=11434 -d --rm ollama/ollama:latest
+Pulling image 'ollama/ollama:latest'
+[==================================================>]    884MB/884MBBB
+8474598f5e0997bb5634bdd2e910df9160c50dc2929a3759e4cd832a805ff69a
 ```
 
+The last line of the output is the container ID, which you can use to reference the container in other commands
+if you haven't specified the name for the container.
+
 ## Ensure Ollama is Up and Running
+
 You can add the port number ahead of your GPU URL, and you will see 
 "Ollama is running" on your system. You can also make a curl request
 to ensure that the model is up and running using the following command:
@@ -50,16 +59,15 @@ curl {node-IP-address}:11434
 ```
 
 Replace {node-IP-address} with the IP address received while renting the
-Fair Compute GPU, or you can run the following command to get the IP address
- of the machine:
+Fair Compute GPU, or you can run the following command to get the IP address of the executor:
 
 ```shell
 fair cluster info
 ```
 
-Run Inferences with LLMs Using Ollama Container
-To interact with LLMs using the running Fair Docker container for Ollama, 
-run the following command:
+## Run LLM Inference Using Ollama Container
+
+To interact with Ollama container run the following command:
 
 ```shell
 fair docker exec -it ollama ollama run llama3
@@ -89,7 +97,13 @@ success
 Use API to Make Inferences with LLMs Using Ollama
 You can also use API calls to pull and chat with the model. Here's how you do it:
 
-## Pull the model using the following command:
+## Run LLM Inference Using Ollama REST API
+
+Ollama provides a comprehensive REST API to interact with the models.
+You can find the API documentation [here](https://github.com/ollama/ollama/blob/main/docs/api.md).
+Bindings for Python and other languages are also available through 3rdParty libraries.
+
+To pull the model, run the following command:
 
 ```shell
 curl <node-IP-address>:11434/api/pull -d '{ 
@@ -97,7 +111,6 @@ curl <node-IP-address>:11434/api/pull -d '{
 }'
 ```
 
-Interact with the Model Using API Calls
 Run the following command, specifying the name of the model pulled and the prompt for the model to generate a response:
 
 ```shell
@@ -107,5 +120,7 @@ curl <node-IP-address>:11434/api/generate -d '{
 }'  
 ```
 
-That's it! Now you can run Ollama locally and avoid paying for expensive cloud GPU instances using the Fair Compute platform.
+## Large Language Models with Vision Capabilities
 
+Note that Ollama also supports large language models with vision capabilities.
+Check out [LLaVA](https://ollama.com/library/llava) for more information.
