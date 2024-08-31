@@ -169,9 +169,7 @@ fair docker kill $CONTAINER_ID
 :::info
 
 This tutorial example is trying to access the executor using its public IP. If the executor is not accessible from the
-internet, the example won't work. Please refer
-to [Serving Stable Diffusion](/docs/tutorials/stable-diffusion-on-hugging-face)
-tutorial to see how tunneling can be used to work around this problem.
+internet, the example won't work.
 
 :::
 
