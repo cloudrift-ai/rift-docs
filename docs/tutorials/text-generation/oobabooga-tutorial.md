@@ -44,7 +44,9 @@ listening and verbose mode.
   stopped while you keep the terminal open (note that it will stop if you close the terminal).
 - `--name oobabooga` (optional): Specifies the name for the container
 allowing you to reference it by this name in other commands.
-- `--rm` (optional): Removes the container when it stops to save space.
+- `--rm` (optional): Removes the container when it stops. This is useful when you need to start the container multiple times.
+  If you don't specify it, you'll need to invoke `fair docker rm <container-id>` to remove the container manually. However, if the
+  container is removed, you'll lose all the data stored in it and will need to download the checkpoint again.
 - `atinoda/text-generation-webui:default-nvidia`: Specifies the Docker image to be run.
 
 After running this command, you'll see output similar to the following:

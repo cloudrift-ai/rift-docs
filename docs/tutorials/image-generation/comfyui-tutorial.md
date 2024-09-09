@@ -29,7 +29,7 @@ Once you have rented a GPU and connected to the Fair server, run the
 following Docker command to pull and start the Docker container for ComfyUI:
 
 ```bash
-fair docker run --name comfyui -p 8188 -e WEB_ENABLE_AUTH=false -d ghcr.io/ai-dock/comfyui:latest-cuda
+fair docker run -p 8188 -e WEB_ENABLE_AUTH=false --name comfyui -it --rm ghcr.io/ai-dock/comfyui:latest-cuda
 ```
 
 The fair docker run command will automatically select the executor (machine)
@@ -40,30 +40,53 @@ can be found by running `fair cluster info`.
 
 Here's what this command does:
 
-1. `fair docker run`: Pulls the Docker image and starts the container.
-2. `--name comfyui` (optional): Specifies the name for the container
-allowing you to reference it by this name in other commands,
-e.g. `fair docker exec` used below to download the checkpoint.
-3. `-p 8188`: Maps port 8188 on your server to port 8188 on the container, allowing you to access Comfy web UI.
-4. `-e WEB_ENABLE_AUTH=false`: Passes `WEB_ENABLE_AUTH` environment variable to the container
-to disable authentication for the web UI. See available environment variables [here](https://github.com/ai-dock/comfyui).
-5. `-d` (optional): Runs the container in the background. If you omit this flag, the container will stop once you close the terminal.
-6. `--rm` (optional): Removes the container when it stops. This is useful when you need to start the container multiple times.
-If you don't specify it, you'll need to invoke `fair docker rm <container-id>` to remove the container manually. However, if the
-container is removed, you'll lose all the data stored in it and will need to download the checkpoint again.
-7. `ghcr.io/ai-dock/comfyui:latest-cuda` : Specifies the Docker image to be run.
+- `fair docker run`: Pulls the Docker image and starts the container.
+- `-p 8188`: Maps port 8188 on your server to port 8188 on the container, allowing you to access Comfy web UI.
+- `-e WEB_ENABLE_AUTH=false`: Passes `WEB_ENABLE_AUTH` environment variable to the container.
+  We disable authentication for simplicity of this tutorial. 
+- `--name comfyui` (optional): Specifies the name for the container
+  allowing you to reference it by this name in other commands,
+  e.g. `fair docker exec` used below to download the checkpoint.
+- `-it`: Runs the container in interactive mode with a pseudo-TTY, ensuring that container is not
+  stopped while you keep the terminal open (note that it will stop if you close the terminal).
+- `--rm` (optional): Removes the container when it stops. This is useful when you need to start the container multiple times.
+  If you don't specify it, you'll need to invoke `fair docker rm <container-id>` to remove the container manually. However, if the
+  container is removed, you'll lose all the data stored in it and will need to download the checkpoint again.
+- `ghcr.io/ai-dock/comfyui:latest-cuda` : Specifies the Docker image to be run.
 
-After running this command, you'll see that the image being pulled and the container started, printing the container ID.
+After running this command, you'll see that the image being pulled and the container started.
 If the image is already downloaded, it will start the container right away.
+There will be a lot of log messages, here is how this will approximately look like:
 ```bash
 $ fair docker run --name comfyui -p 8188 -e WEB_ENABLE_AUTH=false -d --rm ghcr.io/ai-dock/comfyui:latest-cuda
 Pulling image 'ai-dock/comfyui:latest-cuda'
 [==================================================>]  221.3MB/221.3MB
-37803ae894d97163f9efd7c59182db05b191af212db929ba7079e4e83c980e08
+
+... lots of log messages ...
+
+==> /var/log/supervisor/quicktunnel-3.log <==
+2024-09-09T23:16:56Z INF Registered tunnel connection connIndex=0 connection=264e7605-3daf-47dc-a39b-ec2f698b757d event=0 ip=198.41.192.227 location=sjc01 protocol=http2
+
+==> /var/log/supervisor/supervisor.log <==
+2024-09-09 23:16:56,219 INFO exited: sshd (exit status 0; expected)
+
+==> /var/log/supervisor/syncthing.log <==
+[NFAZS] 2024/09/09 23:17:11 INFO: quic://0.0.0.0:22000 detected NAT type: Port restricted NAT
+[NFAZS] 2024/09/09 23:17:11 INFO: quic://0.0.0.0:22000 resolved external address quic://98.42.0.120:22000 (via stun.syncthing.net:3478)
+[NFAZS] 2024/09/09 23:17:12 INFO: Detected 0 NAT services
+[NFAZS] 2024/09/09 23:18:10 INFO: Joined relay relay://193.160.32.204:22067
+
 ```
 
-The last line of the output is the container ID, which you can use to reference the container in other commands
-if you haven't specified the name for the container.
+:::caution
+
+If you need to close the terminal window, but you want your container to keep running,
+press Ctrl-P followed by Ctrl-Q. This will detach the terminal from the container.
+
+If you press Ctrl-C or Ctrl-D, the container will stop. Also, you can specify `-d` flag
+instead of `-it` to run the container in the background when launching it.
+
+:::
 
 ## Ensure ComfyUI is Up and Running
 
@@ -96,9 +119,8 @@ $ fair docker -x 0b94918a-67b4-11ef-899d-77923e9a9038 exec -it comfyui bash
 (comfyui) root@957ce9414eea:/opt# cd /opt/ComfyUI/models/checkpoints
 (comfyui) root@957ce9414eea:/opt/ComfyUI/models/checkpoints# wget https://civitai.com/api/download/models/128713 --content-disposition
 Resolving civitai.com (civitai.com)... 172.67.12.143, 104.22.18.237, 104.22.19.237, ...
-...
-dreamshaper_8.safet 100%[===================>]   1.99G  12.1MB/s    in 60s     
-...
+... lots of log messages ...
+dreamshaper_8.safet   100%[=====================================>]   1.99G  12.1MB/s    in 60s     
 2024-08-31 17:54:55 (33.9 MB/s) - ‘dreamshaper_8.safetensors’ saved [2132625894/2132625894]
 ```
 
@@ -109,18 +131,21 @@ executor that you can get by running `fair cluster info` command.
 
 You should see the ComfyUI web interface. Click "Queue Prompt" to generate images using the DreamShaper checkpoint.
 
-<div>
-<img src={require("/static/img/comfyui-screenshot.png").default} alt="ComfyUI"/>
-</div>
+![comfyui](/img/comfyui-screenshot.png)
 
 ## Generate with FLUX.1
 
 You can download FLUX.1 checkpoint from the [Comfy Flux Checkpoint Page](https://huggingface.co/Comfy-Org/flux1-schnell/blob/main/flux1-schnell-fp8.safetensors).
 Right-click on the download button and select "Copy link". Then use the `wget` command to download the checkpoint to the container.
+
+Here is an example:
 ```
 $ fair docker exec -it comfyui bash
 (comfyui) root@957ce9414eea:/opt# cd /opt/ComfyUI/models/checkpoints
 (comfyui) root@957ce9414eea:/opt/ComfyUI/models/checkpoints# wget https://huggingface.co/Comfy-Org/flux1-schnell/resolve/main/flux1-schnell-fp8.safetensors
+... lots of log messages ...
+flux1-schnell-fp8.safetensors   100%[=====================================>]  16.05G   190MB/s    in 58s
+2024-09-09 23:10:44 (282 MB/s) - ‘flux1-schnell-fp8.safetensors’ saved [17236328572/17236328572]
 ```
 
 Refresh the ComfyUI web interface. You should see the FLUX.1 checkpoint available in the "ckpt_name" field of the

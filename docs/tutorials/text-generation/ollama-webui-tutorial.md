@@ -170,19 +170,21 @@ fair docker run -it -p 8080 -e OLLAMA_BASE_URL=http://ollama:11434 --name open-w
 
 Here's what this command does:
 
-1. `fair docker run`: Pulls the image and starts the container.
-   e.g. `fair docker exec` used below to interact with the container.
-2. `-p 8080`: Maps port 8080 on your server to port 8080 on the container, allowing users to access Open WebUI.
-3. `-it`: Runs the container in interactive mode with a pseudo-TTY, ensuring that container is not
-   stopped while you keep the terminal open (note that it will stop if you close the terminal).
-4. `-e OLLAMA_BASE_URL=http://ollama:11434`: Pass `OLLAMA_BASE_URL` environment variable to the container
-   to specify the base URL for the Ollama server. The reason why we use http://ollama:11434 is that
-   we've started ollama in the container named `ollama` and are using the port `11434`. We start all the
-   containers on the same network by default, so they can find each other by name.
-5. `--name open-webui` (optional): Specifies the name for the container
-   allowing you to reference it by this name in other commands.
-5. `--rm` (optional): Removes the container when it stops.
-6. `ghcr.io/open-webui/open-webui:main` : Specifies the Docker image to be run.
+- `fair docker run`: Pulls the image and starts the container,
+e.g. `fair docker exec` used below to interact with the container.
+- `-p 8080`: Maps port 8080 on your server to port 8080 on the container, allowing users to access Open WebUI.
+- `-it`: Runs the container in interactive mode with a pseudo-TTY, ensuring that container is not
+stopped while you keep the terminal open (note that it will stop if you close the terminal).
+- `-e OLLAMA_BASE_URL=http://ollama:11434`: Pass `OLLAMA_BASE_URL` environment variable to the container
+to specify the base URL for the Ollama server. The reason why we use http://ollama:11434 is that
+we've started ollama in the container named `ollama` and are using the port `11434`. We start all the
+containers on the same network by default, so they can find each other by name.
+- `--name open-webui` (optional): Specifies the name for the container
+ allowing you to reference it by this name in other commands.
+- `--rm` (optional): Removes the container when it stops. This is useful when you need to start the container multiple times.
+If you don't specify it, you'll need to invoke `fair docker rm <container-id>` to remove the container manually. However, if the
+container is removed, you'll lose all the data stored in it and will need to download the checkpoint again.
+- `ghcr.io/open-webui/open-webui:main` : Specifies the Docker image to be run.
 
 After running this command, you'll see output similar to the following:
 ```shell
