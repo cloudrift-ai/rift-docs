@@ -2,7 +2,18 @@
 sidebar_position: 1
 ---
 
-# Oobabooga LLM WebUI
+# Oobabooga WebUI
+
+Run [Oobabooga](https://github.com/oobabooga/text-generation-webui) LLM WebUI using the Fair Compute platform.
+
+Oobabooga features:
+- OpenAI-compatible API server with Chat and Completions endpoints.
+- Three chat modes: instruct, chat-instruct, and chat, allowing for both instruction-following and casual conversations with characters.
+chat-instruct mode automatically applies the model's template to the chat prompt, ensuring high-quality outputs without manual setup.
+- "Past chats" menu to quickly switch between conversations and start new ones.
+- Free-form generation in the Default/Notebook tabs without being limited to chat turns. Send formatted chat conversations from the Chat tab to these tabs.
+- Multiple sampling parameters and generation options for sophisticated text generation control.
+- Simple LoRA fine-tuning tool to customize models with your data.
 
 ![oobabooga](/img/oobabooga.webp)
 
@@ -15,7 +26,7 @@ for this tutorial. Once you have rented a GPU and connected to the Fair server, 
 following Docker command to pull and start the Oobabooga container.
 
 ```bash
-fair docker run -n oobabooga -p 7860 -it --rm -e EXTRA_LAUNCH_ARGS="--listen --verbose" atinoda/text-generation-webui:default-nvidia
+fair docker run -p 7860 -e EXTRA_LAUNCH_ARGS="--listen --verbose" -it --name oobabooga atinoda/text-generation-webui:default-nvidia
 ```
 
 The fair docker run command will automatically select the executor (machine)
@@ -25,40 +36,56 @@ command line parameter. Names of the executors in your cluster
 can be found by running `fair cluster info`.
 
 Here's what this command does:
-
-1. `fair docker run`: Pulls the image and starts the container.
-2. `-n oobabooga` (optional): Specifies the name for the container
+- `fair docker run`: Pulls the image and starts the container.
+- `-p 7860`: Maps port 7860 on your server to port 7860 on the container, allowing you to access Oobabooga.
+- `-e EXTRA_LAUNCH_ARGS="--listen --verbose"`: Passes environment variables to the container to enable
+listening and verbose mode.
+- `-it`: Runs the container in interactive mode with a pseudo-TTY, ensuring that container is not
+  stopped while you keep the terminal open (note that it will stop if you close the terminal).
+- `--name oobabooga` (optional): Specifies the name for the container
 allowing you to reference it by this name in other commands.
-3. `-p 7860`: Maps port 7860 on your server to port 7860 on the container, allowing you to access Oobabooga.
-4. `-it`: Runs the container in interactive mode with a pseudo-TTY, ensuring that container is not
-stopped while you keep the terminal open (note that it will stop if you close the terminal).
-5. `--rm` (optional): Removes the container when it stops to save space.
-6. `-e EXTRA_LAUNCH_ARGS="--listen --verbose"`: Passes environment variables to the container to enable listening and verbose mode.
-7. `atinoda/text-generation-webui:default-nvidia` : Specifies the Docker image to be run.
+- `--rm` (optional): Removes the container when it stops to save space.
+- `atinoda/text-generation-webui:default-nvidia`: Specifies the Docker image to be run.
 
 After running this command, you'll see output similar to the following:
 
 ```bash
-$ fair docker run -it --rm -e EXTRA_LAUNCH_ARGS="--listen --verbose" --gpus all -p 7860:7860 atinoda/text-generation-webui:default-nvidia
 === Running text-generation-webui variant: 'Nvidia Extended' v1.14 ===
 === (This version is 4 commits behind origin main) ===
 === Image build date: 2024-08-20 21:23:03 ===
-18:33:19-894366 INFO     Starting Text generation web UI                                                                                                                                                                        
-18:33:19-898214 WARNING                                                                                                                                                                                                         
-                         You are potentially exposing the web UI to the entire internet without any access password.                                                                                                            
-                         You can create one with the "--gradio-auth" flag like this:                                                                                                                                            
-                                                                                                                                                                                                                                
-                         --gradio-auth username:password                                                                                                                                                                        
-                                                                                                                                                                                                                                
-                         Make sure to replace username:password with your own.                                                                                                                                                  
+23:49:23-157933 INFO     Starting Text generation web UI                                                                                                                                                    
+23:49:23-162344 WARNING                                                                                                                                                                                     
+                         You are potentially exposing the web UI to the entire internet without any access password.                                                                                        
+                         You can create one with the "--gradio-auth" flag like this:                                                                                                                        
+                                                                                                                                                                                                            
+                         --gradio-auth username:password                                                                                                                                                    
+                                                                                                                                                                                                            
+                         Make sure to replace username:password with your own.                                                                                                                              
 
 Running on local URL:  http://0.0.0.0:7860
 ```
 
+To prevent others from accessing the Oobabooga LLM WebUI, you can set a password by adding the `--gradio-auth` flag
+using `-e EXTRA_LAUNCH_ARGS="--listen --verbose --gradio-auth username:password"` to the `fair docker run` command.
+
+:::caution
+
+If you need to close the terminal window, but you want your container to keep running,
+press Ctrl-P followed by Ctrl-Q. This will detach the terminal from the container.
+
+If you press Ctrl-C or Ctrl-D, the container will stop. Also, you can specify `-d` flag
+instead of `-it` to run the container in the background when launching it.
+
+:::
+
 ## Open Oobabooga LLM WebUI
 
-Open the browser and type in `http://{node-IP-address}:7860` URL. Replace {node-IP-address} with the IP address received while renting the
-Fair Compute GPU, or run `fair cluster info` to get the IP address of the executor.
+Open the browser and type in `http://{oobabooga-IP-address}:7860` URL. Replace {oobabooga-IP-address} with the IP address
+received while renting the machine, or run cluster info command to get see IP addresses of your executors.
+
+```bash
+fair cluster info
+```
 
 ## Download and Select Model
 
