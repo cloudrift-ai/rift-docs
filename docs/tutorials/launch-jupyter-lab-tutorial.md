@@ -8,7 +8,7 @@ sidebar_position: 1
 In this tutorial we will see how to open Jupyter Lab notebook
 using Fair Compute platform
 
-Once you have rented a gpu and connected to the fair server, 
+Once you have rented a gpu (rent at [https://neuralrack.ai](https://neuralrack.ai)) and connected to the fair server, 
 run the following Docker command to start the Jupyter
 Notebook server. 
 

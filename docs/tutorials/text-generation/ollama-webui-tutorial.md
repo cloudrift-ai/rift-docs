@@ -13,7 +13,7 @@ entirely offline. It supports various LLM runners, including Ollama and OpenAI-c
 
 ## Pull and Run the Ollama Image
 
-Once you have rented a GPU and connected to the Fair server, run the 
+Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.ai)) and connected to the Fair server, run the 
 following Docker command to pull and start the Docker container for Ollama:
 
 ```bash

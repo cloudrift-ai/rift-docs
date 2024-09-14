@@ -22,7 +22,7 @@ In this tutorial, we will explore how to run Oobabooga LLM WebUI using the Fair 
 ## Start Oobabooga LLM WebUI
 
 We will be using [Atinoda/text-generation-webui-docker](https://github.com/Atinoda/text-generation-webui-docker) Docker image
-for this tutorial. Once you have rented a GPU and connected to the Fair server, run the
+for this tutorial. Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.ai)) and connected to the Fair server, run the
 following Docker command to pull and start the Oobabooga container.
 
 ```bash

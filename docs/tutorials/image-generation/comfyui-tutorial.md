@@ -25,7 +25,7 @@ Run ComfyUI on a GPU-enabled machine managed by Fair Compute and learn how to:
 
 ## Pull and Run the ComfyUI Image
 
-Once you have rented a GPU and connected to the Fair server, run the 
+Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.ai)) and connected to the Fair server, run the 
 following Docker command to pull and start the Docker container for ComfyUI:
 
 ```bash
