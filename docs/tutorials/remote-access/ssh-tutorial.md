@@ -84,4 +84,63 @@ ssh -p 2222 root@<executor-ip-address>
 
 Replace `<executor-ip-address>` with the IP address from the previous step.
 
+
+## Configuring SSH Access with Public/Private Keys
+
+For improved security and convenience, you can set up SSH access using public/private key pairs instead of password authentication.
+
+1. On your local machine, generate an SSH key pair if you don't already have one:
+
+   ```bash
+   ssh-keygen -t rsa -b 4096 
+   ```
+
+2. Copy the contents of your public key (usually located at `~/.ssh/id_rsa.pub`):
+
+   ```bash
+   cat ~/.ssh/id_rsa.pub
+   ```
+
+3. In the SSH server container, create the `.ssh` directory and authorized_keys file:
+
+   ```bash
+   mkdir -p /root/.ssh
+   touch /root/.ssh/authorized_keys
+   chmod 700 /root/.ssh
+   chmod 600 /root/.ssh/authorized_keys
+   ```
+
+4. Add your public key to the `authorized_keys` file:
+
+   ```bash
+   echo "your_public_key_here" >> /root/.ssh/authorized_keys
+   ```
+
+   Replace `your_public_key_here` with the content you copied in step 2.
+
+5. Modify the SSH configuration to disable password authentication:
+
+   ```bash
+   sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+   ```
+
+6. Restart the SSH service:
+
+   ```bash
+   service ssh restart
+   ```
+
+Now you can connect to your SSH server using your private key:
+
+```bash
+ssh -p 2222 -i /path/to/your/private_key root@<executor-ip-address>
+```
+
+This method is more secure as it doesn't rely on password authentication, and it's more convenient as you don't need to enter a password each time you connect.
+
+:::caution
+Make sure to keep your private key secure and never share it. If you lose access to your private key, you won't be able to connect to the server without resetting the authentication method.
+:::
+
+
 Remember to stop the container when you're done to avoid unnecessary charges.

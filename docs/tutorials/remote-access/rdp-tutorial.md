@@ -50,7 +50,11 @@ fair cluster info
 
 Now you can connect to your RDP server using any RDP client:
 
-1. Open your RDP client (Remote Desktop on Windows, Microsoft Remote Desktop on macOS, or Remmina on Linux).
+
+1. Open your RDP client:
+   - Windows: [Remote Desktop Connection](ms-settings:remotedesktop) 
+   - macOS: [Microsoft Remote Desktop](https://apps.apple.com/us/app/microsoft-remote-desktop/id1295203466?mt=12) 
+   - Linux: [Remmina](https://remmina.org/how-to-install-remmina/)
 2. Enter the IP address of your executor as the hostname.
 3. Use the default port 3389.
 4. When prompted for credentials, use:
