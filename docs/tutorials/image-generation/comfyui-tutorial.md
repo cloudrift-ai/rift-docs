@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # ComfyUI with DreamShaper and FLUX.1
 
-Run ComfyUI on a GPU-enabled machine managed by Fair Compute and learn how to:
+Run ComfyUI on a GPU-enabled machine managed by CloudRift and learn how to:
 - Start a container with ComfyUI.
 - Download DreamShaper-V8 or FLUX.1 checkpoints
 - Generate images using Comfy web UI.
@@ -25,32 +25,32 @@ Run ComfyUI on a GPU-enabled machine managed by Fair Compute and learn how to:
 
 ## Pull and Run the ComfyUI Image
 
-Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.ai)) and connected to the Fair server, run the 
+Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.ai)) and installed CloudRift CLI, run the 
 following Docker command to pull and start the Docker container for ComfyUI:
 
 ```bash
-fair docker run -p 8188 -e WEB_ENABLE_AUTH=false --name comfyui -it --rm ghcr.io/ai-dock/comfyui:latest-cuda
+rift docker run -p 8188 -e WEB_ENABLE_AUTH=false --name comfyui -it --rm ghcr.io/ai-dock/comfyui:latest-cuda
 ```
 
-The fair docker run command will automatically select the executor (machine)
-in your fair cluster and start the ComfyUI container. If you have multiple executors
+The rift docker run command will automatically select the executor (machine)
+in your rift cluster and start the ComfyUI container. If you have multiple executors
 in your cluster, you can specify the executor using `-x <executor-name>`
 command line parameter. Names of the executors in your cluster
-can be found by running `fair cluster info`.
+can be found by running `rift cluster info`.
 
 Here's what this command does:
 
-- `fair docker run`: Pulls the Docker image and starts the container.
+- `rift docker run`: Pulls the Docker image and starts the container.
 - `-p 8188`: Maps port 8188 on your server to port 8188 on the container, allowing you to access Comfy web UI.
 - `-e WEB_ENABLE_AUTH=false`: Passes `WEB_ENABLE_AUTH` environment variable to the container.
   We disable authentication for simplicity of this tutorial. 
 - `--name comfyui` (optional): Specifies the name for the container
   allowing you to reference it by this name in other commands,
-  e.g. `fair docker exec` used below to download the checkpoint.
+  e.g. `rift docker exec` used below to download the checkpoint.
 - `-it`: Runs the container in interactive mode with a pseudo-TTY, ensuring that container is not
   stopped while you keep the terminal open (note that it will stop if you close the terminal).
 - `--rm` (optional): Removes the container when it stops. This is useful when you need to start the container multiple times.
-  If you don't specify it, you'll need to invoke `fair docker rm <container-id>` to remove the container manually. However, if the
+  If you don't specify it, you'll need to invoke `rift docker rm <container-id>` to remove the container manually. However, if the
   container is removed, you'll lose all the data stored in it and will need to download the checkpoint again.
 - `ghcr.io/ai-dock/comfyui:latest-cuda` : Specifies the Docker image to be run.
 
@@ -58,7 +58,7 @@ After running this command, you'll see that the image being pulled and the conta
 If the image is already downloaded, it will start the container right away.
 There will be a lot of log messages, here is how this will approximately look like:
 ```bash
-$ fair docker run --name comfyui -p 8188 -e WEB_ENABLE_AUTH=false -d --rm ghcr.io/ai-dock/comfyui:latest-cuda
+$ rift docker run --name comfyui -p 8188 -e WEB_ENABLE_AUTH=false -d --rm ghcr.io/ai-dock/comfyui:latest-cuda
 Pulling image 'ai-dock/comfyui:latest-cuda'
 [==================================================>]  221.3MB/221.3MB
 
@@ -90,17 +90,17 @@ instead of `-it` to run the container in the background when launching it.
 
 ## Ensure ComfyUI is Up and Running
 
-To confirm that the container is running, you can run `fair docker ps` command. It will show you the list of running containers:
+To confirm that the container is running, you can run `rift docker ps` command. It will show you the list of running containers:
 ```bash
-$ fair docker ps
+$ rift docker ps
  EXECUTOR                              CONTAINER ID  IMAGE                                COMMAND  CREATED              STATUS   NAMES 
  0b94918a-67b4-11ef-899d-77923e9a9038  37803ae894d9  ghcr.io/ai-dock/comfyui:latest-cuda  init.sh  2024-08-31 17:39:29  Running  /comfyui
 ```
 
 Open the browser and type in `http://{node-IP-address}:8188` URL. Replace {node-IP-address} with the IP address received while renting the
-Fair Compute GPU, or run `fair cluster info` to get the IP address of the executor. The output should look like this:
+CloudRift GPU, or run `rift cluster info` to get the IP address of the executor. The output should look like this:
 ```bash
-fair cluster info
+rift cluster info
 ```
 
 ## Download Checkpoint
@@ -109,13 +109,13 @@ A lot of checkpoints are available at [Civit.ai](https://civit.ai/). In this tut
 [DreamShaper-V8](https://civitai.com/models/4384/dreamshaper) checkpoint.
 
 To download the checkpoint:
-1. Connect to the container using `fair docker exec -it comfyui bash` command:
+1. Connect to the container using `rift docker exec -it comfyui bash` command:
 2. Run `cd /opt/ComfyUI/models/checkpoints/` to navigate to the checkpoints directory.
 3. Run `wget https://civitai.com/api/download/models/128713 --content-disposition` command to download the checkpoint.
 
 Here is the example of running the aforementioned command:
 ```
-$ fair docker -x 0b94918a-67b4-11ef-899d-77923e9a9038 exec -it comfyui bash
+$ rift docker -x 0b94918a-67b4-11ef-899d-77923e9a9038 exec -it comfyui bash
 (comfyui) root@957ce9414eea:/opt# cd /opt/ComfyUI/models/checkpoints
 (comfyui) root@957ce9414eea:/opt/ComfyUI/models/checkpoints# wget https://civitai.com/api/download/models/128713 --content-disposition
 Resolving civitai.com (civitai.com)... 172.67.12.143, 104.22.18.237, 104.22.19.237, ...
@@ -127,7 +127,7 @@ dreamshaper_8.safet   100%[=====================================>]   1.99G  12.1
 ## Start Using ComfyUI
 
 Open the browser and type in `http://{node-IP-address}:8188` URL. Replace {node-IP-address} with the IP address of the
-executor that you can get by running `fair cluster info` command.
+executor that you can get by running `rift cluster info` command.
 
 You should see the ComfyUI web interface. Click "Queue Prompt" to generate images using the DreamShaper checkpoint.
 
@@ -140,7 +140,7 @@ Right-click on the download button and select "Copy link". Then use the `wget` c
 
 Here is an example:
 ```
-$ fair docker exec -it comfyui bash
+$ rift docker exec -it comfyui bash
 (comfyui) root@957ce9414eea:/opt# cd /opt/ComfyUI/models/checkpoints
 (comfyui) root@957ce9414eea:/opt/ComfyUI/models/checkpoints# wget https://huggingface.co/Comfy-Org/flux1-schnell/resolve/main/flux1-schnell-fp8.safetensors
 ... lots of log messages ...

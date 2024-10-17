@@ -13,21 +13,21 @@ entirely offline. It supports various LLM runners, including Ollama and OpenAI-c
 
 ## Pull and Run the Ollama Image
 
-Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.ai)) and connected to the Fair server, run the 
+Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.ai)) and installed rift tools, run the 
 following Docker command to pull and start the Docker container for Ollama:
 
 ```bash
-fair docker run -p 11434 -it --name ollama --rm ollama/ollama:latest
+rift docker run -p 11434 -it --name ollama --rm ollama/ollama:latest
 ```
 
-The fair docker run command will automatically select the executor (machine)
-in your fair cluster and start the Ollama container. If you have multiple executors
+The rift docker run command will automatically select the executor (machine)
+in your rift cluster and start the Ollama container. If you have multiple executors
 in your cluster, you can specify the executor using `-x <executor-name>`
 command line parameter. Names of the executors in your cluster
-can be found by running `fair cluster info`.
+can be found by running `rift cluster info`.
 
 Here's what this command does:
-- `fair docker run`: Pulls the image and starts the container.
+- `rift docker run`: Pulls the image and starts the container.
 - `-p 11434`: Maps port 11434 on your server to port 11434 on the container, allowing users to access Ollama.
 - `-it`: Runs the container in interactive mode with a pseudo-TTY, ensuring that container is not
 stopped while you keep the terminal open (note that it will stop if you close the terminal).
@@ -77,13 +77,13 @@ if curl is not available on your machine. To find out the IP address of machines
 you can use the following command:
 
 ```shell
-fair cluster info
+rift cluster info
 ```
 
 Additionally, you can run the following command to check if the Ollama container is running:
 
 ```shell
-fair docker ps
+rift docker ps
 ```
 
 You should see an out similar to the following:
@@ -104,7 +104,7 @@ to have typical Linux command line tools available for you.
 To interact with Ollama container run the following command:
 
 ```shell
-fair docker exec -it ollama ollama run llama3
+rift docker exec -it ollama ollama run llama3
 ```
 
 For this tutorial, we are running LLama-3 by Meta AI, one of the most powerful 
@@ -176,7 +176,7 @@ Here is the steps you need to do to analyze an image using LLaVA model.
 
 Pull the LLaVA model:
 ```shell
-fair docker exec ollama ollama pull llava
+rift docker exec ollama ollama pull llava
 ```
 
 Encode the image. You can use the following command to encode the image in the terminal or use
@@ -213,13 +213,13 @@ The output will be similar to the following:
 allows you to interact with the model. To start a WebUI server, run the following command:
 
 ```shell
-fair docker run -it -p 8080 -e OLLAMA_BASE_URL=http://ollama:11434 --name open-webui --rm ghcr.io/open-webui/open-webui:main
+rift docker run -it -p 8080 -e OLLAMA_BASE_URL=http://ollama:11434 --name open-webui --rm ghcr.io/open-webui/open-webui:main
 ```
 
 Here's what this command does:
 
-- `fair docker run`: Pulls the image and starts the container,
-e.g. `fair docker exec` used below to interact with the container.
+- `rift docker run`: Pulls the image and starts the container,
+e.g. `rift docker exec` used below to interact with the container.
 - `-p 8080`: Maps port 8080 on your server to port 8080 on the container, allowing users to access Open WebUI.
 - `-it`: Runs the container in interactive mode with a pseudo-TTY, ensuring that container is not
 stopped while you keep the terminal open (note that it will stop if you close the terminal).
@@ -230,7 +230,7 @@ containers on the same network by default, so they can find each other by name.
 - `--name open-webui` (optional): Specifies the name for the container
  allowing you to reference it by this name in other commands.
 - `--rm` (optional): Removes the container when it stops. This is useful when you need to start the container multiple times.
-If you don't specify it, you'll need to invoke `fair docker rm <container-id>` to remove the container manually. However, if the
+If you don't specify it, you'll need to invoke `rift docker rm <container-id>` to remove the container manually. However, if the
 container is removed, you'll lose all the data stored in it and will need to download the checkpoint again.
 - `ghcr.io/open-webui/open-webui:main` : Specifies the Docker image to be run.
 
@@ -279,7 +279,7 @@ If you've followed the steps above, you should see the `llama3` model available 
 If you want to download other models, you can do so by running the ollama pull command as follows:
 
 ```shell
-fair docker exec -it ollama ollama pull <model-name>
+rift docker exec -it ollama ollama pull <model-name>
 ```
 
 List of supported models can be found [here](https://ollama.com/library).

@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Oobabooga WebUI
 
-Run [Oobabooga](https://github.com/oobabooga/text-generation-webui) LLM WebUI using the Fair Compute platform.
+Run [Oobabooga](https://github.com/oobabooga/text-generation-webui) LLM WebUI using the CloudRift platform.
 
 Oobabooga features:
 - OpenAI-compatible API server with Chat and Completions endpoints.
@@ -17,26 +17,26 @@ chat-instruct mode automatically applies the model's template to the chat prompt
 
 ![oobabooga](/img/oobabooga.webp)
 
-In this tutorial, we will explore how to run Oobabooga LLM WebUI using the Fair Compute platform.
+In this tutorial, we will explore how to run Oobabooga LLM WebUI using the CloudRift platform.
 
 ## Start Oobabooga LLM WebUI
 
 We will be using [Atinoda/text-generation-webui-docker](https://github.com/Atinoda/text-generation-webui-docker) Docker image
-for this tutorial. Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.ai)) and connected to the Fair server, run the
-following Docker command to pull and start the Oobabooga container.
+for this tutorial. Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.ai)) and installed rift tools,
+run the following Docker command to pull and start the Oobabooga container.
 
 ```bash
-fair docker run -p 7860 -e EXTRA_LAUNCH_ARGS="--listen --verbose" -it --name oobabooga atinoda/text-generation-webui:default-nvidia
+rift docker run -p 7860 -e EXTRA_LAUNCH_ARGS="--listen --verbose" -it --name oobabooga atinoda/text-generation-webui:default-nvidia
 ```
 
-The fair docker run command will automatically select the executor (machine)
-in your fair cluster and start the Oobabooga container. If you have multiple executors
+The rift docker run command will automatically select the executor (machine)
+in your rift cluster and start the Oobabooga container. If you have multiple executors
 in your cluster, you can specify the executor using `-x <executor-name>`
 command line parameter. Names of the executors in your cluster
-can be found by running `fair cluster info`.
+can be found by running `rift cluster info`.
 
 Here's what this command does:
-- `fair docker run`: Pulls the image and starts the container.
+- `rift docker run`: Pulls the image and starts the container.
 - `-p 7860`: Maps port 7860 on your server to port 7860 on the container, allowing you to access Oobabooga.
 - `-e EXTRA_LAUNCH_ARGS="--listen --verbose"`: Passes environment variables to the container to enable
 listening and verbose mode.
@@ -45,7 +45,7 @@ listening and verbose mode.
 - `--name oobabooga` (optional): Specifies the name for the container
 allowing you to reference it by this name in other commands.
 - `--rm` (optional): Removes the container when it stops. This is useful when you need to start the container multiple times.
-  If you don't specify it, you'll need to invoke `fair docker rm <container-id>` to remove the container manually. However, if the
+  If you don't specify it, you'll need to invoke `rift docker rm <container-id>` to remove the container manually. However, if the
   container is removed, you'll lose all the data stored in it and will need to download the checkpoint again.
 - `atinoda/text-generation-webui:default-nvidia`: Specifies the Docker image to be run.
 
@@ -68,7 +68,7 @@ Running on local URL:  http://0.0.0.0:7860
 ```
 
 To prevent others from accessing the Oobabooga LLM WebUI, you can set a password by adding the `--gradio-auth` flag
-using `-e EXTRA_LAUNCH_ARGS="--listen --verbose --gradio-auth username:password"` to the `fair docker run` command.
+using `-e EXTRA_LAUNCH_ARGS="--listen --verbose --gradio-auth username:password"` to the `rift docker run` command.
 
 :::caution
 
@@ -86,7 +86,7 @@ Open the browser and type in `http://{oobabooga-IP-address}:7860` URL. Replace {
 received while renting the machine, or run cluster info command to get see IP addresses of your executors.
 
 ```bash
-fair cluster info
+rift cluster info
 ```
 
 ## Download and Select Model

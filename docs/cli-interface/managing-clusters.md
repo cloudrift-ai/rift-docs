@@ -22,7 +22,7 @@ By default, all nodes are added to the default cluster and commands will
 work with it by default. You can see information about the default cluster
 by running the following command:
 ```shell
-fair cluster info
+rift cluster info
 ```
 
 ## Creating a Cluster
@@ -30,17 +30,17 @@ fair cluster info
 Throughout this tutorial we will be using a cluster named `my_cluster`.
 To create a new cluster use:
 ```shell
-fair cluster create my_cluster
+rift cluster create my_cluster
 ```
 
 Now the cluster is created and you can inspect the cluster by running
 ```shell
-fair cluster -c my_cluster info
+rift cluster -c my_cluster info
 ```
 
 To list all clusters you have access to use
 ```shell
-fair cluster list
+rift cluster list
 ```
 
 ### Adding Nodes to the Cluster
@@ -48,14 +48,14 @@ fair cluster list
 After creating a cluster you can add nodes to it. By default, all nodes are
 added to the default cluster, you can inspect them by invoking:
 ```shell
-fair cluster nodes list
+rift cluster nodes list
 ```
 
 Let's add some first node from our default cluster to the `my_cluster` cluster
 under the name `my_node`.
 ```shell
-NODE_ID=`fair cluster nodes list | head -n 1 | awk '{print $2}'`
-fair cluster -c my_cluster nodes add $NODE_ID my_node
+NODE_ID=`rift cluster nodes list | head -n 1 | awk '{print $2}'`
+rift cluster -c my_cluster nodes add $NODE_ID my_node
 ```
 
 Note that **node_id** is a unique identifier of the node in the cluster,
@@ -67,7 +67,7 @@ the node to which you can refer to when running jobs.
 You can remove nodes from the cluster. For example, let's remove the node
 that we just added:
 ```shell
-fair cluster -c my_cluster nodes remove my_node
+rift cluster -c my_cluster nodes remove my_node
 ```
 
 ### Renaming Nodes in the Cluster
@@ -76,13 +76,13 @@ You can also rename the node at any point in time. It is equivalent to
 simply removing and adding the node again. For example, let's add the node
 that we've just removed back to the cluster under the name `my_new_node`:
 ```shell
-fair cluster -c my_cluster nodes add $NODE_ID my_new_node
+rift cluster -c my_cluster nodes add $NODE_ID my_new_node
 ```
 
 However, if node is already in the cluster it is more convenient to use
 `rename` command. Let's rename node back to `my_node`:
 ```shell
-fair cluster -c my_cluster nodes rename my_new_node my_node
+rift cluster -c my_cluster nodes rename my_new_node my_node
 ```
 
 ### Adding Users to the Cluster
@@ -91,18 +91,18 @@ You can add users to the cluster. Users will be able to run jobs on the cluster.
 Users are identified by their email address. For example, to add `some@user.com`
 to the cluster you can use the command:
 ```shell
-fair cluster -c my_cluster users add some@user.com
+rift cluster -c my_cluster users add some@user.com
 ```
 
 Now authorized users can run jobs on the cluster. You can list authorized users by running
 the following command:
 ```shell
-fair cluster -c my_cluster users list
+rift cluster -c my_cluster users list
 ```
 
 ## Removing the Cluster
 
 Finally, you can remove the cluster by running:
 ```shell
-fair cluster remove my_cluster
+rift cluster remove my_cluster
 ```

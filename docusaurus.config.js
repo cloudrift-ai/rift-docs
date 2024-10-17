@@ -6,20 +6,20 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Fair Compute',
-  tagline: 'Democratizing compute market',
+  title: 'CloudRift',
+  tagline: 'Run your code on any cloud or on your own hardware',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://fair-docs.vercel.app',
+  url: 'https://rift-docs.vercel.app',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub docs deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub docs deployment config.
   // If you aren't using GitHub docs, you don't need these.
-  organizationName: 'Fair Compute', // Usually your GitHub org/user name.
-  projectName: 'Fair Compute', // Usually your repo name.
+  organizationName: 'CloudRift', // Usually your GitHub org/user name.
+  projectName: 'CloudRift', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -54,9 +54,9 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'Fair Compute',
+        title: 'CloudRift',
         logo: {
-          alt: 'Fair Logo',
+          alt: 'CloudRift Logo',
           src: 'img/fair-logo.svg',
         },
         items: [

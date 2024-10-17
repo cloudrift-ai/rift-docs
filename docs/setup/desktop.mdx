@@ -6,19 +6,19 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import DownloadWindowsInstaller from '@site/src/components/DownloadWindowsInstaller';
 
-# Fair Desktop App & CLI
+# CloudRift App & CLI
 
-Fair Desktop app is a desktop application that allows you to run workloads on your own machines.
+CloudRift desktop app is a desktop application that allows you to run workloads on your own machines.
 
 ## Sign Up
 
-To start using Fair please sign-up at [faircompute.com](https://faircompute.com). It is free.
+To start using CloudRift please sign-up at [cloudrift.ai](https://cloudrift.ai).
 
-## Install Fair Desktop App
+## Install CloudRift Desktop App
 
 ### 1. Run the installer
 
-Install Fair Desktop application onto the machine you want to use to run jobs. Use fair CLI to schedule jobs.
+Install CloudRift desktop application onto the machine you want to use to run jobs. Use CloudRift CLI to schedule jobs.
 <Tabs groupId="operating-systems">
   <TabItem value="win" label="Windows">
     <DownloadWindowsInstaller/>
@@ -26,14 +26,14 @@ Install Fair Desktop application onto the machine you want to use to run jobs. U
   <TabItem value="mac" label="Mac">
 
   ```shell
-  curl https://faircompute.com/install-fair.sh | sh
+  curl https://cloudrift.ai/install-rift.sh | sh
   ```
 
   </TabItem>
   <TabItem value="linux" label="Linux">
 
   ```shell
-  curl https://faircompute.com/install-fair.sh | sh
+  curl https://cloudrift.ai/install-rift.sh | sh
   ```
 
   </TabItem>
@@ -41,24 +41,24 @@ Install Fair Desktop application onto the machine you want to use to run jobs. U
 
 ### 2. Configure credentials
 
-Configure credentials using Fair command line tool by running
+Configure credentials using CloudRift command line tool by running
 ```shell
-fair configure
+rift configure
 ```
 
-You can also configure credentials using Fair desktop app.
+You can also configure credentials using CloudRift desktop app.
 To configure credentials, launch the app, <u>right-click on the tray icon</u> and click <u>change credentials</u>.
 
 Lastly, you can edit the config manually. Location depends on your operating system.
 <Tabs groupId="operating-systems">
     <TabItem value="win" label="Windows">
-        <pre>%APPDATA%\Roaming\Fair Compute\credentials.yml</pre>
+        <pre>%APPDATA%\Roaming\CloudRift\credentials.yml</pre>
     </TabItem>
     <TabItem value="mac" label="Mac">
-        <pre>~/Library/Application Support/rs.fair-compute/credentials.yml</pre>
+        <pre>~/Library/Application Support/rs.cloudrift/credentials.yml</pre>
     </TabItem>
     <TabItem value="linux" label="Linux">
-        <pre>~/.config/faircompute/credentials.yml</pre>
+        <pre>~/.config/cloudrift/credentials.yml</pre>
     </TabItem>
 </Tabs>
 
@@ -69,37 +69,37 @@ Note that only Docker engine is required, desktop app is optional.
 
 :::info
 
-  Fair needs to communicate with Docker engine. On Windows this is done via tcp connection.
+  CloudRift needs to communicate with Docker engine. On Windows this is done via tcp connection.
   In Docker Settings -> General, ensure that **"Expose daemon on tcp://localhost:2375 without TLS"** is checked.
 
 :::
 
-## Using Fair
+## Using CloudRift
 
 ### 1. Inspect the cluster
 
 Once you've authenticated and launched the client it is time to inspect the cluster.
-Use `fair cluster info` command for this purpose. Ensure that you see details of all
-the machines that you have launched Fair desktop application on.
+Use `rift cluster info` command for this purpose. Ensure that you see details of all
+the machines that you have launched CloudRift desktop application on.
 
 ```shell
-fair cluster info
+rift cluster info
 ```
 
 If cluster is empty, it means that no providers are running. You can start a provider
-on a machine using `fair-desktop` command:
+on a machine using `rift-desktop` command:
 ```shell
-fair-desktop
+rift-desktop
 ```
 
-Afterward `fair cluster info` command should show that you have at least one node in the cluster.
+Afterward `rift cluster info` command should show that you have at least one node in the cluster.
 
 ### 2. Run your first job
 
-To run the task on the cluster you can leverage `fair docker run` command:
+To run the task on the cluster you can leverage `rift docker run` command:
 
 ```shell
-fair docker run alpine echo "Hello Fair Compute"
+rift docker run alpine echo "Hello CloudRift"
 ```
 
 If you need to see more details about program execution, pass `-vv` flag.

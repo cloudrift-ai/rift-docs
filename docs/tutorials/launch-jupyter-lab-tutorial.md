@@ -5,23 +5,21 @@ sidebar_position: 1
 # Jupyter Lab Notebook Tutorial
 
 
-In this tutorial we will see how to open Jupyter Lab notebook
-using Fair Compute platform
+In this tutorial we will see how to open Jupyter Lab notebook using CloudRift platform
 
-Once you have rented a gpu (rent at [https://neuralrack.ai](https://neuralrack.ai)) and connected to the fair server, 
+Once you have rented a gpu (rent at [https://neuralrack.ai](https://neuralrack.ai)) and connected to the rift server, 
 run the following Docker command to start the Jupyter
 Notebook server. 
 
 ```bash
-fair docker run -p='8888:8888' jupyter/datascience-notebook
-
+rift docker run -p='8888:8888' jupyter/datascience-notebook
 ```
 
-The fair docker command will automatically select the rented machine available
+The rift docker command will automatically select the rented machine available
 without the need to specify the specific machine ID.
 
 Here's what this command does:
-1. fair docker run: Pulls image and starts the container.
+1. rift docker run: Pulls image and starts the container.
 2. -p='8888:8888': Maps port 8888 on your server to port 8888 on the container,
 allowing you to access the Jupyter Notebook server.
 3. jupyter/datascience-notebook: Specifies the Docker image to use.
@@ -39,7 +37,7 @@ You can get the IP address for your jupyter notebook on your instructions window
 or you can also run the following command to get the IP address of the machine.
 
 ```shell
-fair cluster info
+rift cluster info
 ```
 
 You can use other variants available for running the jupyter notebook

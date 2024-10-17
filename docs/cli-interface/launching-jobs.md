@@ -4,26 +4,26 @@ sidebar_position: 1
 
 # Launching Jobs
 
-Fair command interface is inspired by [Docker](https://www.docker.com/).
-Most of the time running a Docker command using fair command line tool will work.
+CloudRift command interface is inspired by [Docker](https://www.docker.com/).
+Most of the time running a Docker command using rift command line tool will work.
 You can start containers, list containers on the machine, inspect logs, kill them, etc.
 
-However, Fair tool manages the entire cluster, and thus you can run multiple jobs
+However, CloudRift tool manages the entire cluster, and thus you can run multiple jobs
 at once or inspect multiple executors. There are also additional commands designed
 specifically for cluster management.
 
 ## Listing Executors in the Cluster
 
 Before launching any jobs it is good to inspect the cluster, i.e. see summary of all
-the executors that we have. You can do it with Fair by invoking the following command:
+the executors that we have. You can do it with CloudRift by invoking the following command:
 
 ```shell
-fair cluster info
+rift cluster info
 ```
 
 :::info What is an Executor?
 
-You're adding your machine to the cluster when you're running `fair-desktop` or service on your machine.
+You're adding your machine to the cluster when you're running `rift-desktop` or service on your machine.
 However, big servers might have more CPUs, GPUs, and other resources necessary to run user jobs.
 Thus, we allow them to be split into multiple executors.
 An executor is an isolated job runner with limited access to node HW.
@@ -32,12 +32,12 @@ An executor is an isolated job runner with limited access to node HW.
 
 ## Running a Container
 
-To run a task on a container `fair docker run` command is used (similar to `docker run`).
+To run a task on a container `rift docker run` command is used (similar to `docker run`).
 The difference with Docker is that we can additionally specify the executor on which we want
-to run the job via `-e <executor_name>` argument. By default, Fair will run the job on an arbitrary
+to run the job via `-e <executor_name>` argument. By default, rift will run the job on an arbitrary
 executor.
 
-Specifically, `fair docker run` command does the following:
+Specifically, `rift docker run` command does the following:
 
 1. Starts a container on the specified executor.
 2. Starts a process in the container.
@@ -49,22 +49,22 @@ Specifically, `fair docker run` command does the following:
 For example, try the following command
 
 ```shell
-fair docker run python:slim -- python -c "print('Hello Fair Compute')"
+rift docker run python:slim -- python -c "print('Hello CloudRift')"
 ```
 
 This command creates a container using public `python:slim` image containing python interpreter and
-starts a python task that prints `Hello Fair Compute` to the console. By default `stdin, stdout`
+starts a python task that prints `Hello CloudRift` to the console. By default `stdin, stdout`
 and `stderr` streams are attached, and thus you can see the output of the command immediately.
 
 ### Running Container in Background
 
 If we don't want to block until task is finished, supply `-d` argument.
 Also, in this case instead of printing container output to the console
-Fair will print container ID. Thus, it is also convenient to use `-d`
+rift will print container ID. Thus, it is also convenient to use `-d`
 flag when you want to memorize the container ID for some future commands.
 
 ```shell
-CONTAINER_ID=`fair docker run -d alpine sleep 10`
+CONTAINER_ID=`rift docker run -d alpine sleep 10`
 ```
 
 ### Running on a Specific Executor
@@ -72,16 +72,16 @@ CONTAINER_ID=`fair docker run -d alpine sleep 10`
 To run the job on a specific executor use `-e <executor_name>` option. The technique described
 below can be used to run several jobs on the same executor.
 
-First, let's get the name of the executor. For this we can leverage `FAIR_EXECUTOR_NAME` environment variable.
+First, let's get the name of the executor. For this we can leverage `CLOUDRIFT_EXECUTOR_NAME` environment variable.
 
 ```shell
-EXECUTOR_NAME=`fair docker run alpine printenv FAIR_EXECUTOR_NAME`
+EXECUTOR_NAME=`rift docker run alpine printenv CLOUDRIFT_EXECUTOR_NAME`
 ```
 
 Now, let's ensure that we're running on the same executor.
 
 ```shell
-fair docker -e $EXECUTOR_NAME run alpine -- printenv FAIR_EXECUTOR_NAME
+rift docker -e $EXECUTOR_NAME run alpine -- printenv CLOUDRIFT_EXECUTOR_NAME
 ```
 
 ### Launching Several Jobs at Once
@@ -92,46 +92,46 @@ executors is useful for inspecting the cluster.
 For example, let's print system information of all executors we have in the cluster:
 
 ```shell
-fair docker -e all run alpine -- uname -a
+rift docker -e all run alpine -- uname -a
 ```
 
 However, the aforementioned command is not very useful because it is hard to tell
-which executor is which. To fix that we can add `printenv FAIR_EXECUTOR_NAME` before printing
+which executor is which. To fix that we can add `printenv CLOUDRIFT_EXECUTOR_NAME` before printing
 system information. Let's use it to print system information of the executors in the cluster
 alongside the executor id:
 
 ```shell
-fair docker -e all run alpine -- sh -c 'printf "$FAIR_EXECUTOR_NAME:\n  "; uname -a'
+rift docker -e all run alpine -- sh -c 'printf "$CLOUDRIFT_EXECUTOR_NAME:\n  "; uname -a'
 ```
 
 Now we have see system information for each executor in the cluster.
 
 ### Launching a Container with GPU Support
 
-The biggest value of Fair is that it allows you to leverage the powerful GPU
+The biggest value of CloudRift is that it allows you to leverage the powerful GPU
 that you have in your computer.
 
 To check that GPU is available on the executor run the following command supplying
 `-e <EXECUTOR_NAME>` argument to run the command on a specific executor if necessary:
 
 ```shell
-fair docker run -- ubuntu nvidia-smi -L
+rift docker run -- ubuntu nvidia-smi -L
 ```
 
 ### Supplying Files
 
 Volumes are the preferred mechanism for persisting data generated by and used by Docker containers.
-However, since Fair is executing the docker command on a remote machine, data needs to be copied over first.
-Fair does that automatically behind the scenes, so you can use it as you would normally use Docker.
+However, since CloudRift is executing the docker command on a remote machine, data needs to be copied over first.
+CloudRift does that automatically behind the scenes, so you can use it as you would normally use Docker.
 
 ```shell
 echo "Hello Volumes" > /tmp/message.txt
-fair docker run --volume "/tmp/message.txt:/app/message.txt" alpine cat /app/message.txt
+rift docker run --volume "/tmp/message.txt:/app/message.txt" alpine cat /app/message.txt
 ```
 
 :::info
 
-Note that Fair simply copies the files over and is not actually mounting the local
+Note that CloudRift simply copies the files over and is not actually mounting the local
 volume onto remote machine over the network.
 
 :::
@@ -145,25 +145,25 @@ web server.
 
 ```shell
 # memorize id of the executor
-EXECUTOR_NAME=`fair docker run alpine printenv FAIR_EXECUTOR_NAME`
+EXECUTOR_NAME=`rift docker run alpine printenv FAIR_EXECUTOR_NAME`
 echo $EXECUTOR_NAME
 
 # run trivial web server
 echo "Trivial Web Server" > /tmp/index.html
-CONTAINER_ID=`fair docker run -d -p 8080:8080 \
+CONTAINER_ID=`rift docker run -d -p 8080:8080 \
               --volume "/tmp/index.html:/www/index.html" \
               busybox -- httpd -f -h /www -p 8080`
 echo $CONTAINER_ID
 
 # get IP of the executor where server is running
-EXECUTOR_IP=`./fair docker -e $EXECUTOR_NAME run curlimages/curl -- curl -sS icanhazip.com`
+EXECUTOR_IP=`rift docker -e $EXECUTOR_NAME run curlimages/curl -- curl -sS icanhazip.com`
 echo $EXECUTOR_IP
 
 # check that the server is working
 curl http://$EXECUTOR_IP:8080/
 
 # kill the server
-fair docker kill $CONTAINER_ID
+rift docker kill $CONTAINER_ID
 ```
 
 :::info
@@ -178,24 +178,24 @@ internet, the example won't work.
 To list all running containers on the executor use the following command:
 
 ```shell
-fair docker ps
+rift docker ps
 ```
 
-This will print all container on all the executors because by default Fair adds `-e all`
-to `fair docker ps` command.
+This will print all container on all the executors because by default CloudRift adds `-e all`
+to `rift docker ps` command.
 
 Use `-a` flag to list all containers, including the ones that have already been
-stopped. Note that Fair periodically cleans up containers on the executor.
+stopped. Note that CloudRift periodically cleans up containers on the executor.
 
 ## Retrieving Container Logs
 
-To retrieve container logs use `fair docker -e <executor_id> logs <container_id>`. Here is an example
+To retrieve container logs use `rift docker -e <executor_id> logs <container_id>`. Here is an example
 of how to start a job and retrieve logs from it afterward.
 
 ```shell
-EXECUTOR_NAME=`fair docker run alpine printenv FAIR_EXECUTOR_NAME`
-CONTAINER_ID=`fair docker -e $EXECUTOR_NAME run -d alpine echo "Hello World"`
-fair docker -e $EXECUTOR_NAME logs $CONTAINER_ID
+EXECUTOR_NAME=`rift docker run alpine printenv FAIR_EXECUTOR_NAME`
+CONTAINER_ID=`rift docker -e $EXECUTOR_NAME run -d alpine echo "Hello World"`
+rift docker -e $EXECUTOR_NAME logs $CONTAINER_ID
 ```
 
 You can retrieve logs even if the task has finished. However, task containers and all the associated
@@ -203,13 +203,13 @@ information is removed after a few minutes.
 
 ## Stopping the Container
 
-To stop (kill) the container on the executor use `fair docker -e <executor_id> kill <container_id>`.
+To stop (kill) the container on the executor use `rift docker -e <executor_id> kill <container_id>`.
 Here is an example of starting some long-running command and terminating it.
 
 ```shell
-EXECUTOR_NAME=`fair docker run alpine printenv FAIR_EXECUTOR_NAME`
-CONTAINER_ID=`fair -e $EXECUTOR_NAME docker run -d alpine sleep 30`
-fair docker -e $EXECUTOR_NAME kill $CONTAINER_ID
+EXECUTOR_NAME=`rift docker run alpine printenv FAIR_EXECUTOR_NAME`
+CONTAINER_ID=`rift -e $EXECUTOR_NAME docker run -d alpine sleep 30`
+rift docker -e $EXECUTOR_NAME kill $CONTAINER_ID
 ```
 
 ## End-to-end Example
@@ -220,24 +220,24 @@ and finally terminate it.
 
 ```shell
 # check the cluster
-fair cluster info
+rift cluster info
 
 # get id of some executor in the cluster
-EXECUTOR_NAME=`fair docker run alpine printenv FAIR_EXECUTOR_NAME`
+EXECUTOR_NAME=`rift docker run alpine printenv FAIR_EXECUTOR_NAME`
 
 # run a task that will be printing countdown to console for two minutes, run in background
-CONTAINER_ID=`fair docker -e $EXECUTOR_NAME run -d python:slim --\
+CONTAINER_ID=`rift docker -e $EXECUTOR_NAME run -d python:slim --\
   python -uc "import time; [(print(f'{120-i} seconds left'), time.sleep(1)) for i in range(120)]"`
 
 # inspect running tasks
-fair docker -e $EXECUTOR_NAME ps
+rift docker -e $EXECUTOR_NAME ps
 
 # check logs of the task we've started
-fair docker -e $EXECUTOR_NAME logs $CONTAINER_ID
+rift docker -e $EXECUTOR_NAME logs $CONTAINER_ID
 
 # stop the task
-fair docker -e $EXECUTOR_NAME kill $CONTAINER_ID
+rift docker -e $EXECUTOR_NAME kill $CONTAINER_ID
 
 # ensure that no tasks are running
-fair docker -e $EXECUTOR_NAME ps
+rift docker -e $EXECUTOR_NAME ps
 ```

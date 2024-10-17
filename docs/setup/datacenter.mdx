@@ -6,15 +6,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import DownloadWindowsInstaller from '@site/src/components/DownloadWindowsInstaller';
 
-# Fair Datacenter Service
+# CloudRift Datacenter Service
 
-Fair Datacenter Service is a system service that connects to the Fair platform allowing
-you to manage and lease your datacenter computational resources. Together with Fair CLI,
+CloudRift Datacenter Service is a system service that connects to the CloudRift platform allowing
+you to manage and lease your datacenter computational resources. Together with CloudRift CLI,
 Rest API, and other developer tools, it provides a comprehensive solution for managing your datacenter.
 
 ## Sign Up & Activate the Account
 
-To start using Fair please sign-up at [faircompute.com](https://faircompute.com).
+To start using CloudRift please sign-up at [cloudrift.ai](https://cloudrift.ai).
 
 ## Configuring Rentable Machines
 
@@ -26,49 +26,49 @@ Up-to-date instructions can be found on [Docker Website](https://docs.docker.com
 
 Up-to-date instructions can be found on [NVidia Website](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 
-### 3. Install Fair system service
+### 3. Install CloudRift system service
 
 Any Linux distribution is supported, but we typically test on Ubuntu 22.04.
 
 ```shell
-curl https://faircompute.com/install-fair-service.sh | sudo sh
+curl https://cloudrift.ai/install-rift-service.sh | sudo sh
 ```
 
-### 4. Install Fair CLI (Optional)
+### 4. Install CloudRift CLI (Optional)
 
-Install Fair CLI to configure the system service.
+Install CloudRift CLI to configure the system service.
 
 ```shell
-curl https://faircompute.com/install-fair.sh | sh
+curl https://faircompute.com/install-rift.sh | sh
 ```
 
 ### 5. Configure credentials
 
-Configure credentials using Fair command line tool by running
+Configure credentials using rift command line tool by running
 
 ```shell
-sudo fair configure
+sudo rift configure
 ```
 
-Note that we're running fair system service as root, so we need to configure it as root.
+Note that we're running rift system service as root, so we need to configure it as root.
 
 You can also edit the config manually, it is located in `/root/.config/faircompute/credentials.yml`
 
 ### 6. Restart system service and check status
 
-Restart Fair System Service and check status of the service and Docker Engine.
+Restart CloudRift system service and check status of the service and Docker Engine.
 
 ```shell
-sudo systemctl restart fair
-sudo systemctl status fair
+sudo systemctl restart rift
+sudo systemctl status rift
 sudo systemctl status docker
 ```
 
-## Testing Fair Setup
+## Testing CloudRift Setup
 
-### 1. Install Fair CLI
+### 1. Install CloudRift CLI
 
-Install Fair CLI on your local machine. Installation instructions vary depending on your OS.
+Install CloudRift CLI on your local machine. Installation instructions vary depending on your OS.
 
 <Tabs groupId="operating-systems">
   <TabItem value="win" label="Windows">
@@ -77,14 +77,14 @@ Install Fair CLI on your local machine. Installation instructions vary depending
   <TabItem value="mac" label="Mac">
 
   ```shell
-  curl https://faircompute.com/install-fair.sh | sh
+  curl https://cloudrift.ai/install-rift.sh | sh
   ```
 
   </TabItem>
   <TabItem value="linux" label="Linux">
 
   ```shell
-  curl https://faircompute.com/install-fair.sh | sh
+  curl https://cloudrift.ai/install-rift.sh | sh
   ```
 
   </TabItem>
@@ -92,18 +92,18 @@ Install Fair CLI on your local machine. Installation instructions vary depending
 
 ### 2. Configure credentials
 
-Configure your credentials using Fair command line tool by running:
+Configure your credentials using rift command line tool by running:
 
 ```shell
-fair configure
+rift configure
 ```
 
 ### 3. Inspect the cluster
 
-Inspect the cluster. You should see all machines that you've installed Fair Service on:
+Inspect the cluster. You should see all machines that you've installed CloudRift service on:
 
 ```shell
-fair cluster info
+rift cluster info
 ```
 
 ### 4. Run your first job
@@ -111,11 +111,11 @@ fair cluster info
 Run your first job. For example, to run a simple echo command:
 
 ```shell
-fair docker run --rm alpine echo "Hello Fair Compute"
+rift docker run --rm alpine echo "Hello CloudRift"
 ```
 
 ## Next Steps
 
-For more information on how to use Fair platform to lease your computational resources
-please send a request to <a href="mailto:dc@faircompute.com">dc@faircompute.com</a>.
+For more information on how to use CloudRift platform to lease your computational resources
+please send a request to <a href="mailto:dc@cloudrift.ai">dc@cloudrift.ai</a>.
 We support a variety of integrations, e.g. marketplace, white-label website, custom integration, and more.
