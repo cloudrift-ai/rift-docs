@@ -5,7 +5,7 @@ const DownloadWindowsInstaller = () => {
     const [url, setUrl] = useState('');
 
     useEffect(() => {
-        fetch('https://faircompute.com:8000/internal/release/fair-desktop-full/stable/windows-x86_64/latest/url')
+        fetch('https://api.cloudrift.ai/internal/release/fair-desktop-full/stable/windows-x86_64/latest/url')
             .then((response) => response.text())
             .then((url) => setUrl(url));
     }, []);

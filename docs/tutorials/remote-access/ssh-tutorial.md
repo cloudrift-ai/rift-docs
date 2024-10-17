@@ -4,28 +4,28 @@ sidebar_position: 1
 
 # SSH Server with Fair
 
-Run an SSH server on a GPU-enabled machine managed by Fair Compute and learn how to:
+Run an SSH server on a GPU-enabled machine managed by CloudRift and learn how to:
 - Start an Ubuntu container and access its bash shell.
 - Install and configure an SSH server within the container.
 - Connect to the SSH server remotely.
 
 ## Pull and Run the Ubuntu Image
 
-Once you have rented a GPU and connected to the Fair server, run the 
+Once you have rented a GPU and installed CloudRift CLI, run the 
 following Docker command to pull and start the Ubuntu container:
 
 ```bash
-fair docker run --rm -p='2222:22' -it ubuntu /bin/bash
+rift docker run --rm -p='2222:22' -it ubuntu /bin/bash
 ```
 
-The fair docker run command will automatically select the executor (machine)
-in your fair cluster and start the Ubuntu container. If you have multiple executors
+The rift docker run command will automatically select the executor (machine)
+in your rift cluster and start the Ubuntu container. If you have multiple executors
 in your cluster, you can specify the executor using `-x <executor-name>`
 command line parameter. Names of the executors in your cluster
-can be found by running `fair cluster info`.
+can be found by running `rift cluster info`.
 
 Here's what this command does:
-- `fair docker run`: Pulls the Docker image and starts the container.
+- `rift docker run`: Pulls the Docker image and starts the container.
 - `--rm`: Automatically removes the container when it exits.
 - `-p='2222:22'`: Maps port 2222 on your server to port 22 on the container, allowing SSH access.
 - `-it`: Runs the container in interactive mode with a pseudo-TTY.
@@ -73,7 +73,7 @@ Now that you're in the container's bash shell, set up the SSH server:
 To connect to your SSH server, you'll need the IP address of the executor. You can find this by running:
 
 ```bash
-fair cluster info
+rift cluster info
 ```
 
 Connect to the SSH server using:

@@ -26,4 +26,4 @@ This command generates static content into the `build` directory and can be serv
 
 ### Deployment
 
-Deployment is handled by the main repo: https://github.com/faircompute/faircompute
+Deployment is handled by the main repo: https://github.com/faircompute/cloudrift

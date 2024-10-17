@@ -4,28 +4,28 @@ sidebar_position: 2
 
 # Remote Desktop with Fair
 
-Run a Remote Desktop server on a GPU-enabled machine managed by Fair Compute and learn how to:
+Run a Remote Desktop server on a GPU-enabled machine managed by CloudRift and learn how to:
 - Start a container with an RDP server and XFCE desktop environment.
 - Connect to the remote desktop using an RDP client.
 - Access a full graphical desktop environment remotely.
 
 ## Pull and Run the RDP Server Container
 
-Once you have rented a GPU and connected to the Fair server, run the 
+Once you have rented a GPU and connected to the CloudRift server, run the 
 following Docker command to pull and start the RDP server container:
 
 ```bash
-fair docker run -p 3389 --name remote-desktop scottyhardy/docker-remote-desktop:latest
+rift docker run -p 3389 --name remote-desktop scottyhardy/docker-remote-desktop:latest
 ```
 
-The fair docker run command will automatically select the executor (machine)
-in your fair cluster and start the RDP server container. If you have multiple executors
+The rift docker run command will automatically select the executor (machine)
+in your rift cluster and start the RDP server container. If you have multiple executors
 in your cluster, you can specify the executor using `-x <executor-name>`
 command line parameter. Names of the executors in your cluster
-can be found by running `fair cluster info`.
+can be found by running `rift cluster info`.
 
 Here's what this command does:
-- `fair docker run`: Pulls the Docker image and starts the container.
+- `rift docker run`: Pulls the Docker image and starts the container.
 - `-p 3389`: Maps port 3389 on your server to port 3389 on the container, allowing RDP access.
 - `--name remote-desktop`: Assigns the name "remote-desktop" to the container for easy reference.
 - `scottyhardy/docker-remote-desktop:latest`: Specifies the Docker image to be run. This image can be found on [Docker Hub](https://hub.docker.com/r/scottyhardy/docker-remote-desktop).
@@ -45,7 +45,7 @@ to run the container in the background when launching it.
 To connect to your RDP server, you'll need the IP address of the executor running the container:
 
 ```bash
-fair cluster info
+rift cluster info
 ```
 
 Now you can connect to your RDP server using any RDP client:

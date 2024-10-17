@@ -6,15 +6,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import DownloadWindowsInstaller from '@site/src/components/DownloadWindowsInstaller';
 
-# Fair CLI
+# CloudRift CLI
 
-Fair CLI is a command line tool for managing cluster, running and inspecting jobs.
+CloudRift CLI is a command line tool for managing cluster, running and inspecting jobs.
 
-## Installing Fair CLI
+## Installing CloudRift CLI
 
-### 1. Install Fair CLI
+### 1. Install CloudRift CLI
 
-Install Fair CLI application onto your machine:
+Install CloudRift CLI application onto your machine:
 
 <Tabs groupId="operating-systems">
   <TabItem value="win" label="Windows">
@@ -23,14 +23,14 @@ Install Fair CLI application onto your machine:
   <TabItem value="mac" label="Mac">
 
   ```shell
-  curl https://faircompute.com/install-fair.sh | sh
+  curl https://cloudrift.ai/install-rift.sh | sh
   ```
 
   </TabItem>
   <TabItem value="linux" label="Linux">
 
   ```shell
-  curl https://faircompute.com/install-fair.sh | sh
+  curl https://cloudrift.ai/install-rift.sh | sh
   ```
 
   </TabItem>
@@ -38,43 +38,43 @@ Install Fair CLI application onto your machine:
 
 ### 2. Configure credentials
 
-Configure credentials using Fair command line tool by running
+Configure credentials using CloudRift command line tool by running
 ```shell
-fair configure
+rift configure
 ```
 
 You can edit the config manually. Location depends on your operating system.
 <Tabs groupId="operating-systems">
     <TabItem value="win" label="Windows">
-        <pre>%APPDATA%\Roaming\Fair Compute\credentials.yml</pre>
+        <pre>%APPDATA%\Roaming\CloudRift\credentials.yml</pre>
     </TabItem>
     <TabItem value="mac" label="Mac">
-        <pre>~/Library/Application Support/rs.fair-compute/credentials.yml</pre>
+        <pre>~/Library/Application Support/rs.cloudrift/credentials.yml</pre>
     </TabItem>
     <TabItem value="linux" label="Linux">
-        <pre>~/.config/faircompute/credentials.yml</pre>
+        <pre>~/.config/cloudrift/credentials.yml</pre>
     </TabItem>
 </Tabs>
 <br/>
 
-## Using Fair
+## Using CloudRift
 
 ### 1. Inspect the cluster
 
 Once you've authenticated and launched the client it is time to inspect the cluster.
-Use `fair cluster info` command for this purpose. Ensure that you see details of all
-the machines that you have rented or launched Fair desktop application on.
+Use `rift cluster info` command for this purpose. Ensure that you see details of all
+the machines that you have rented or launched CloudRift desktop application on.
 
 ```shell
-fair cluster info
+rift cluster info
 ```
 
 ### 2. Run your first job
 
-To run the job on the cluster you can leverage `fair docker run` command:
+To run the job on the cluster you can leverage `rift docker run` command:
 
 ```shell
-fair docker run alpine echo "Hello Fair Compute"
+rift docker run alpine echo "Hello CloudRift"
 ```
 
 If you need to see more details about program execution, pass `-vv` flag.
