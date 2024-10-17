@@ -4,6 +4,6 @@ sidebar_position: 2
 
 # Python API
 
-Python API can be found https://pypi.org/project/faircompute/.
+Python API can be found https://pypi.org/project/cloudrift/.
 
-Use `pip install faircompute` to install it.
+Use `pip install cloudrift` to install it.

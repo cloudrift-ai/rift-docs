@@ -181,7 +181,7 @@ rift docker exec ollama ollama pull llava
 
 Encode the image. You can use the following command to encode the image in the terminal or use
 one of the many online tools available to encode the image, like [this one](https://www.base64-image.de/).
-Let's feed FairCompute logo to the model and see what it predicts:
+Let's feed CloudRift logo to the model and see what it predicts:
 ```shell
 openssl base64 -in ./static/img/fair-logo-64.png
 ```

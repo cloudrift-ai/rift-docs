@@ -35,6 +35,9 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          // Serve the docs at the site's root
+          routeBasePath: '/',
+
           sidebarPath: require.resolve('./sidebars.js'),
 
           // Please change this to your repo.
@@ -67,7 +70,7 @@ const config = {
             label: 'Docs Home',
           },
           {
-            href: 'https://faircompute.com:8000/rapidoc',
+            href: 'https://cloudrift.ai/rapidoc',
             label: 'API',
             position: 'left',
           },
