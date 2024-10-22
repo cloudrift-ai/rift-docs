@@ -1,4 +1,7 @@
-# Dependencies
+# Vercel
+.vercel
+
+# Node
 /node_modules
 
 # Production
