@@ -145,7 +145,7 @@ web server.
 
 ```shell
 # memorize id of the executor
-EXECUTOR_NAME=`rift docker run alpine printenv FAIR_EXECUTOR_NAME`
+EXECUTOR_NAME=`rift docker run alpine printenv CLOUDRIFT_EXECUTOR_NAME`
 echo $EXECUTOR_NAME
 
 # run trivial web server
@@ -193,7 +193,7 @@ To retrieve container logs use `rift docker -e <executor_id> logs <container_id>
 of how to start a job and retrieve logs from it afterward.
 
 ```shell
-EXECUTOR_NAME=`rift docker run alpine printenv FAIR_EXECUTOR_NAME`
+EXECUTOR_NAME=`rift docker run alpine printenv CLOUDRIFT_EXECUTOR_NAME`
 CONTAINER_ID=`rift docker -e $EXECUTOR_NAME run -d alpine echo "Hello World"`
 rift docker -e $EXECUTOR_NAME logs $CONTAINER_ID
 ```
@@ -207,7 +207,7 @@ To stop (kill) the container on the executor use `rift docker -e <executor_id> k
 Here is an example of starting some long-running command and terminating it.
 
 ```shell
-EXECUTOR_NAME=`rift docker run alpine printenv FAIR_EXECUTOR_NAME`
+EXECUTOR_NAME=`rift docker run alpine printenv CLOUDRIFT_EXECUTOR_NAME`
 CONTAINER_ID=`rift -e $EXECUTOR_NAME docker run -d alpine sleep 30`
 rift docker -e $EXECUTOR_NAME kill $CONTAINER_ID
 ```
@@ -223,7 +223,7 @@ and finally terminate it.
 rift cluster info
 
 # get id of some executor in the cluster
-EXECUTOR_NAME=`rift docker run alpine printenv FAIR_EXECUTOR_NAME`
+EXECUTOR_NAME=`rift docker run alpine printenv CLOUDRIFT_EXECUTOR_NAME`
 
 # run a task that will be printing countdown to console for two minutes, run in background
 CONTAINER_ID=`rift docker -e $EXECUTOR_NAME run -d python:slim --\

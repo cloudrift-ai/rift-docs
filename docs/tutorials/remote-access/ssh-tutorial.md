@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# SSH Server with Fair
+# SSH Server with Rift
 
 Run an SSH server on a GPU-enabled machine managed by CloudRift and learn how to:
 - Start an Ubuntu container and access its bash shell.
