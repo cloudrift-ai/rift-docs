@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Managing Clusters
 
-Clusters are the core concept of Fair. A cluster is a set of nodes that
+Clusters are the core concept of Rift. A cluster is a set of nodes that
 are managed together. You can run jobs on the cluster, inspect the cluster
 state, add/remove nodes, add/remove users etc.
 

@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Remote Desktop with Fair
+# Remote Desktop with Rift
 
 Run a Remote Desktop server on a GPU-enabled machine managed by CloudRift and learn how to:
 - Start a container with an RDP server and XFCE desktop environment.
