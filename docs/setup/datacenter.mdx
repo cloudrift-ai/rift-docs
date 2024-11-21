@@ -28,14 +28,28 @@ Up-to-date instructions can be found on [NVidia Website](https://docs.nvidia.com
 
 ### 3. Install system dependencies
 
-Install additonal packages reqired by the service.
+Install additional packages required by the service.
 
 ```shell
 sudo apt update
-sudo apt install qemu-kvm libvirt-daemon-system
+sudo apt install qemu-kvm libvirt-daemon-system genisoimage
 ```
 
-### 4. Install CloudRift system service
+### 4. Configure Libvirt
+
+Rift system service is being run using root user, thus need set up libvirt to run under root as well.
+Edit `/etc/libvirt/qemu.conf` and modify the `user` and `group` settings
+```shell
+user = "root"
+group = "root"
+```
+
+Then restart the `libvirtd` service:
+```shell
+sudo systemctl restart libvirtd
+```
+
+### 5. Install CloudRift system service
 
 Any Linux distribution is supported, but we typically test on Ubuntu 22.04.
 
@@ -43,7 +57,7 @@ Any Linux distribution is supported, but we typically test on Ubuntu 22.04.
 curl -L https://cloudrift.ai/install-rift-service.sh | sudo sh
 ```
 
-### 5. Install CloudRift CLI (Optional)
+### 6. Install CloudRift CLI (Optional)
 
 Install CloudRift CLI to configure the system service.
 
@@ -51,7 +65,7 @@ Install CloudRift CLI to configure the system service.
 curl -L https://cloudrift.com/install-rift.sh | sh
 ```
 
-### 6. Configure credentials
+### 7. Configure credentials
 
 Configure credentials using rift command line tool by running
 
