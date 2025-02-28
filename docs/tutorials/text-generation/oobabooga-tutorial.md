@@ -26,7 +26,7 @@ for this tutorial. Once you have rented a GPU (rent at [https://neuralrack.ai](h
 run the following Docker command to pull and start the Oobabooga container.
 
 ```bash
-rift docker run -p 7860 -e EXTRA_LAUNCH_ARGS="--listen --verbose" -it --name oobabooga atinoda/text-generation-webui:default-nvidia
+rift docker run -p 7860 -x EXTRA_LAUNCH_ARGS="--listen --verbose" -it --name oobabooga atinoda/text-generation-webui:default-nvidia
 ```
 
 The rift docker run command will automatically select the executor (machine)
@@ -38,7 +38,7 @@ can be found by running `rift cluster info`.
 Here's what this command does:
 - `rift docker run`: Pulls the image and starts the container.
 - `-p 7860`: Maps port 7860 on your server to port 7860 on the container, allowing you to access Oobabooga.
-- `-e EXTRA_LAUNCH_ARGS="--listen --verbose"`: Passes environment variables to the container to enable
+- `-x EXTRA_LAUNCH_ARGS="--listen --verbose"`: Passes environment variables to the container to enable
 listening and verbose mode.
 - `-it`: Runs the container in interactive mode with a pseudo-TTY, ensuring that container is not
   stopped while you keep the terminal open (note that it will stop if you close the terminal).
@@ -68,7 +68,7 @@ Running on local URL:  http://0.0.0.0:7860
 ```
 
 To prevent others from accessing the Oobabooga LLM WebUI, you can set a password by adding the `--gradio-auth` flag
-using `-e EXTRA_LAUNCH_ARGS="--listen --verbose --gradio-auth username:password"` to the `rift docker run` command.
+using `-x EXTRA_LAUNCH_ARGS="--listen --verbose --gradio-auth username:password"` to the `rift docker run` command.
 
 :::caution
 

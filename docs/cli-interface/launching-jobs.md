@@ -34,7 +34,7 @@ An executor is an isolated job runner with limited access to node HW.
 
 To run a task on a container `rift docker run` command is used (similar to `docker run`).
 The difference with Docker is that we can additionally specify the executor on which we want
-to run the job via `-e <executor_name>` argument. By default, rift will run the job on an arbitrary
+to run the job via `-x <executor_name>` argument. By default, rift will run the job on an arbitrary
 executor.
 
 Specifically, `rift docker run` command does the following:
@@ -69,7 +69,7 @@ CONTAINER_ID=`rift docker run -d alpine sleep 10`
 
 ### Running on a Specific Executor
 
-To run the job on a specific executor use `-e <executor_name>` option. The technique described
+To run the job on a specific executor use `-x <executor_name>` option. The technique described
 below can be used to run several jobs on the same executor.
 
 First, let's get the name of the executor. For this we can leverage `CLOUDRIFT_EXECUTOR_NAME` environment variable.
@@ -81,18 +81,18 @@ EXECUTOR_NAME=`rift docker run alpine printenv CLOUDRIFT_EXECUTOR_NAME`
 Now, let's ensure that we're running on the same executor.
 
 ```shell
-rift docker -e $EXECUTOR_NAME run alpine -- printenv CLOUDRIFT_EXECUTOR_NAME
+rift docker -x $EXECUTOR_NAME run alpine -- printenv CLOUDRIFT_EXECUTOR_NAME
 ```
 
 ### Launching Several Jobs at Once
 
-To launch jobs on all executors at once use `-e all` option. Running a command on all
+To launch jobs on all executors at once use `-x all` option. Running a command on all
 executors is useful for inspecting the cluster.
 
 For example, let's print system information of all executors we have in the cluster:
 
 ```shell
-rift docker -e all run alpine -- uname -a
+rift docker -x all run alpine -- uname -a
 ```
 
 However, the aforementioned command is not very useful because it is hard to tell
@@ -101,7 +101,7 @@ system information. Let's use it to print system information of the executors in
 alongside the executor id:
 
 ```shell
-rift docker -e all run alpine -- sh -c 'printf "$CLOUDRIFT_EXECUTOR_NAME:\n  "; uname -a'
+rift docker -x all run alpine -- sh -c 'printf "$CLOUDRIFT_EXECUTOR_NAME:\n  "; uname -a'
 ```
 
 Now we have see system information for each executor in the cluster.
@@ -112,7 +112,7 @@ The biggest value of CloudRift is that it allows you to leverage the powerful GP
 that you have in your computer.
 
 To check that GPU is available on the executor run the following command supplying
-`-e <EXECUTOR_NAME>` argument to run the command on a specific executor if necessary:
+`-x <EXECUTOR_NAME>` argument to run the command on a specific executor if necessary:
 
 ```shell
 rift docker run -- ubuntu nvidia-smi -L
@@ -156,7 +156,7 @@ CONTAINER_ID=`rift docker run -d -p 8080:8080 \
 echo $CONTAINER_ID
 
 # get IP of the executor where server is running
-EXECUTOR_IP=`rift docker -e $EXECUTOR_NAME run curlimages/curl -- curl -sS icanhazip.com`
+EXECUTOR_IP=`rift docker -x $EXECUTOR_NAME run curlimages/curl -- curl -sS icanhazip.com`
 echo $EXECUTOR_IP
 
 # check that the server is working
@@ -181,7 +181,7 @@ To list all running containers on the executor use the following command:
 rift docker ps
 ```
 
-This will print all container on all the executors because by default CloudRift adds `-e all`
+This will print all container on all the executors because by default CloudRift adds `-x all`
 to `rift docker ps` command.
 
 Use `-a` flag to list all containers, including the ones that have already been
@@ -189,13 +189,13 @@ stopped. Note that CloudRift periodically cleans up containers on the executor.
 
 ## Retrieving Container Logs
 
-To retrieve container logs use `rift docker -e <executor_id> logs <container_id>`. Here is an example
+To retrieve container logs use `rift docker -x <executor_id> logs <container_id>`. Here is an example
 of how to start a job and retrieve logs from it afterward.
 
 ```shell
 EXECUTOR_NAME=`rift docker run alpine printenv CLOUDRIFT_EXECUTOR_NAME`
-CONTAINER_ID=`rift docker -e $EXECUTOR_NAME run -d alpine echo "Hello World"`
-rift docker -e $EXECUTOR_NAME logs $CONTAINER_ID
+CONTAINER_ID=`rift docker -x $EXECUTOR_NAME run -d alpine echo "Hello World"`
+rift docker -x $EXECUTOR_NAME logs $CONTAINER_ID
 ```
 
 You can retrieve logs even if the task has finished. However, task containers and all the associated
@@ -203,13 +203,13 @@ information is removed after a few minutes.
 
 ## Stopping the Container
 
-To stop (kill) the container on the executor use `rift docker -e <executor_id> kill <container_id>`.
+To stop (kill) the container on the executor use `rift docker -x <executor_id> kill <container_id>`.
 Here is an example of starting some long-running command and terminating it.
 
 ```shell
 EXECUTOR_NAME=`rift docker run alpine printenv CLOUDRIFT_EXECUTOR_NAME`
-CONTAINER_ID=`rift -e $EXECUTOR_NAME docker run -d alpine sleep 30`
-rift docker -e $EXECUTOR_NAME kill $CONTAINER_ID
+CONTAINER_ID=`rift -x $EXECUTOR_NAME docker run -d alpine sleep 30`
+rift docker -x $EXECUTOR_NAME kill $CONTAINER_ID
 ```
 
 ## End-to-end Example
@@ -226,18 +226,18 @@ rift cluster info
 EXECUTOR_NAME=`rift docker run alpine printenv CLOUDRIFT_EXECUTOR_NAME`
 
 # run a task that will be printing countdown to console for two minutes, run in background
-CONTAINER_ID=`rift docker -e $EXECUTOR_NAME run -d python:slim --\
+CONTAINER_ID=`rift docker -x $EXECUTOR_NAME run -d python:slim --\
   python -uc "import time; [(print(f'{120-i} seconds left'), time.sleep(1)) for i in range(120)]"`
 
 # inspect running tasks
-rift docker -e $EXECUTOR_NAME ps
+rift docker -x $EXECUTOR_NAME ps
 
 # check logs of the task we've started
-rift docker -e $EXECUTOR_NAME logs $CONTAINER_ID
+rift docker -x $EXECUTOR_NAME logs $CONTAINER_ID
 
 # stop the task
-rift docker -e $EXECUTOR_NAME kill $CONTAINER_ID
+rift docker -x $EXECUTOR_NAME kill $CONTAINER_ID
 
 # ensure that no tasks are running
-rift docker -e $EXECUTOR_NAME ps
+rift docker -x $EXECUTOR_NAME ps
 ```

@@ -29,7 +29,7 @@ Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.a
 following Docker command to pull and start the Docker container for ComfyUI:
 
 ```bash
-rift docker run -p 8188 -e WEB_ENABLE_AUTH=false --name comfyui -it --rm ghcr.io/ai-dock/comfyui:latest-cuda
+rift docker run -p 8188 -x WEB_ENABLE_AUTH=false --name comfyui -it --rm ghcr.io/ai-dock/comfyui:latest-cuda
 ```
 
 The rift docker run command will automatically select the executor (machine)
@@ -42,7 +42,7 @@ Here's what this command does:
 
 - `rift docker run`: Pulls the Docker image and starts the container.
 - `-p 8188`: Maps port 8188 on your server to port 8188 on the container, allowing you to access Comfy web UI.
-- `-e WEB_ENABLE_AUTH=false`: Passes `WEB_ENABLE_AUTH` environment variable to the container.
+- `-x WEB_ENABLE_AUTH=false`: Passes `WEB_ENABLE_AUTH` environment variable to the container.
   We disable authentication for simplicity of this tutorial. 
 - `--name comfyui` (optional): Specifies the name for the container
   allowing you to reference it by this name in other commands,
@@ -58,7 +58,7 @@ After running this command, you'll see that the image being pulled and the conta
 If the image is already downloaded, it will start the container right away.
 There will be a lot of log messages, here is how this will approximately look like:
 ```bash
-$ rift docker run --name comfyui -p 8188 -e WEB_ENABLE_AUTH=false -d --rm ghcr.io/ai-dock/comfyui:latest-cuda
+$ rift docker run --name comfyui -p 8188 -x WEB_ENABLE_AUTH=false -d --rm ghcr.io/ai-dock/comfyui:latest-cuda
 Pulling image 'ai-dock/comfyui:latest-cuda'
 [==================================================>]  221.3MB/221.3MB
 
