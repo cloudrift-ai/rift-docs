@@ -29,7 +29,7 @@ Once you have rented a GPU (rent at [https://neuralrack.ai](https://neuralrack.a
 following Docker command to pull and start the Docker container for ComfyUI:
 
 ```bash
-rift docker run -p 8188 -x WEB_ENABLE_AUTH=false --name comfyui -it --rm ghcr.io/ai-dock/comfyui:latest-cuda
+rift docker -x <executor id> run -p 8188 -e WEB_ENABLE_AUTH=false --name comfyui -it --rm ghcr.io/ai-dock/comfyui:latest-cuda
 ```
 
 The rift docker run command will automatically select the executor (machine)
@@ -40,9 +40,9 @@ can be found by running `rift cluster info`.
 
 Here's what this command does:
 
-- `rift docker run`: Pulls the Docker image and starts the container.
+- `rift docker -x <executor id> run`: Pulls the Docker image and starts the container. You can find the executor ID in your workspace summary where your rented your GPU.
 - `-p 8188`: Maps port 8188 on your server to port 8188 on the container, allowing you to access Comfy web UI.
-- `-x WEB_ENABLE_AUTH=false`: Passes `WEB_ENABLE_AUTH` environment variable to the container.
+- `-e WEB_ENABLE_AUTH=false`: Passes `WEB_ENABLE_AUTH` environment variable to the container.
   We disable authentication for simplicity of this tutorial. 
 - `--name comfyui` (optional): Specifies the name for the container
   allowing you to reference it by this name in other commands,
@@ -58,7 +58,7 @@ After running this command, you'll see that the image being pulled and the conta
 If the image is already downloaded, it will start the container right away.
 There will be a lot of log messages, here is how this will approximately look like:
 ```bash
-$ rift docker run --name comfyui -p 8188 -x WEB_ENABLE_AUTH=false -d --rm ghcr.io/ai-dock/comfyui:latest-cuda
+$ rift docker -x c6a827ce run -p 8188 -e WEB_ENABLE_AUTH=false --name comfyui -it --rm ghcr.io/ai-dock/comfyui:latest-cuda
 Pulling image 'ai-dock/comfyui:latest-cuda'
 [==================================================>]  221.3MB/221.3MB
 
@@ -93,8 +93,8 @@ instead of `-it` to run the container in the background when launching it.
 To confirm that the container is running, you can run `rift docker ps` command. It will show you the list of running containers:
 ```bash
 $ rift docker ps
- EXECUTOR                              CONTAINER ID  IMAGE                                COMMAND  CREATED              STATUS   NAMES 
- 0b94918a-67b4-11ef-899d-77923e9a9038  37803ae894d9  ghcr.io/ai-dock/comfyui:latest-cuda  init.sh  2024-08-31 17:39:29  Running  /comfyui
+ EXECUTOR                                      CONTAINER ID  IMAGE                                COMMAND  CREATED              STATUS   NAMES 
+ c6a827ce-1728-11f0-94eb-f77f736915a8          37803ae894d9  ghcr.io/ai-dock/comfyui:latest-cuda  init.sh  2024-08-31 17:39:29  Running  /comfyui
 ```
 
 Open the browser and type in `http://{node-IP-address}:8188` URL. Replace {node-IP-address} with the IP address received while renting the
@@ -115,7 +115,7 @@ To download the checkpoint:
 
 Here is the example of running the aforementioned command:
 ```
-$ rift docker -x 0b94918a-67b4-11ef-899d-77923e9a9038 exec -it comfyui bash
+$ rift docker exec -it comfyui bash
 (comfyui) root@957ce9414eea:/opt# cd /opt/ComfyUI/models/checkpoints
 (comfyui) root@957ce9414eea:/opt/ComfyUI/models/checkpoints# wget https://civitai.com/api/download/models/128713 --content-disposition
 Resolving civitai.com (civitai.com)... 172.67.12.143, 104.22.18.237, 104.22.19.237, ...
