@@ -1,0 +1,8 @@
+{
+    "label": "Game Server",
+    "position": 4,
+    "link": {
+      "type": "generated-index",
+      "description": "How to use CloudRift to host a game server."
+    }
+  }
