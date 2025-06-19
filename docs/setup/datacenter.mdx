@@ -13,13 +13,33 @@ CloudRift Datacenter Service is a system service that connects to the CloudRift 
 you to manage and lease your datacenter computational resources. Together with CloudRift CLI,
 REST API, and other developer tools, it provides a comprehensive solution for managing your datacenter.
 
+## Node Operation Modes
+
+CloudRift nodes can operate in three distinct modes, depending on your infrastructure and requirements:
+
+- **Docker Mode:** Run containerized workloads using Docker Engine. This is the most common setup for GPU and CPU resource sharing.
+- **Virtual Machine (VM) Mode:** Serve virtual machines using Libvirt and QEMU/KVM. Suitable for scenarios requiring full VM isolation or custom OS environments.
+- **Bare Metal Mode:** Lease entire physical machines directly, without virtualization or containers. Ideal for maximum performance or specialized hardware needs.
+
+You can configure your node to support one or more of these modes based on your use case.
+
+:::info
+
+**Coming Soon:** CloudRift will soon support MAAS (Metal-as-a-Service) for automated bare metal provisioning and management.
+
+:::
+
 ## Sign Up & Activate the Account
 
 To start using CloudRift, please sign up at [cloudrift.ai](https://cloudrift.ai).
 
 ## Configuring Rentable Machines
 
-> **Note:** All steps below are included in our setup script, which can be found on [GitHub](https://github.com/cloudrift-ai/rift-utils).
+:::info
+
+All steps below are included in our setup script, which can be found on [GitHub](https://github.com/cloudrift-ai/rift-utils).
+
+:::
 
 ### Prerequisites
 
@@ -80,11 +100,17 @@ nvidia-smi
 cat /proc/driver/nvidia/version
 ```
 
-> [!NOTE]
-> NVIDIA driver version and NVIDIA Utils version should match for the `nvidia-smi` command to work properly.
+:::note
 
-> [!WARNING]
-> On Ubuntu, **Failed to initialize NVML: Driver/library version mismatch** may happen because of the **unattended-upgrades** process. It automatically downloads and installs updates without user intervention. Usually, it's enough to reboot the system with `reboot now`.
+NVIDIA driver version and NVIDIA Utils version should match for the `nvidia-smi` command to work properly.
+
+:::
+
+:::info
+
+On Ubuntu, **Failed to initialize NVML: Driver/library version mismatch** may happen because of the **unattended-upgrades** process. It automatically downloads and installs updates without user intervention. Usually, it's enough to reboot the system with `reboot now`.
+
+:::
 
 You can check if the NVIDIA driver is loaded and used by the system using the following command:
 
@@ -122,6 +148,17 @@ sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
 ```
 
+:::tip
+You can use [client_setup.sh](https://github.com/cloudrift-ai/rift-utils/blob/main/scripts/client_setup.sh) to install docker, drivers and rift:
+
+```shell
+sudo client_setup.sh --only=docker
+sudo client_setup.sh --only=nvidia
+sudo client_setup.sh --only=rift
+```
+
+:::
+
 ### Virtual Machine Service
 
 If your node will serve virtual machines, you need to install and configure Libvirt. To allow Libvirt to use GPU device in pass-through mode, you have to make sure the NVIDIA driver is not installed or not used by the system.
@@ -145,8 +182,11 @@ echo 'nouveau' | sudo tee -a /etc/modules
 sudo rm /etc/X11/xorg.conf
 ```
 
-> [!IMPORTANT]
-> Restart your machine to apply the changes.
+:::info
+
+Restart your machine to apply the changes.
+
+:::
 
 #### 1. Install System Dependencies
 
@@ -173,6 +213,16 @@ Then restart the `libvirtd` service:
 sudo systemctl restart libvirtd
 ```
 
+:::tip
+You can use [client_setup.sh](https://github.com/cloudrift-ai/rift-utils/blob/main/scripts/client_setup.sh) to install libvirt and rift:
+
+```shell
+sudo client_setup.sh --only=vm
+sudo client_setup.sh --only=rift
+```
+
+:::
+
 ### CloudRift System Service
 
 Any Linux distribution is supported, but we typically test on Ubuntu 22.04.
@@ -197,13 +247,19 @@ Configure credentials using the rift command line tool by running:
 sudo rift configure
 ```
 
-> [!NOTE]
-> We're running the rift system service as root, so we need to configure it as root.
+:::note
+
+We're running the rift system service as root, so we need to configure it as root.
+
+:::
 
 You can also edit the config manually. It is located at `/root/.config/cloudrift/credentials.yml`.
 
-> [!WARNING]
-> If editing manually, ensure you have the correct permissions and YAML formatting.
+:::info
+
+If editing manually, ensure you have the correct permissions and YAML formatting.
+
+:::
 
 #### 3. Restart System Service and Check Status
 
@@ -214,6 +270,15 @@ sudo systemctl restart rift
 sudo systemctl status rift
 sudo systemctl status docker
 ```
+
+:::tip
+You can use [client_setup.sh](https://github.com/cloudrift-ai/rift-utils/blob/main/scripts/client_setup.sh) to install and configure rift service:
+
+```shell
+sudo client_setup.sh --only=rift
+```
+
+:::
 
 ## Testing CloudRift Setup
 
