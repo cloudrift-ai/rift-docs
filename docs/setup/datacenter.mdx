@@ -9,34 +9,37 @@ import DownloadWindowsInstaller from '@site/src/components/DownloadWindowsInstal
 
 # CloudRift Datacenter Service
 
-CloudRift Datacenter Service is a system service that connects to the CloudRift platform allowing
+CloudRift Datacenter Service is a system service that connects to the CloudRift platform, allowing
 you to manage and lease your datacenter computational resources. Together with CloudRift CLI,
-Rest API, and other developer tools, it provides a comprehensive solution for managing your datacenter.
+REST API, and other developer tools, it provides a comprehensive solution for managing your datacenter.
 
 ## Sign Up & Activate the Account
 
-To start using CloudRift please sign-up at [cloudrift.ai](https://cloudrift.ai).
+To start using CloudRift, please sign up at [cloudrift.ai](https://cloudrift.ai).
 
 ## Configuring Rentable Machines
 
-> **Note:** All steps below are included in our setup script, which can be found on [GitHub](https://github.com/cloudrift-ai/rift-utils)
+> **Note:** All steps below are included in our setup script, which can be found on [GitHub](https://github.com/cloudrift-ai/rift-utils).
 
 ### Prerequisites
 
-Install `curl` and `sudo` if they are not installed on your system.
+Before you begin, ensure your system has the following tools installed. These are required for downloading scripts, managing permissions, and installing packages.
+
+- `curl`: For downloading scripts and files.
+- `sudo`: For running commands as root.
 
 ```shell
 sudo apt-get update
 sudo apt-get install -y curl sudo
 ```
 
-### Docker Service
+### Docker Engine & NVIDIA Container Toolkit
 
-You need to install Docker Engine and NVidia Container Toolkit (if you have NVidia GPUs) if you want your node to serve Docker containers.
+If you want your node to serve Docker containers, you need to install Docker Engine and NVIDIA Container Toolkit (if you have NVIDIA GPUs).
 
-#### 1. Install Docker engine
+#### 1. Install Docker Engine
 
-Up-to-date instructions can be found on [Docker Website](https://docs.docker.com/engine/install/debian/).
+Up-to-date instructions can be found on the [Docker Website](https://docs.docker.com/engine/install/debian/).
 
 ```shell
 # Uninstall conflicting packages
@@ -61,7 +64,7 @@ sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-#### 2. Install NVidia Drivers
+#### 2. Install NVIDIA Drivers
 
 You can check installed NVIDIA packages using the following command:
 
@@ -69,7 +72,7 @@ You can check installed NVIDIA packages using the following command:
 dpkg -l | grep -i nvidia
 ```
 
-To check version of the installed NVIDIA driver, you can use:
+To check the version of the installed NVIDIA driver, you can use:
 
 ```shell
 nvidia-smi
@@ -77,11 +80,13 @@ nvidia-smi
 cat /proc/driver/nvidia/version
 ```
 
-> **Note:** NVIDIA driver version and NVIDIA Utils version should match to `nvidia-smi` command to work properly.
-> **Note**: On Ubuntu **Failed to initialize NVML: Driver/library version mismatch** may happen, because of **unattended-upgrades** process. It automatically downloads and installs updates without user intervention. Usually it's enough to reboot the system with `reboot now`.
+> [!NOTE]
+> NVIDIA driver version and NVIDIA Utils version should match for the `nvidia-smi` command to work properly.
 
+> [!WARNING]
+> On Ubuntu, **Failed to initialize NVML: Driver/library version mismatch** may happen because of the **unattended-upgrades** process. It automatically downloads and installs updates without user intervention. Usually, it's enough to reboot the system with `reboot now`.
 
-You can check if NVIDIA driver is loaded and used by the system using the following command:
+You can check if the NVIDIA driver is loaded and used by the system using the following command:
 
 ```shell
 lsmod | grep nvidia
@@ -95,9 +100,9 @@ To install the latest NVIDIA driver, you can use the following command:
 sudo apt-get install -y nvidia-driver-570-server nvidia-utils-570-server
 ```
 
-#### 3. Install NVidia Container Toolkit (if you have NVidia GPUs)
+#### 3. Install NVIDIA Container Toolkit (if you have NVIDIA GPUs)
 
-Up-to-date instructions can be found on [NVidia Website](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+Up-to-date instructions can be found on the [NVIDIA Website](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 
 ```shell
 # Configure the repository
@@ -119,9 +124,9 @@ sudo systemctl restart docker
 
 ### Virtual Machine Service
 
-If your node will serve virtual machines, you need to install and configure Libvirt. To allow Libvirt to use GPU device in pass-through mode, you have to make sure NVIDIA driver is not installed or not used by the system.
+If your node will serve virtual machines, you need to install and configure Libvirt. To allow Libvirt to use GPU device in pass-through mode, you have to make sure the NVIDIA driver is not installed or not used by the system.
 
-You can check if NVIDIA driver is loaded and used by the system using the following command:
+You can check if the NVIDIA driver is loaded and used by the system using the following command:
 
 ```shell
 lsmod | grep nvidia
@@ -129,9 +134,9 @@ lsmod | grep nvidia
 lspci -k | grep -EA3 'VGA|3D|Display'
 ```
 
-#### 0. Remove NVIDIA driver (if installed)
+#### 0. Remove NVIDIA Driver (if installed)
 
-If NVIDIA driver is installed you can remove it using the following command:
+If the NVIDIA driver is installed, you can remove it using the following command:
 
 ```shell
 sudo apt-get remove --purge '^nvidia-.*'
@@ -140,9 +145,10 @@ echo 'nouveau' | sudo tee -a /etc/modules
 sudo rm /etc/X11/xorg.conf
 ```
 
-Restart your machine to apply the changes.
+> [!IMPORTANT]
+> Restart your machine to apply the changes.
 
-#### 1. Install system dependencies
+#### 1. Install System Dependencies
 
 Install additional packages required by the service.
 
@@ -153,8 +159,8 @@ sudo apt install qemu-kvm libvirt-daemon-system genisoimage whois
 
 #### 2. Configure Libvirt
 
-Rift system service is being run using root user, thus need set up libvirt to run under root as well.
-Edit `/etc/libvirt/qemu.conf` and modify the `user` and `group` settings
+Rift system service is run as the root user, so you need to set up libvirt to run under root as well.
+Edit `/etc/libvirt/qemu.conf` and modify the `user` and `group` settings:
 
 ```shell
 user = "root"
@@ -180,24 +186,28 @@ curl -L https://cloudrift.ai/install-rift-service.sh | sudo sh
 Install CloudRift CLI to configure the system service.
 
 ```shell
-curl -L https://cloudrift.com/install-rift.sh | sh
+curl -L https://cloudrift.ai/install-rift.sh | sh
 ```
 
-#### 2. Configure credentials
+#### 2. Configure Credentials
 
-Configure credentials using rift command line tool by running
+Configure credentials using the rift command line tool by running:
 
 ```shell
 sudo rift configure
 ```
 
-Note that we're running rift system service as root, so we need to configure it as root.
+> [!NOTE]
+> We're running the rift system service as root, so we need to configure it as root.
 
-You can also edit the config manually, it is located in `/root/.config/cloudrift/credentials.yml`
+You can also edit the config manually. It is located at `/root/.config/cloudrift/credentials.yml`.
 
-#### 3. Restart system service and check status
+> [!WARNING]
+> If editing manually, ensure you have the correct permissions and YAML formatting.
 
-Restart CloudRift system service and check status of the service and Docker Engine.
+#### 3. Restart System Service and Check Status
+
+Restart CloudRift system service and check the status of the service and Docker Engine.
 
 ```shell
 sudo systemctl restart rift
@@ -231,15 +241,15 @@ Install CloudRift CLI on your local machine. Installation instructions vary depe
   </TabItem>
 </Tabs>
 
-### 2. Configure credentials
+### 2. Configure Credentials
 
-Configure your credentials using rift command line tool by running:
+Configure your credentials using the rift command line tool by running:
 
 ```shell
 rift configure
 ```
 
-### 3. Inspect the cluster
+### 3. Inspect the Cluster
 
 Inspect the cluster. You should see all machines that you've installed CloudRift service on:
 
@@ -247,7 +257,7 @@ Inspect the cluster. You should see all machines that you've installed CloudRift
 rift cluster info
 ```
 
-### 4. Run your first job
+### 4. Run Your First Job
 
 Run your first job. For example, to run a simple echo command:
 
@@ -255,8 +265,15 @@ Run your first job. For example, to run a simple echo command:
 rift docker run --rm alpine echo "Hello CloudRift"
 ```
 
+## Troubleshooting
+
+- **Docker or NVIDIA driver issues:** Ensure you have rebooted after installation or removal of drivers. Check `nvidia-smi` and `docker info`.
+- **Permission errors:** Make sure you are running commands as root or with `sudo`.
+- **Service not starting:** Check logs with `sudo journalctl -u rift` or `sudo systemctl status rift`.
+
 ## Next Steps
 
-For more information on how to use CloudRift platform to lease your computational resources
-please send a request to <a href="mailto:dc@cloudrift.ai">dc@cloudrift.ai</a>.
-We support a variety of integrations, e.g. marketplace, white-label website, custom integration, and more.
+For more information on how to use the CloudRift platform to lease your computational resources,
+please see our [documentation](https://docs.cloudrift.ai) or send a request to [dc@cloudrift.ai](mailto:dc@cloudrift.ai).
+
+We support a variety of integrations, e.g., marketplace, white-label website, custom integration, and more.
