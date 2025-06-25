@@ -1,0 +1,160 @@
+---
+sidebar_position: 4
+toc_max_heading_level: 4
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import DownloadWindowsInstaller from '@site/src/components/DownloadWindowsInstaller';
+
+# Configure Rift Service
+
+Once you have configured the machine for either [Docker], [VM] or Bare Metal (coming soon) rental - install and configure
+Rift system service.
+
+## Sign Up & Activate the Account
+
+To start using CloudRift, please sign up at [cloudrift.ai](https://cloudrift.ai).
+
+## Configuring Rentable Machines
+
+:::info
+
+All steps below are included in our setup script, which can be found on [GitHub](https://github.com/cloudrift-ai/rift-utils).
+
+:::
+
+### Prerequisites
+
+Before you begin, ensure your system has the following tools installed. These are required for downloading scripts, managing permissions, and installing packages.
+
+- `curl`: For downloading scripts and files.
+- `sudo`: For running commands as root.
+
+```shell
+sudo apt-get update
+sudo apt-get install -y curl sudo
+```
+
+### CloudRift System Service
+
+Any Linux distribution is supported, but we typically test on Ubuntu 22.04.
+
+```shell
+curl -L https://cloudrift.ai/install-rift-service.sh | sudo sh
+```
+
+#### 1. CloudRift CLI
+
+Install CloudRift CLI to configure the system service.
+
+```shell
+curl -L https://cloudrift.ai/install-rift.sh | sh
+```
+
+#### 2. Configure Credentials
+
+Configure credentials using the rift command line tool by running:
+
+```shell
+sudo rift configure
+```
+
+:::note
+
+We're running the rift system service as root, so we need to configure it as root.
+
+:::
+
+You can also edit the config manually. It is located at `/root/.config/cloudrift/credentials.yml`.
+
+:::info
+
+If editing manually, ensure you have the correct permissions and YAML formatting.
+
+:::
+
+#### 3. Restart System Service and Check Status
+
+Restart CloudRift system service and check the status of the service and Docker Engine.
+
+```shell
+sudo systemctl restart rift
+sudo systemctl status rift
+sudo systemctl status docker
+```
+
+:::tip
+You can use [client_setup.sh](https://github.com/cloudrift-ai/rift-utils/blob/main/scripts/client_setup.sh) to install and configure rift service:
+
+```shell
+sudo client_setup.sh --only=rift
+```
+
+:::
+
+## Testing CloudRift Setup
+
+### 1. Install CloudRift CLI
+
+Install CloudRift CLI on your local machine. Installation instructions vary depending on your OS.
+
+<Tabs groupId="operating-systems">
+  <TabItem value="win" label="Windows">
+    <DownloadWindowsInstaller/>
+  </TabItem>
+  <TabItem value="mac" label="Mac">
+
+  ```shell
+  curl -L https://cloudrift.ai/install-rift.sh | sh
+  ```
+
+  </TabItem>
+  <TabItem value="linux" label="Linux">
+
+  ```shell
+  curl -L https://cloudrift.ai/install-rift.sh | sh
+  ```
+
+  </TabItem>
+</Tabs>
+
+### 2. Configure Credentials
+
+Configure your credentials using the rift command line tool by running:
+
+```shell
+rift configure
+```
+
+### 3. Inspect the Cluster
+
+Inspect the cluster. You should see all machines that you've installed CloudRift service on:
+
+```shell
+rift cluster info
+```
+
+### 4. Run Your First Job
+
+If you have configured the machine for Docker - you can test it immediately. Otherwise, contact us and we'll help
+you to configure the console for VM rental.
+
+Run your first job. For example, to run a simple echo command:
+
+```shell
+rift docker run --rm alpine echo "Hello CloudRift"
+```
+
+## Troubleshooting
+
+- **Docker or NVIDIA driver issues:** Ensure you have rebooted after installation or removal of drivers. Check `nvidia-smi` and `docker info`.
+- **Permission errors:** Make sure you are running commands as root or with `sudo`.
+- **Service not starting:** Check logs with `sudo journalctl -u rift` or `sudo systemctl status rift`.
+
+## Next Steps
+
+For more information on how to use the CloudRift platform to lease your computational resources,
+please see our [documentation](https://docs.cloudrift.ai) or send a request to [dc@cloudrift.ai](mailto:dc@cloudrift.ai).
+
+We support a variety of integrations, e.g., marketplace, white-label website, custom integration, and more.

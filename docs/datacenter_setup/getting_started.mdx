@@ -1,0 +1,31 @@
+---
+sidebar_position: 1
+toc_max_heading_level: 4
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import DownloadWindowsInstaller from '@site/src/components/DownloadWindowsInstaller';
+
+# Getting Started
+
+CloudRift Datacenter Service is a system service that connects to the CloudRift platform, allowing
+you to manage and lease your datacenter computational resources. Together with CloudRift CLI,
+REST API, and other developer tools, it provides a comprehensive solution for managing your datacenter.
+
+## Node Operation Modes
+
+CloudRift nodes can operate in three distinct modes, depending on your infrastructure and requirements.
+Please proceed to the next step accordingly to your needs.
+
+- [Docker Mode](./docker): Run containerized workloads using Docker Engine. This is the most common setup for GPU and CPU resource sharing.
+- [Virtual Machine (VM) Mode](./vm): Serve virtual machines using Libvirt and QEMU/KVM. Suitable for scenarios requiring full VM isolation or custom OS environments.
+- **Bare Metal Mode** (Coming Soon): Lease entire physical machines directly, without virtualization or containers. Ideal for maximum performance or specialized hardware needs.
+
+You can configure your node to support one or more of these modes based on your use case.
+
+:::info
+
+**Coming Soon:** CloudRift will soon support MAAS (Metal-as-a-Service) for automated bare metal provisioning and management.
+
+:::
