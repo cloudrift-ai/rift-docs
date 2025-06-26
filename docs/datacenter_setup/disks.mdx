@@ -1,0 +1,162 @@
+---
+sidebar_position: 4
+toc_max_heading_level: 4
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import DownloadWindowsInstaller from '@site/src/components/DownloadWindowsInstaller';
+
+# Disk Configuration
+
+You may have one of the following setups:
+
+- **Single disk setup**: CloudRift will work out of the box, and the single disk will be used for
+  both the OS and virtual machine storage. Proceed to [Next Steps](#next-steps) if this is your setup.
+- [Two-disk setup](#two-disk-setup): One disk for the system and a second disk for VM allocation.
+- [Multiple disks setup](#multiple-disks-setup): One system disk and multiple additional disks that will be configured
+  in a RAID array for VM allocation.
+
+
+## Two-disk Setup
+
+If you have two disks, you need to ensure that the second disk is properly mounted and formatted for CloudRift to use it for VM allocation.
+
+### 0. Check the available disks
+
+Run `lsblk` command to check available disks.
+
+You should see something like this:
+```
+NAME                      MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+nvme0n1                   259:0    0 447.1G  0 disk
+├─nvme0n1p1               259:1    0     1G  0 part /boot/efi
+├─nvme0n1p2               259:2    0     2G  0 part /boot
+└─nvme0n1p3               259:3    0 444.1G  0 part
+  └─ubuntu--vg-ubuntu--lv 252:0    0   100G  0 lvm  /
+nvme2n1                   259:4    0   3.5T  0 disk
+```
+
+In this example, `nvme0n1` is the system disk (with mountpoints) and `nvme2n1` is the second disk without a mount point.
+
+If your second disk already has a mount point, you can skip to [Next Steps](#next-steps). Otherwise, continue with formatting and mounting.
+
+### 1. Format the disk
+
+Format the disk to EXT4 or your preferred filesystem.
+
+```
+sudo mkfs.ext4 /dev/nvme2n1
+```
+
+### 2. Mount the Disk
+
+The mount point location is not important, but we recommend using `/media/cloudrift` so that you know
+what this disk is being used for.
+
+```
+sudo mkdir -p /media/cloudrift
+sudo mount /dev/nvme2n1 /media/cloudrift
+```
+
+### 3. Persist the Mount on Reboot
+
+Add to `/etc/fstab`:
+
+```
+UUID=$(blkid -s UUID -o value /dev/nvme2n1)
+echo "UUID=$UUID /media/cloudrift ext4 defaults,nofail,discard 0 0" | sudo tee -a /etc/fstab
+```
+
+### 5. Verify Everything Works
+
+```
+sudo mount -a
+df -h /media/cloudrift
+```
+
+It is also a good idea to perform a reboot and check run aforementioned commands to check that your
+disks are persisted after the reboot.
+
+## Multiple Disks Setup
+
+Multiple disks will be formatted into RAID0 array and used for VM allocation.
+
+### 0. Check the available disks
+
+Run `lsblk` command to check available disks.
+
+You should see something like this:
+```
+NAME                      MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+nvme0n1                   259:0    0 447.1G  0 disk
+├─nvme0n1p1               259:1    0     1G  0 part /boot/efi
+├─nvme0n1p2               259:2    0     2G  0 part /boot
+└─nvme0n1p3               259:3    0 444.1G  0 part
+  └─ubuntu--vg-ubuntu--lv 252:0    0   100G  0 lvm  /
+nvme2n1                   259:4    0   3.5T  0 disk
+nvme3n1                   259:5    0   3.5T  0 disk
+nvme4n1                   259:6    0   3.5T  0 disk
+nvme1n1                   259:7    0   3.5T  0 disk
+```
+
+### 1. Install mdadm
+
+```
+sudo apt update
+sudo apt install -y mdadm
+```
+
+### 2. Create the RAID array
+
+Run the following command to create a RAID0 array. Replace device names appropriately:
+```
+sudo mdadm --create --verbose /dev/md0 --level=0 \
+    --raid-devices=4 /dev/nvme1n1 /dev/nvme2n1 /dev/nvme3n1 /dev/nvme4n1
+```
+
+### 3. Watch it build (should be fast for RAID 0)
+
+```
+cat /proc/mdstat
+```
+
+### 4. Create a filesystem
+
+Format the array to EXT4 or your preferred filesystem.
+```
+sudo mkfs.ext4 /dev/md0
+```
+
+### 5. Mount the array
+
+The mount point location is not important, but we recommend using `/media/cloudrift` so that you know
+what this disk is being used for.
+
+```
+sudo mkdir -p /media/cloudrift
+sudo mount /dev/md0 /media/cloudrift
+```
+
+### 6. Persist on boot
+
+Add to `/etc/fstab`:
+
+```
+UUID=$(blkid -s UUID -o value /dev/md0)
+echo "UUID=$UUID /media/cloudrift ext4 defaults,nofail,discard 0 0" | sudo tee -a /etc/fstab
+```
+
+### 7. Verify Everything Works
+
+```
+sudo mount -a
+df -h /media/cloudrift
+```
+
+It is also a good idea to perform a reboot and check run aforementioned commands to check that your
+disks are persisted after the reboot.
+
+## Next Steps
+
+To test the node configuration and make your nodes rentable, proceed to the [System Service Setup](./system_service) guide.
