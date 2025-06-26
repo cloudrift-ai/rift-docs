@@ -1,0 +1,75 @@
+---
+sidebar_position: 3
+toc_max_heading_level: 4
+---
+
+# Setup for VM
+
+If your node will serve virtual machines, you need to install and configure Libvirt and Qemu.
+
+To allow Libvirt to use GPU device in pass-through mode, you have to make sure the NVIDIA driver is not installed or not used by the system.
+
+## 0. Check NVIDIA Driver Installation
+
+You can check if the NVIDIA driver is loaded and used by the system using the following command:
+
+```shell
+lsmod | grep nvidia
+# or check if driver is used by your GPU:
+lspci -k | grep -EA3 'VGA|3D|Display'
+```
+
+## 1. Remove NVIDIA Driver (if installed)
+
+If the NVIDIA driver is installed, you can remove it using the following command:
+
+```shell
+sudo apt-get remove --purge '^nvidia-.*'
+sudo apt autoremove
+echo 'nouveau' | sudo tee -a /etc/modules
+sudo rm /etc/X11/xorg.conf
+```
+
+:::info
+
+Restart your machine to apply the changes.
+
+:::
+
+## 2. Install System Dependencies
+
+Install additional packages required by the service.
+
+```shell
+sudo apt update
+sudo apt install qemu-kvm libvirt-daemon-system genisoimage whois
+```
+
+## 3. Configure Libvirt
+
+Rift system service is run as the root user, so you need to set up libvirt to run under root as well.
+Edit `/etc/libvirt/qemu.conf` and modify the `user` and `group` settings:
+
+```shell
+user = "root"
+group = "root"
+```
+
+Then restart the `libvirtd` service:
+
+```shell
+sudo systemctl restart libvirtd
+```
+
+:::tip
+You can use [client_setup.sh](https://github.com/cloudrift-ai/rift-utils/blob/main/scripts/client_setup.sh) to install libvirt and rift:
+
+```shell
+sudo client_setup.sh --only=vm
+sudo client_setup.sh --only=rift
+```
+:::
+
+## Next Steps
+
+To test the node configuration and make your nodes rentable, proceed to [CloudRift System Service Setup](./system_service).

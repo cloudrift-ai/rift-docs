@@ -1,0 +1,114 @@
+---
+sidebar_position: 2
+toc_max_heading_level: 4
+---
+
+# Setup for Docker
+
+If you want your node to serve Docker containers, you need to install Docker Engine and NVIDIA Container Toolkit (if you have NVIDIA GPUs).
+
+### 1. Install Docker Engine
+
+Up-to-date instructions can be found on the [Docker Website](https://docs.docker.com/engine/install/debian/).
+
+```shell
+# Uninstall conflicting packages
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
+# Setup repository
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+# Install docker
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+### 2. Install NVIDIA Drivers
+
+You can check installed NVIDIA packages using the following command:
+
+```shell
+dpkg -l | grep -i nvidia
+```
+
+To check the version of the installed NVIDIA driver, you can use:
+
+```shell
+nvidia-smi
+# or 
+cat /proc/driver/nvidia/version
+```
+
+:::note
+
+NVIDIA driver version and NVIDIA Utils version should match for the `nvidia-smi` command to work properly.
+
+:::
+
+:::info
+
+On Ubuntu, **Failed to initialize NVML: Driver/library version mismatch** may happen because of the **unattended-upgrades** process. It automatically downloads and installs updates without user intervention. Usually, it's enough to reboot the system with `reboot now`.
+
+:::
+
+You can check if the NVIDIA driver is loaded and used by the system using the following command:
+
+```shell
+lsmod | grep nvidia
+# or check if driver is used by your GPU:
+lspci -k | grep -EA3 'VGA|3D|Display'
+```
+
+To install the latest NVIDIA driver, you can use the following command:
+
+```shell
+sudo apt-get install -y nvidia-driver-570-server nvidia-utils-570-server
+```
+
+#### 3. Install NVIDIA Container Toolkit (if you have NVIDIA GPUs)
+
+Up-to-date instructions can be found on the [NVIDIA Website](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+
+```shell
+# Configure the repository
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list    
+
+# Install the NVIDIA Container Toolkit
+sudo apt-get update
+sudo apt-get install -y nvidia-container-toolkit
+
+# Configure
+sudo nvidia-ctk runtime configure --runtime=docker
+
+# Restart Docker
+sudo systemctl restart docker
+```
+
+:::tip
+You can use [client_setup.sh](https://github.com/cloudrift-ai/rift-utils/blob/main/scripts/client_setup.sh) to install docker, drivers and rift:
+
+```shell
+sudo client_setup.sh --only=docker
+sudo client_setup.sh --only=nvidia
+sudo client_setup.sh --only=rift
+```
+
+:::
+
+## Next Steps
+
+To test the node configuration and make your nodes rentable, proceed to [CloudRift System Service Setup](./system_service).
