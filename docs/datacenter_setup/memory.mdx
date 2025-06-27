@@ -1,0 +1,162 @@
+---
+sidebar_position: 5
+toc_max_heading_level: 4
+---
+
+# Memory Configuration
+
+This section explains how to leverage 1GB Huge Pages for addressing your memory, which is necessary
+for efficient virtualization on systems with large amounts of RAM. This section is only applicable for **VM Mode**.
+
+## When to Use Huge Pages
+
+Based on your system's RAM capacity:
+
+- **< 128 GB RAM**: Not recommended. Proceed to [Next Steps](#next-steps).
+- **128-512 GB RAM**: Optional but can provide performance benefits.
+- **> 512 GB RAM**: Strongly recommended to avoid performance degradation.
+
+## Why Use Huge Pages?
+
+Implementing 1GB Huge Pages provides several advantages:
+
+- **Reduced TLB Misses**: Fewer page table entries means better CPU performance
+- **Improved Memory Access**: Faster virtual-to-physical address translation
+- **Enhanced VM Performance**: Critical for hypervisors managing large memory allocations
+- **Lower Overhead**: Decreased page table management burden on the system
+
+## 1G Huge Page Configuration
+
+### 1. Check Huge Page Support
+
+Run `grep -i huge /proc/meminfo` command to check the huge page support. You should see an output like this:
+```
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+FileHugePages:         0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+Hugetlb:               0 kB
+```
+
+### 2. Allocate Huge Pages
+
+Determine how much memory you want to reserve for the VMs. You need to reserve that much memory for huge pages
+plus a buffer. Note that this memory will be reserved and will be unusable on the host machine.
+
+**Calculation Formula**:
+```
+Number of Huge Pages = (VM Memory in GB + Buffer) / 1GB
+```
+
+For example, if you want to dedicate `2000 GB` to virtual machines with a `80 GB` buffer, you would need `2080` huge pages.
+
+| Total System RAM | Recommended VM Allocation | Buffer | Huge Pages Needed |
+|------------------|---------------------------|--------|-------------------|
+| 768 GB           | 600 GB                    | 24 GB  | 624               |
+| 1 TB (1024 GB)   | 900 GB                    | 36 GB  | 936               |
+| 2 TB (2048 GB)   | 1800 GB                   | 72 GB  | 1872              |
+| 4 TB (4096 GB)   | 3600 GB                   | 144 GB | 3744              |
+
+Run the following command (it will take a while):
+```
+echo 2000 | sudo tee /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+```
+
+To check that huge pages were allocated, run `grep -i huge /proc/meminfo`. You should see output like this:
+```
+AnonHugePages:     79872 kB
+ShmemHugePages:        0 kB
+FileHugePages:         0 kB
+HugePages_Total:    2080
+HugePages_Free:     1580
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:    1048576 kB
+Hugetlb:        2181038080 kB
+```
+
+To deallocate, invoke:
+```
+echo 0 | sudo tee /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+```
+
+### 3. Make Huge Pages Persistent
+
+Edit the `/etc/default/grub` file and modify the line containing `GRUB_CMDLINE_LINUX`.
+
+Add `default_hugepagesz=1G hugepagesz=1G hugepages=<num>` to the `GRUB_CMDLINE_LINUX` options.
+The `<num>` is the number of huge pages to allocate. For example:
+```
+GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=2080"
+```
+
+Update grub changes.
+```
+sudo update-grub
+```
+
+### 4. Mount Huge Page Table
+
+We need to mount the huge page table to the system, so that Hypervisor can use it.
+
+The mount point location is not important, but we recommend using `/mnt/hugepages-1G` so that you know
+what this mount is used for.
+
+```
+sudo mkdir -p /mnt/hugepages-1G
+sudo mount -t hugetlbfs -o pagesize=1G none /mnt/hugepages-1G
+```
+
+Check that mount point is present by running `grep hugetlbfs /proc/mounts`.
+
+You should see something like:
+```
+hugetlbfs /dev/hugepages hugetlbfs rw,nosuid,nodev,relatime,pagesize=1024M 0 0
+hugetlbfs /mnt/hugepages-1G hugetlbfs rw,relatime,pagesize=1024M 0 0
+```
+
+### 5. Persist the Mount on Reboot
+
+Add to `/etc/fstab`:
+
+```
+none /mnt/hugepages-1G hugetlbfs pagesize=1G 0 0
+```
+
+### 6. Reboot and Verify that the Configuration Works
+
+Reboot: `sudo reboot`
+
+Verify that hugepages are allocated and mount point is present.
+```
+grep -i huge /proc/meminfo
+grep hugetlbfs /proc/mounts
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### Not Enough Memory Available
+
+If you see errors about not being able to allocate the requested number of huge pages:
+
+1. Ensure you have enough free memory available (check with `free -h`)
+2. Close unnecessary applications that may be consuming memory
+3. Try allocating a smaller number of huge pages
+
+#### Mount Point Issues
+
+If the huge page filesystem fails to mount:
+
+1. Verify the directory exists: `ls -la /mnt/hugepages-1G`
+2. Check for mount errors: `dmesg | grep huge`
+3. Ensure kernel support is enabled: `grep CONFIG_HUGETLB_PAGE /boot/config-$(uname -r)`
+
+## Next Steps
+
+To test the node configuration and make your nodes rentable, proceed to the [System Service Setup](./system_service) guide.
