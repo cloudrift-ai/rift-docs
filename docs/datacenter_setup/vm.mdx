@@ -70,6 +70,22 @@ sudo client_setup.sh --only=rift
 ```
 :::
 
+## 4. (Optional) Ensure that GPU is not Used by the System
+
+Add `nomodeset video=efifb:off` the following line in the `/etc/default/grub`
+```
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nomodeset video=efifb:off console=ttyS0"
+```
+
+Then, invoke:
+```
+sudo update-grub
+sudo update-initramfs -u
+```
+
+And reboot.
+
+
 ## Next Steps
 
 Proceed to the [Disk Setup](./disks) guide.
