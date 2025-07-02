@@ -60,6 +60,7 @@ sudo mount /dev/nvme2n1 /media/cloudrift
 Add to `/etc/fstab`:
 
 ```
+sudo udevadm trigger
 UUID=$(blkid -s UUID -o value /dev/nvme2n1)
 echo "UUID=$UUID /media/cloudrift ext4 defaults,nofail,discard 0 0" | sudo tee -a /etc/fstab
 ```
@@ -139,6 +140,7 @@ sudo mount /dev/md0 /media/cloudrift
 Add to `/etc/fstab`:
 
 ```
+sudo udevadm trigger
 UUID=$(blkid -s UUID -o value /dev/md0)
 echo "UUID=$UUID /media/cloudrift ext4 defaults,nofail,discard 0 0" | sudo tee -a /etc/fstab
 ```
