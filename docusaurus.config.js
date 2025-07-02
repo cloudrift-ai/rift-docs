@@ -70,7 +70,7 @@ const config = {
             label: 'Docs Home',
           },
           {
-            href: 'https://cloudrift.ai/rapidoc',
+            href: 'https://api.cloudrift.ai/rapidoc',
             label: 'API',
             position: 'left',
           },
