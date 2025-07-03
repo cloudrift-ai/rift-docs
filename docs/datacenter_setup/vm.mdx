@@ -30,6 +30,23 @@ echo 'nouveau' | sudo tee -a /etc/modules
 sudo rm /etc/X11/xorg.conf
 ```
 
+If you've installed the driver using the RUN file, remove it using:
+```shell
+sudo /usr/bin/nvidia-uninstall
+```
+
+Remove configs if any.
+```shell
+sudo rm -rf /etc/X11/xorg.conf
+sudo rm -rf /etc/modprobe.d/nvidia*.conf
+sudo rm -rf /lib/modprobe.d/nvidia*.conf
+```
+
+After the reboot, verify that driver is uninstalled. The following command should return nothing:
+```
+lsmod | grep nvidia
+```
+
 :::info
 
 Restart your machine to apply the changes.
