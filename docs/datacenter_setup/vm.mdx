@@ -89,18 +89,55 @@ sudo client_setup.sh --only=rift
 
 ## 4. (Optional) Ensure that GPU is not Used by the System
 
-Add `nomodeset video=efifb:off` the following line in the `/etc/default/grub`. Keep other options if needed.
+Libvirt automatically binds the VFIO driver when VM is being allocated, but for greater stability it is
+best to ensure that VFIO driver is always bound and no driver changes are happening at runtime. Thus, first
+blacklist all other drivers early and disable video mode setup to ensure that the GPU is not used by the system.
+
+Add `nomodeset video=efifb:off modprobe.blacklist=nouveau,nvidia,nvidiafb` the following line in the `/etc/default/grub`.
+Keep other options if needed.
 ```
-GRUB_CMDLINE_LINUX_DEFAULT="nomodeset video=efifb:off"
+GRUB_CMDLINE_LINUX_DEFAULT="nomodeset modprobe.blacklist=nouveau,nvidia,nvidiafb video=efifb:off"
 ```
 
-Then, invoke:
+Ensure that VFIO drivers are loaded:
+```
+echo -e "vfio\nvfio_pci\nvfio_virqfd" | sudo tee /etc/modules-load.d/vfio.conf
+```
+
+Bind VFIO drivers to GPUs. You need to first figure out the PCI vendor ID and device ID for GPUs.
+To do so you can run `lspci -nnk | grep NVIDIA`. You'll see output like this (RTX 5090):
+```
+$ lspci -nnk | grep NVIDIA
+01:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:2b85] (rev a1)
+01:00.1 Audio device [0403]: NVIDIA Corporation Device [10de:22e8] (rev a1)
+	Subsystem: NVIDIA Corporation Device [10de:0000]
+```
+
+Bind the VFIO to provided vendor IDs and device IDs on boot:
+```
+echo "options vfio-pci ids=10de:2b85,10de:22e8" | sudo tee /etc/modprobe.d/vfio.conf
+```
+
+Finally, invoke:
 ```
 sudo update-grub
 sudo update-initramfs -u
 ```
 
-And reboot.
+Reboot.
+
+After reboot check that VFIO drivers are in use. You can use `lspci -k | grep -A 2 -i nvidia` command
+and should see `vfio` drivers in use:
+```
+81:00.0 VGA compatible controller: NVIDIA Corporation Device 2b85 (rev a1)
+	Subsystem: Gigabyte Technology Co., Ltd Device 416f
+	Kernel driver in use: vfio-pci
+	Kernel modules: nvidiafb, nouveau
+81:00.1 Audio device: NVIDIA Corporation Device 22e8 (rev a1)
+	Subsystem: NVIDIA Corporation Device 0000
+	Kernel driver in use: vfio-pci
+	Kernel modules: snd_hda_intel
+```
 
 
 ## Next Steps
