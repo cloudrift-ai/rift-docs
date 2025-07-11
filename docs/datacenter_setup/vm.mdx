@@ -87,7 +87,26 @@ sudo client_setup.sh --only=rift
 ```
 :::
 
-## 4. (Optional) Ensure that GPU is not Used by the System
+## 4. (Optional) Enable iommu=pt pci=realloc options
+
+The iommu=pt and pci=realloc kernel parameters in GRUB are used to optimize I/O operations and improve performance,
+particularly in virtualized environments or when dealing with GPUs with large amount of memory. The iommu=pt option
+enables IOMMU pass-through mode, bypassing DMA translation for better performance, while pci=realloc allows the kernel
+to reallocate PCI resources if the BIOS's initial allocation is insufficient.
+
+Add `iommu=pt pci=realloc` the following line in the `/etc/default/grub`.
+```
+GRUB_CMDLINE_LINUX_DEFAULT="... iommu=pt pci=realloc"
+```
+
+Then, invoke (or do it after the next section).
+```
+sudo update-grub
+sudo update-initramfs -u
+sudo reboot
+```
+
+## 5. (Optional) Ensure that GPU is not Used by the System
 
 Libvirt automatically binds the VFIO driver when VM is being allocated, but for greater stability it is
 best to ensure that VFIO driver is always bound and no driver changes are happening at runtime. Thus, first
@@ -96,7 +115,7 @@ blacklist all other drivers early and disable video mode setup to ensure that th
 Add `nomodeset video=efifb:off modprobe.blacklist=nouveau,nvidia,nvidiafb` the following line in the `/etc/default/grub`.
 Keep other options if needed.
 ```
-GRUB_CMDLINE_LINUX_DEFAULT="nomodeset modprobe.blacklist=nouveau,nvidia,nvidiafb video=efifb:off"
+GRUB_CMDLINE_LINUX_DEFAULT="... nomodeset modprobe.blacklist=nouveau,nvidia,nvidiafb video=efifb:off"
 ```
 
 Ensure that VFIO drivers are loaded:
