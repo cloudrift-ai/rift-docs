@@ -91,15 +91,51 @@ Edit the `/etc/default/grub` file and modify the line containing `GRUB_CMDLINE_L
 Add `default_hugepagesz=1G hugepagesz=1G hugepages=<num>` to the `GRUB_CMDLINE_LINUX` options.
 The `<num>` is the number of huge pages to allocate. For example:
 ```
-GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=2080"
+GRUB_CMDLINE_LINUX="... default_hugepagesz=1G hugepagesz=1G hugepages=2080"
 ```
 
-Update grub changes.
+Update grub changes and reboot (or do it after the next section).
 ```
 sudo update-grub
 ```
 
-### 4. Mount Huge Page Table
+### 4. (Optional) Enable 5-level Paging
+
+If you're planning to virtualize a large number of GPUs with a large amount of VRAM, like 8 x H100,
+you'll most likely need to enable 5-level paging. Otherwise, qemu won't be able to allocate
+large enough chunk of memory for passthrough. Check if your CPU supports 57-bit address space via:
+```
+$ lscpu | grep "Address sizes"
+```
+
+You should see an output like:
+```
+Address sizes:                        52 bits physical, 57 bits virtual
+```
+
+If so, add `la57` option to the `GRUB_CMDLINE_LINUX_DEFAULT` variable in `/etc/default/grub`:
+```
+GRUB_CMDLINE_LINUX_DEFAULT="la57"
+GRUB_CMDLINE_LINUX="... default_hugepagesz=1G hugepagesz=1G hugepages=2080"
+```
+
+For this option to work you also need to use a kernel with la57 support. To check if your kernel supports
+la57 option run `grep CONFIG_CMDLINE /boot/config-$(uname -r)`. You should see:
+```
+CONFIG_CMDLINE_BOOL=y
+CONFIG_CMDLINE="la57"
+```
+
+If CONFIG_CMDLINE_BOOL is not set or CONFIG_CMDLINE does not include la57, then your kernel won’t activate la57,
+even if it’s supported and passed in GRUB. You'll need to build a kernel with those options enabled.
+
+Update grub changes and reboot:
+```
+sudo update-grub
+sudo reboot
+```
+
+### 5. Mount Huge Page Table
 
 We need to mount the huge page table to the system, so that Hypervisor can use it.
 
@@ -119,7 +155,7 @@ hugetlbfs /dev/hugepages hugetlbfs rw,nosuid,nodev,relatime,pagesize=1024M 0 0
 hugetlbfs /mnt/hugepages-1G hugetlbfs rw,relatime,pagesize=1024M 0 0
 ```
 
-### 5. Persist the Mount on Reboot
+### 6. Persist the Mount on Reboot
 
 Add to `/etc/fstab`:
 
@@ -127,7 +163,7 @@ Add to `/etc/fstab`:
 none /mnt/hugepages-1G hugetlbfs pagesize=1G 0 0
 ```
 
-### 6. Reboot and Verify that the Configuration Works
+### 7. Reboot and Verify that the Configuration Works
 
 Reboot: `sudo reboot`
 
