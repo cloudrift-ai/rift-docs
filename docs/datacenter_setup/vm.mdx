@@ -87,7 +87,7 @@ sudo client_setup.sh --only=rift
 ```
 :::
 
-## 4. (Optional) Enable iommu=pt pci=realloc options
+## 4. (Optional) Enable Other Virtualization options
 
 The iommu=pt and pci=realloc kernel parameters in GRUB are used to optimize I/O operations and improve performance,
 particularly in virtualized environments or when dealing with GPUs with large amount of memory. The iommu=pt option
@@ -99,10 +99,12 @@ Add `iommu=pt pci=realloc` the following line in the `/etc/default/grub`.
 GRUB_CMDLINE_LINUX_DEFAULT="... iommu=pt pci=realloc"
 ```
 
+Additionally, you may need to add `intel_iommu=on` or `amd_iommu=on` options depending on your system.
+
 Then, invoke (or do it after the next section).
 ```
+sudo update-initramfs -u -k all
 sudo update-grub
-sudo update-initramfs -u
 sudo reboot
 ```
 
@@ -139,8 +141,8 @@ echo "options vfio-pci ids=10de:2b85,10de:22e8" | sudo tee /etc/modprobe.d/vfio.
 
 Finally, invoke:
 ```
+sudo update-initramfs -u -k all
 sudo update-grub
-sudo update-initramfs -u
 ```
 
 Reboot.
@@ -157,7 +159,6 @@ and should see `vfio` drivers in use:
 	Kernel driver in use: vfio-pci
 	Kernel modules: snd_hda_intel
 ```
-
 
 ## Next Steps
 
