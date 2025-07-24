@@ -87,7 +87,7 @@ sudo client_setup.sh --only=rift
 ```
 :::
 
-## 4. (Optional) Enable Other Virtualization options
+## 4. (Optional) Enable Other Virtualization Options
 
 The iommu=pt and pci=realloc kernel parameters in GRUB are used to optimize I/O operations and improve performance,
 particularly in virtualized environments or when dealing with GPUs with large amount of memory. The iommu=pt option
@@ -108,24 +108,13 @@ sudo update-grub
 sudo reboot
 ```
 
-## 5. (Optional) Ensure that GPU is not Used by the System
+## 5. (Optional) Bind to VFIO Early
 
 Libvirt automatically binds the VFIO driver when VM is being allocated, but for greater stability it is
 best to ensure that VFIO driver is always bound and no driver changes are happening at runtime. Thus, first
 blacklist all other drivers early and disable video mode setup to ensure that the GPU is not used by the system.
 
-Add `nomodeset video=efifb:off modprobe.blacklist=nouveau,nvidia,nvidiafb` the following line in the `/etc/default/grub`.
-Keep other options if needed.
-```
-GRUB_CMDLINE_LINUX_DEFAULT="... nomodeset modprobe.blacklist=nouveau,nvidia,nvidiafb video=efifb:off"
-```
-
-Ensure that VFIO drivers are loaded:
-```
-echo -e "vfio\nvfio_pci\nvfio_virqfd" | sudo tee /etc/modules-load.d/vfio.conf
-```
-
-Bind VFIO drivers to GPUs. You need to first figure out the PCI vendor ID and device ID for GPUs.
+You need to first figure out the PCI vendor ID and device ID for GPUs.
 To do so you can run `lspci -nnk | grep NVIDIA`. You'll see output like this (RTX 5090):
 ```
 $ lspci -nnk | grep NVIDIA
@@ -134,18 +123,22 @@ $ lspci -nnk | grep NVIDIA
 	Subsystem: NVIDIA Corporation Device [10de:0000]
 ```
 
-Bind the VFIO to provided vendor IDs and device IDs on boot:
+Then add the following lines to `GRUB_CMDLINE_LINUX_DEFAULT` in the `/etc/default/grub` changing the
+PCI vendor ID and device ID appropriately. Keep other options if needed.
 ```
-echo "options vfio-pci ids=10de:2b85,10de:22e8" | sudo tee /etc/modprobe.d/vfio.conf
+GRUB_CMDLINE_LINUX_DEFAULT="nomodeset video=efifb:off modprobe.blacklist=nouveau,nvidia,nvidiafb,snd_hda_intel vfio-pci.ids=10de:2b85,10de:22e8 ..."
 ```
+
+The reason why we're adding the driver binding options to `GRUB` is because `vfio` is a kernel builtin module.
+Many online manuals suggest adding vfio modules to `/etc/modprobe.d/vfio.conf`, but any options we add to `/etc/modprobe.d/XXX`
+are ignored, because modprobe doesn't control builtin drivers.
 
 Finally, invoke:
 ```
 sudo update-initramfs -u -k all
 sudo update-grub
+sudo reboot
 ```
-
-Reboot.
 
 After reboot check that VFIO drivers are in use. You can use `lspci -k | grep -A 2 -i nvidia` command
 and should see `vfio` drivers in use:
