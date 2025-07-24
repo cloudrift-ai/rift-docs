@@ -87,7 +87,53 @@ sudo client_setup.sh --only=rift
 ```
 :::
 
-## 4. (Optional) Enable Other Virtualization Options
+## 4. Check IOMMU groups
+
+Run the following script on the host system.
+```
+#!/bin/bash
+
+for g in /sys/kernel/iommu_groups/*; do
+    group_num=$(basename "$g")
+    gpu_found=false
+    device_lines=""
+
+    for d in "$g"/devices/*; do
+        pci_addr=$(basename "$d")
+        line=$(lspci -nn -s "$pci_addr")
+        device_lines+="$line"$'\n'
+        if echo "$line" | grep -qE 'VGA compatible controller|3D controller'; then
+            gpu_found=true
+        fi
+    done
+
+    if $gpu_found; then
+        echo "IOMMU Group $group_num:"
+        echo "$device_lines"
+    fi
+done
+```
+
+Typically, you'll see just GPUs or GPU + Audio device or in some cases GPU + Audio + PCI bridges. All of these
+are normal.
+```
+IOMMU Group 112:
+a0:03.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge [1022:1482]
+a0:03.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse GPP Bridge [1022:1483]
+a1:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:2b85] (rev a1)
+a1:00.1 Audio device [0403]: NVIDIA Corporation Device [10de:22e8] (rev a1)
+
+IOMMU Group 13:
+40:01.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge [1022:1482]
+40:01.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse GPP Bridge [1022:1483]
+41:00.0 VGA compatible controller [0300]: NVIDIA Corporation Device [10de:2b85] (rev a1)
+41:00.1 Audio device [0403]: NVIDIA Corporation Device [10de:22e8] (rev a1)
+```
+
+If you see multiple GPUs in the same group or too many devices, your motherboard might not support all the
+necessary features for virtualization and it may be tricky to workaround these.
+
+## 5. (Optional) Enable Other Virtualization Options
 
 The iommu=pt and pci=realloc kernel parameters in GRUB are used to optimize I/O operations and improve performance,
 particularly in virtualized environments or when dealing with GPUs with large amount of memory. The iommu=pt option
@@ -108,7 +154,7 @@ sudo update-grub
 sudo reboot
 ```
 
-## 5. (Optional) Bind to VFIO Early
+## 6. (Optional) Bind to VFIO Early
 
 Libvirt automatically binds the VFIO driver when VM is being allocated, but for greater stability it is
 best to ensure that VFIO driver is always bound and no driver changes are happening at runtime. Thus, first
