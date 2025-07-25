@@ -140,12 +140,21 @@ particularly in virtualized environments or when dealing with GPUs with large am
 enables IOMMU pass-through mode, bypassing DMA translation for better performance, while pci=realloc allows the kernel
 to reallocate PCI resources if the BIOS's initial allocation is insufficient.
 
-Add `iommu=pt pci=realloc` the following line in the `/etc/default/grub`.
+Add `iommu=pt pci=realloc pcie_aspm=off` and `intel_iommu=on` or `amd_iommu=on` options, depending on your system,
+to the following line in the `/etc/default/grub`.
 ```
-GRUB_CMDLINE_LINUX_DEFAULT="... iommu=pt pci=realloc"
+GRUB_CMDLINE_LINUX_DEFAULT="... iommu=pt pci=realloc pcie_aspm=off amd_iommu=on (or intel_iommu=on)"
 ```
 
-Additionally, you may need to add `intel_iommu=on` or `amd_iommu=on` options depending on your system.
+Here is a short summary of these options:
+- `iommu=pt`: IOMMU passthrough mode tells the kernel to enable the IOMMU but use pass-through mode for DMA mappings by default.
+  For VFIO GPU passthrough — allows the device to access physical memory directly with minimal performance penalty.
+- `pci=realloc`: Reallocate PCI resources forces the kernel to reassign PCI bus resources (MMIO/IOBARs) from scratch, ignoring what the firmware/BIOS assigned.
+  It helps avoid issues when the BIOS didn't allocate enough space for devices (common with large GPUs or multiple devices).
+  Fixes “BAR can't be assigned” or “resource busy” errors.
+- `pcie_aspm=off`: Disable PCIe Active State Power Management, which is a power-saving feature that reduces PCIe link power in idle states.
+  Some PCIe devices (especially GPUs) have trouble retraining links or waking from ASPM low-power states, leading
+  to hangs or device inaccessible errors. Disabling ASPM can improve stability.
 
 Then, invoke (or do it after the next section).
 ```
