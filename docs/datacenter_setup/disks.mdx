@@ -7,12 +7,81 @@ toc_max_heading_level: 4
 
 You may have one of the following setups:
 
-- **Single disk setup**: CloudRift will work out of the box, and the single disk will be used for
-  both the OS and virtual machine storage. Proceed to [Next Steps](#next-steps) if this is your setup.
+- [Single-disk setup](#single-disk-setup): CloudRift will most likely work out of the box. The only exception
+  if you're using a smaller logical disk for the system. In this case we need to create another logical disk for VMs.
 - [Two-disk setup](#two-disk-setup): One disk for the system and a second disk for VM allocation.
 - [Multiple disks setup](#multiple-disks-setup): One system disk and multiple additional disks that will be configured
   in a RAID array for VM allocation.
 
+
+## Single Disk Setup
+
+Most of the time, CloudRift will work out of the box with a single disk setup. An exception is the situation
+when a smaller logical disk is used for the system and not all available disk space is used.
+
+### 0. Check the available disks
+
+Run `lsblk` command to check available disks.
+
+If you see a single disk occupying all the available space - you're good to go. CloudRift will work out of the box.
+Example output:
+```
+NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+nvme1n1     259:0    0   3.6T  0 disk
+nvme0n1     259:1    0   3.6T  0 disk
+├─nvme0n1p1 259:2    0     1G  0 part /boot/efi
+└─nvme0n1p2 259:3    0   3.6T  0 part /
+```
+
+If you're using a setup with a single disk, but using a smaller logical disk for the system like in the following
+example, you'll need to create a data disk for VMs.
+```
+NAME                      MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+nvme0n1                   259:0    0  3.6T  0 disk
+├─nvme0n1p1               259:1    0    1G  0 part /boot/efi
+├─nvme0n1p2               259:2    0    2G  0 part /boot
+└─nvme0n1p3               259:3    0  3.6T  0 part
+  └─ubuntu--vg-ubuntu--lv 252:0    0  100G  0 lvm  /
+```
+
+### 1. Create logical volume
+
+Create a new volume for the unused space:
+```
+sudo lvcreate -L 3.4T -n datavol ubuntu-vg
+```
+
+### 2. Format the disk
+
+Make filesystem on the new volume:
+```
+sudo mkfs.ext4 /dev/ubuntu-vg/datavol
+```
+
+### 3. Mount the logical disk
+
+Create a mount point for CloudRift and mount a new volume.
+```
+sudo mkdir -p /media/cloudrift
+sudo mount /dev/ubuntu-vg/datavol /media/cloudrift
+```
+
+### 4. Persist the Mount on Reboot
+
+Add to `/etc/fstab` the following line:
+```
+/dev/ubuntu-vg/datavol /media/cloudrift ext4 defaults 0 2
+```
+
+### 5. Verify Everything Works
+
+```
+sudo mount -a
+df -h /media/cloudrift
+```
+
+It is also a good idea to perform a reboot and check run aforementioned commands to check that your
+disks are persisted after the reboot.
 
 ## Two-disk Setup
 
