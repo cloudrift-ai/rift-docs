@@ -163,11 +163,10 @@ sudo update-grub
 sudo reboot
 ```
 
-## 6. (Optional) Bind to VFIO Early
+## 6. Bind to VFIO Early
 
-Libvirt automatically binds the VFIO driver when VM is being allocated, but for greater stability it is
-best to ensure that VFIO driver is always bound and no driver changes are happening at runtime. Thus, first
-blacklist all other drivers early and disable video mode setup to ensure that the GPU is not used by the system.
+For greater stability it is best to ensure that VFIO driver is always bound and no driver changes are happening at runtime.
+Thus, first blacklist all other drivers early and disable video mode setup to ensure that the GPU is not used by the system.
 
 You need to first figure out the PCI vendor ID and device ID for GPUs.
 To do so you can run `lspci -nnk | grep NVIDIA`. You'll see output like this (RTX 5090):

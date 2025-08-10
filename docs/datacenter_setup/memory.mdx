@@ -54,12 +54,14 @@ Number of Huge Pages = (VM Memory in GB + Buffer) / 1GB
 
 For example, if you want to dedicate `2000 GB` to virtual machines with a `80 GB` buffer, you would need `2080` huge pages.
 
-| Total System RAM | Recommended VM Allocation | Buffer | Huge Pages Needed |
-|------------------|---------------------------|--------|-------------------|
-| 768 GB           | 600 GB                    | 24 GB  | 624               |
-| 1 TB (1024 GB)   | 900 GB                    | 36 GB  | 936               |
-| 2 TB (2048 GB)   | 1800 GB                   | 72 GB  | 1872              |
-| 4 TB (4096 GB)   | 3600 GB                   | 144 GB | 3744              |
+| Total System RAM | VM Allocation   | Buffer | Huge Pages | Left for System |
+|------------------|-----------------|--------|------------|-----------------|
+| 768 GB           | 640 (8x80) GB   | 60 GB  | 700        | 68 GB           |
+| 1024 GB          | 800 (8x100) GB  | 80 GB  | 880        | 144 GB          |
+| 1256 GB          | 1040 (8x130) GB | 100 GB | 1140       | 116 GB          |
+| 1512 GB          | 1280 (8x160) GB | 120 GB | 1300       | 212 GB          |
+| 2048 GB          | 1760 (8x220) GB | 160 GB | 1920       | 128 GB          |
+| 4096 GB          | 3680 (8*460) GB | 200 GB | 3880       | 216 GB          |
 
 Run the following command (it will take a while):
 ```
