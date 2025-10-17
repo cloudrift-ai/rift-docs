@@ -1,5 +1,8 @@
 ---
 sidebar_position: 3
+title: CloudRift REST API Documentation
+description: CloudRift REST API documentation for direct HTTP access. Complete API reference with generated documentation for cluster management and job execution.
+keywords: [CloudRift REST API, HTTP API, API documentation, RapiDoc, API reference, web service, HTTP endpoints, API integration]
 ---
 
 # REST API

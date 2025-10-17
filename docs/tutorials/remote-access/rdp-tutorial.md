@@ -1,5 +1,8 @@
 ---
 sidebar_position: 2
+title: Remote Desktop with CloudRift Tutorial
+description: Set up Remote Desktop Protocol (RDP) on CloudRift GPU machines. Learn how to access XFCE desktop environment remotely using Docker containers and RDP clients.
+keywords: [RDP, Remote Desktop, XFCE, CloudRift tutorial, remote desktop protocol, Docker container, graphical desktop, remote access, Windows Remote Desktop]
 ---
 
 # Remote Desktop with Rift

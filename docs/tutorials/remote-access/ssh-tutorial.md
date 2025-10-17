@@ -1,5 +1,8 @@
 ---
 sidebar_position: 1
+title: SSH Server with CloudRift Tutorial
+description: Learn how to set up and run an SSH server on CloudRift GPU machines. Complete guide for remote SSH access to Ubuntu containers with public/private key authentication.
+keywords: [SSH, remote access, CloudRift tutorial, Ubuntu container, SSH server, Docker container, remote terminal, secure shell, public key authentication]
 ---
 
 # SSH Server with Rift

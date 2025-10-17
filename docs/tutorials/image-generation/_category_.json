@@ -3,6 +3,8 @@
   "position": 3,
   "link": {
     "type": "generated-index",
-    "description": "How to use CloudRift for image generation."
+    "title": "AI Image Generation Tutorials - ComfyUI, Stable Diffusion, FLUX",
+    "description": "Generate AI images with CloudRift GPU resources. Complete tutorials for ComfyUI, DreamShaper, FLUX.1, Stable Diffusion, and other image generation models.",
+    "keywords": ["AI image generation", "ComfyUI tutorial", "Stable Diffusion", "FLUX.1", "DreamShaper", "GPU rendering", "AI art", "image synthesis"]
   }
 }

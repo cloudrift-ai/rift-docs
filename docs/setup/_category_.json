@@ -2,6 +2,9 @@
   "label": "Setup",
   "position": 2,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "title": "CloudRift Setup - Install CLI and Desktop App",
+    "description": "Install and configure CloudRift CLI and Desktop App. Complete setup guides for Windows, Mac, and Linux to manage clusters, run jobs, and access GPU resources.",
+    "keywords": ["CloudRift setup", "CLI installation", "desktop app", "rift install", "configuration", "Windows Mac Linux", "cluster setup"]
   }
 }

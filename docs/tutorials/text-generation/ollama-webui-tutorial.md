@@ -1,5 +1,8 @@
 ---
 sidebar_position: 1
+title: Ollama and Open WebUI Tutorial
+description: Learn how to run Ollama LLM server with Open WebUI on CloudRift. Complete guide for running Llama 3 and other large language models with GPU support using Docker containers.
+keywords: [Ollama, Open WebUI, LLM, large language models, Llama 3, CloudRift tutorial, GPU inference, AI models, text generation, Docker container]
 ---
 
 # Ollama and Open WebUI

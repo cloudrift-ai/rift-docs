@@ -2,6 +2,9 @@
   "label": "Extras",
   "position": 7,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "title": "CloudRift API Documentation - Python, Rust, and REST APIs",
+    "description": "Integrate CloudRift into your applications with Python, Rust, or REST APIs. Complete API documentation, SDKs, and programmatic access to cluster management and job execution.",
+    "keywords": ["CloudRift API", "Python SDK", "Rust API", "REST API", "API documentation", "SDK", "API integration", "developer tools"]
   }
 }

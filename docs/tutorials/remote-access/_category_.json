@@ -3,6 +3,8 @@
   "position": 4,
   "link": {
     "type": "generated-index",
-    "description": "Learn how to use CloudRift for remote access to your machines."
+    "title": "Remote Access Tutorials - SSH and RDP Setup",
+    "description": "Access CloudRift GPU machines remotely. Learn how to set up SSH servers, Remote Desktop Protocol (RDP), and secure remote terminal access to your cloud resources.",
+    "keywords": ["remote access", "SSH tutorial", "RDP tutorial", "remote desktop", "SSH server", "secure shell", "remote terminal", "cloud access"]
   }
 }

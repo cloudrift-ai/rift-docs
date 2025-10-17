@@ -1,5 +1,8 @@
 ---
 sidebar_position: 1
+title: Launching Jobs with CloudRift CLI
+description: Learn how to launch and manage Docker containers on CloudRift clusters. Complete CLI guide for running jobs, managing executors, GPU support, volumes, and port mapping.
+keywords: [CloudRift CLI, launching jobs, Docker commands, cluster management, GPU containers, executor management, container orchestration, rift docker run, remote containers]
 ---
 
 # Launching Jobs

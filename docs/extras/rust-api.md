@@ -1,5 +1,8 @@
 ---
 sidebar_position: 1
+title: CloudRift Rust API and Client
+description: CloudRift Rust API and client library. Learn about the Rust-based architecture and open-source components of the CloudRift platform.
+keywords: [CloudRift Rust, Rust API, Rust client, open source, monorepo, Rust SDK, system programming, CloudRift development, contribute]
 ---
 
 # Rust API and Client

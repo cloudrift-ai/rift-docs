@@ -1,5 +1,8 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
+title: Oobabooga Text Generation WebUI Tutorial
+description: Run Oobabooga text-generation-webui on CloudRift with GPU support. Learn how to deploy LLM models with OpenAI-compatible API server using Docker containers.
+keywords: [Oobabooga, text generation, LLM, WebUI, CloudRift tutorial, GPU inference, Hugging Face models, OpenAI API, Docker container, AI text generation]
 ---
 
 # Oobabooga WebUI

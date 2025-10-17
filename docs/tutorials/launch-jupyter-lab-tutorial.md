@@ -1,5 +1,8 @@
 ---
 sidebar_position: 1
+title: Jupyter Lab Notebook Tutorial
+description: Learn how to launch Jupyter Lab notebooks on CloudRift with GPU support. Step-by-step guide for running data science workloads in Docker containers on remote GPUs.
+keywords: [Jupyter Lab, Jupyter Notebook, data science, GPU computing, Python notebook, CloudRift tutorial, Docker container, remote notebook, machine learning]
 ---
 
 # Jupyter Lab Notebook Tutorial

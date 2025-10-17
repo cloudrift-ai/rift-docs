@@ -1,5 +1,8 @@
 ---
 sidebar_position: 2
+title: Godot Dedicated Game Server Tutorial
+description: Deploy Godot multiplayer game servers on CloudRift. Complete guide for building and running dedicated Godot 4 game servers in Docker containers with CloudRift platform.
+keywords: [Godot, game server, dedicated server, multiplayer, CloudRift tutorial, Godot 4, Docker container, game hosting, server deployment, Godot multiplayer]
 ---
 
 # Godot Game Server

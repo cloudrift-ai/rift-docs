@@ -11,7 +11,7 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://rift-docs.vercel.app',
+  url: 'https://docs.cloudrift.ai',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub docs deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -56,6 +56,16 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
+      metadata: [
+        {name: 'description', content: 'CloudRift documentation - Run your code on any cloud provider or your own hardware. Multi-cloud workload orchestration, LLM inference, GPU support, and container management.'},
+        {name: 'keywords', content: 'CloudRift, cloud orchestration, multi-cloud, workload management, GPU computing, LLM inference, container orchestration, distributed computing, cloud computing, AI inference'},
+        {property: 'og:type', content: 'website'},
+        {property: 'og:site_name', content: 'CloudRift Documentation'},
+        {property: 'og:description', content: 'Run your code on any cloud provider or your own hardware with CloudRift - the platform for workload orchestration and management.'},
+        {name: 'twitter:card', content: 'summary_large_image'},
+        {name: 'twitter:title', content: 'CloudRift Documentation'},
+        {name: 'twitter:description', content: 'Run your code on any cloud provider or your own hardware. Multi-cloud workload orchestration, LLM inference, and GPU support.'},
+      ],
       navbar: {
         title: 'CloudRift',
         logo: {

@@ -3,6 +3,8 @@
     "position": 5,
     "link": {
       "type": "generated-index",
-      "description": "Learn how to use rift inference."
+      "title": "CloudRift Inference - On-Demand LLM API",
+      "description": "Run large language models with CloudRift Inference. Pay-as-you-go GPU-powered LLM inference with OpenAI-compatible REST API endpoints for chat completions, text generation, and AI models.",
+      "keywords": ["CloudRift Inference", "LLM API", "OpenAI compatible", "GPU inference", "pay-as-you-go", "chat completions", "AI inference"]
     }
   }

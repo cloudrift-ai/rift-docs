@@ -1,3 +1,8 @@
+---
+title: CloudRift Inference Overview
+description: CloudRift Inference API for running LLM and AI models on demand with pay-as-you-go pricing. OpenAI-compatible REST API powered by high-performance AMD and NVIDIA GPUs.
+keywords: [CloudRift Inference, LLM API, AI inference, OpenAI compatible, pay-as-you-go, GPU inference, chat completions, language models, REST API, token pricing]
+---
 
 ## What Is CloudRift Inference ?
 

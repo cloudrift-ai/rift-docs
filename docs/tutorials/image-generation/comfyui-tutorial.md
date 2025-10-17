@@ -1,5 +1,8 @@
 ---
 sidebar_position: 3
+title: ComfyUI with DreamShaper and FLUX.1 Tutorial
+description: Run ComfyUI on CloudRift with GPU support. Learn how to generate AI images using DreamShaper-V8 and FLUX.1 checkpoints with this complete Docker container guide.
+keywords: [ComfyUI, DreamShaper, FLUX.1, AI image generation, stable diffusion, GPU rendering, CloudRift tutorial, Docker container, AI art, image synthesis]
 ---
 
 # ComfyUI with DreamShaper and FLUX.1

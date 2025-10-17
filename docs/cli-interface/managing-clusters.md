@@ -1,5 +1,8 @@
 ---
 sidebar_position: 2
+title: Managing CloudRift Clusters
+description: Learn how to manage CloudRift clusters and executors. Guide for viewing cluster information, executor details, and managing your distributed computing resources.
+keywords: [CloudRift cluster, cluster management, executor management, rift cluster info, distributed computing, resource management, cluster administration, CloudRift CLI]
 ---
 
 # Managing Clusters

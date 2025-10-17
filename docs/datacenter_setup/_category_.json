@@ -2,6 +2,9 @@
   "label": "Datacenter & On-Prem Deployment",
   "position": 3,
   "link": {
-    "type": "generated-index"
+    "type": "generated-index",
+    "title": "Datacenter Setup - On-Premises CloudRift Deployment",
+    "description": "Deploy CloudRift in your datacenter or on-premises infrastructure. Complete guides for Docker containers, VM provisioning with QEMU/KVM, bare metal servers, and GPU passthrough.",
+    "keywords": ["datacenter deployment", "on-premises", "CloudRift service", "VM provisioning", "Docker setup", "QEMU KVM", "GPU passthrough", "bare metal"]
   }
 }
