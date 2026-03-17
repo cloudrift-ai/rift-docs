@@ -7,6 +7,21 @@ keywords: [CloudRift REST API, HTTP API, API documentation, RapiDoc, API referen
 
 # REST API
 
-We recommend going through language-specific API libraries since communication protocol is
-still under development. However, if you want to use the REST API directly, you can find
-generated documentation [here](https://api.cloudrift.ai/rapidoc).
+CloudRift provides a full REST API for managing instances, clusters, networks, volumes, reservations, and more. You can explore and test API endpoints using either of the interactive documentation tools below:
+
+- **[Swagger UI](https://api.cloudrift.ai/swagger-ui/)** — recommended, with full OpenAPI 3.1 support.
+- **[RapiDoc](https://api.cloudrift.ai/rapidoc)** — alternative interactive API reference.
+
+All API endpoints support authentication via user JWT token, user API key, or team API key.
+
+## Key Capabilities
+
+Beyond standard instance and cluster management, the API includes:
+
+- **MCP integration** — `POST /mcp` endpoint exposes CloudRift operations as MCP tools for LLM integration (Claude Code, Claude Desktop, etc.).
+- **Node metrics** — `/api/v1/nodes/metrics/list` for GPU and MIG instance metrics.
+- **Admin user & team management** — Endpoints for listing, searching, creating users, and managing teams with financial settings.
+- **Custom recipes** — Create and manage recipes for virtual machines and containers at the user or team level.
+- **Team API key support** — `/api/v1/auth/me` supports team API key authentication in addition to user tokens.
+
+Refer to the [Swagger UI](https://api.cloudrift.ai/swagger-ui/) for the complete endpoint reference.

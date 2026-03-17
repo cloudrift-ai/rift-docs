@@ -109,6 +109,14 @@ sudo client_setup.sh --only=rift
 
 :::
 
+## AMD GPU Support
+
+CloudRift supports AMD Instinct GPUs (MI300X/MI350X) for Docker containers. Nodes with AMD GPUs are automatically detected via PCI scanning, and the ROCm runtime is integrated for container workloads. See the [AMD GPU Support](../features/amd-gpu.md) page for more details.
+
+## DCGM Exporter
+
+On nodes with NVIDIA GPUs, CloudRift automatically launches a `dcgm-exporter` container when GPUs are using NVIDIA drivers to collect GPU metrics. The exporter is automatically stopped before switching drivers to VFIO to prevent device handle conflicts.
+
 ## Next Steps
 
 Proceed to the [Disk Setup](./disks) guide.

@@ -220,6 +220,14 @@ and should see `vfio` drivers in use:
 	Kernel modules: snd_hda_intel
 ```
 
+## AMD SR-IOV (GIM) GPU Passthrough
+
+CloudRift supports AMD SR-IOV (GIM) GPU passthrough for virtual machines, enabling multi-GPU virtual function (VF) assignment. This allows AMD Instinct GPUs to be shared across multiple VMs. See the [AMD GPU Support](../features/amd-gpu.md) page for more details.
+
+## MIG Device Support
+
+NVIDIA Multi-Instance GPU (MIG) devices are supported for VM passthrough. CloudRift automatically creates and manages default compute instances for MIG devices, allowing GPU resources to be partitioned and assigned to individual VMs.
+
 ## Next Steps
 
 Proceed to the [Disk Setup](./disks) guide.

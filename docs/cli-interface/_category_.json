@@ -1,10 +1,5 @@
 {
   "label": "Command Line Interface",
   "position": 4,
-  "link": {
-    "type": "generated-index",
-    "title": "CloudRift CLI Reference - Command Line Interface Guide",
-    "description": "Master CloudRift CLI commands for launching jobs, managing clusters, and orchestrating Docker containers. Complete reference for rift docker run, cluster info, and executor management.",
-    "keywords": ["CloudRift CLI", "rift command", "CLI reference", "docker commands", "cluster management", "job scheduling", "command line"]
-  }
+  "link": null
 }
