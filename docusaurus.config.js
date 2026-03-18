@@ -21,6 +21,8 @@ const config = {
   organizationName: 'CloudRift', // Usually your GitHub org/user name.
   projectName: 'CloudRift', // Usually your repo name.
 
+  clientModules: [require.resolve('./src/clientModules/navbarTitle.js')],
+
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
@@ -70,7 +72,7 @@ const config = {
         title: 'CloudRift',
         logo: {
           alt: 'CloudRift Logo',
-          src: 'img/fair-logo.svg',
+          src: 'img/cloudrift_vector.svg',
         },
         items: [
           {
