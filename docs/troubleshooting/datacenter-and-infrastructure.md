@@ -36,6 +36,14 @@ If PyTorch shows "CUDA initialization: CUDA unknown error" or cannot detect the 
 3. Reboot the instance and try again.
 4. If the issue persists, try a different instance — the GPU on the current host may have a hardware issue.
 
+### VM boot hangs on hosts with newer NVIDIA GPUs
+
+On hosts with newer NVIDIA GPUs (e.g. RTX PRO 6000), VMs may hang during boot.
+
+**Cause:** OVMF firmware fails to initialize the GPU Option ROM on these newer GPU models.
+
+**Solution:** Update Rift Desktop to **v0.56.0** or later, which includes a firmware fix for this issue.
+
 ### High VRAM usage on a fresh container with no processes
 
 In **container mode**, the GPU is shared between users on the same node. Other users' processes may be consuming VRAM.
