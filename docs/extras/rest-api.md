@@ -24,6 +24,6 @@ Beyond standard instance and cluster management, the API includes:
 - **Two-factor authentication** — TOTP-based 2FA endpoints for setting up, verifying, and managing two-factor authentication on accounts. See [Two-Factor Authentication](/features/two-factor-authentication).
 - **Admin user & team management** — Endpoints for listing, searching, creating users, and managing teams with financial settings. Supports team invite by email for users who don't yet have an account.
 - **Custom recipes** — Create and manage recipes for virtual machines and containers at the user or team level.
-- **Team API key support** — `/api/v1/auth/me` supports team API key authentication in addition to user tokens.
+- **Team API key support** — `/api/v1/auth/me` supports team API key authentication in addition to user tokens. Also returns `totp_enabled` to indicate whether 2FA is active on the account.
 
 Refer to the [Swagger UI](https://api.cloudrift.ai/swagger-ui/) for the complete endpoint reference.

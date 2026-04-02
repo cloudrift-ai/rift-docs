@@ -49,6 +49,8 @@ POST /api/v1/auth/totp/complete
 
 Submit the `partial_token` along with the current six-digit code from your authenticator app. On success, this returns a full session token.
 
+> **Note (v0.57.0):** The `pat` field has been removed from both `/api/v1/auth/login` and `/api/v1/auth/totp/complete` responses. Only the JWT session token is returned.
+
 ## Disabling 2FA
 
 ```
