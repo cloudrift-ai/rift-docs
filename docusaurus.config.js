@@ -76,10 +76,9 @@ const config = {
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
+            href: 'https://www.cloudrift.ai/',
+            label: 'CloudRift.ai',
             position: 'left',
-            label: 'Docs Home',
           },
           {
             href: 'https://api.cloudrift.ai/rapidoc',
