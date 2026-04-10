@@ -220,6 +220,16 @@ and should see `vfio` drivers in use:
 	Kernel modules: snd_hda_intel
 ```
 
+## EFI BIOS (OVMF Firmware)
+
+CloudRift uses EFI BIOS via OVMF firmware for virtual machines. This reduces GPU passthrough issues and improves performance compared to legacy BIOS. No manual OVMF configuration is required; CloudRift handles firmware selection automatically when provisioning VMs.
+
+:::note
+
+Some newer NVIDIA GPUs (e.g. RTX PRO 6000) may require updated OVMF firmware to properly initialize the GPU Option ROM during VM boot. If you experience VM boot hangs with newer GPUs, ensure your OVMF/UEFI firmware packages are up to date.
+
+:::
+
 ## AMD SR-IOV (GIM) GPU Passthrough
 
 CloudRift supports AMD SR-IOV (GIM) GPU passthrough for virtual machines, enabling multi-GPU virtual function (VF) assignment. This allows AMD Instinct GPUs to be shared across multiple VMs. See the [AMD GPU Support](../features/amd-gpu.md) page for more details.

@@ -219,7 +219,7 @@ Here is an example of starting some long-running command and terminating it.
 
 ```shell
 EXECUTOR_NAME=`rift docker run alpine printenv CLOUDRIFT_EXECUTOR_NAME`
-CONTAINER_ID=`rift -x $EXECUTOR_NAME docker run -d alpine sleep 30`
+CONTAINER_ID=`rift docker -x $EXECUTOR_NAME run -d alpine sleep 30`
 rift docker -x $EXECUTOR_NAME kill $CONTAINER_ID
 ```
 
