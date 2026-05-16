@@ -56,8 +56,7 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/cloudrift-social-card.webp',
       metadata: [
         {name: 'description', content: 'CloudRift documentation - Run your code on any cloud provider or your own hardware. Multi-cloud workload orchestration, LLM inference, GPU support, and container management.'},
         {name: 'keywords', content: 'CloudRift, cloud orchestration, multi-cloud, workload management, GPU computing, LLM inference, container orchestration, distributed computing, cloud computing, AI inference'},
