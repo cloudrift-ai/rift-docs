@@ -84,6 +84,13 @@ const config = {
             label: 'API',
             position: 'left',
           },
+          {
+            href: 'https://x.com/CloudRiftAI',
+            label: 'Follow on X for benchmarks & updates',
+            position: 'right',
+            className: 'header-x-link',
+            'aria-label': 'Follow CloudRift on X',
+          },
         ],
       },
       prism: {

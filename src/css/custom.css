@@ -34,3 +34,21 @@
 .navbar__title .accent {
   color: var(--ifm-color-accent);
 }
+
+.header-x-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-right: 2.5rem;
+  font-size: 0.875rem;
+}
+
+.header-x-link::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-color: currentColor;
+  -webkit-mask: url('/img/x-logo.svg') center / contain no-repeat;
+          mask: url('/img/x-logo.svg') center / contain no-repeat;
+}
