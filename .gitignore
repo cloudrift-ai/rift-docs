@@ -6,6 +6,7 @@
 
 # Production
 /build
+/build-deplodock
 
 # Generated files
 .docusaurus

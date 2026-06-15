@@ -11,7 +11,10 @@
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids"
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "start:deplodock": "docusaurus start --config docusaurus.deplodock.config.js",
+    "build:deplodock": "docusaurus build --config docusaurus.deplodock.config.js --out-dir build-deplodock",
+    "serve:deplodock": "docusaurus serve --config docusaurus.deplodock.config.js --dir build-deplodock"
   },
   "dependencies": {
     "@docusaurus/core": "2.4.3",
