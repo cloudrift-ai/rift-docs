@@ -58,6 +58,16 @@ To rent a Docker container instance, use the `--docker-image` flag:
 rift instance rent --docker-image pytorch/pytorch:latest
 ```
 
+## Listing Instances and Failure Reasons
+
+To list your instances:
+
+```shell
+rift instance list
+```
+
+Rentals that fail before becoming active are shown with the `Failed` status, and `rift instance list` displays the failure reason under the affected rental (for example a bad Docker image, a broken container command, or a VM boot failure). Terminating a `Failed` rental dismisses it: the status moves to `Inactive` and it disappears from the default listing. Its resources were already released when the failure was recorded.
+
 :::info
 
 These commands interact with the CloudRift public API to rent instances from marketplace providers. For managing containers on your own cluster, see [Launching Jobs](./launching-jobs.md). For managing VM lifecycle (start/stop), see [VM Management](./vm-management.md).

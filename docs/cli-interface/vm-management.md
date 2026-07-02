@@ -25,6 +25,21 @@ To stop a running virtual machine instance:
 rift virt stop <instance_id>
 ```
 
+## Pausing and Resuming a VM
+
+Pausing freezes vCPU execution while keeping the VM's resources allocated. You can address the VM by its id or its human-readable name:
+
+```shell
+rift virt pause <id_or_name>
+rift virt resume <id_or_name>
+```
+
+:::warning
+
+Billing continues while a VM is paused, since its resources stay allocated.
+
+:::
+
 :::info
 
 Providers and admins can start and stop VMs on their nodes. Regular users can manage their own instances.

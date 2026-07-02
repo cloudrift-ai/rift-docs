@@ -54,7 +54,32 @@ curl -L https://cloudrift.ai/install-rift.sh | sh
 
 #### 2. Configure Credentials
 
-Configure credentials using the rift command line tool by running:
+The recommended way to authenticate a node is with an API key, which you can create in the CloudRift Console. Set the `CLOUDRIFT_API_KEY` environment variable for the rift service:
+
+```shell
+sudo systemctl edit rift
+```
+
+Add the following, then save:
+
+```ini
+[Service]
+Environment="CLOUDRIFT_API_KEY=<your-api-key>"
+```
+
+Alternatively, you can store the API key in the credentials file at `/root/.config/cloudrift/credentials.yml`:
+
+```yaml
+api_key: <your-api-key>
+```
+
+:::warning
+
+Node authentication with an account email/password, personal access token, or token is deprecated and will be removed in a future release. Nodes using a deprecated method still work but log a warning. Please migrate to API keys.
+
+:::
+
+You can also configure credentials interactively using the rift command line tool:
 
 ```shell
 sudo rift configure
@@ -66,11 +91,9 @@ We're running the rift system service as root, so we need to configure it as roo
 
 :::
 
-You can also edit the config manually. It is located at `/root/.config/cloudrift/credentials.yml`.
-
 :::info
 
-If editing manually, ensure you have the correct permissions and YAML formatting.
+If editing `credentials.yml` manually, ensure you have the correct permissions and YAML formatting.
 
 :::
 
