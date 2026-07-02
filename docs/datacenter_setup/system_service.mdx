@@ -9,7 +9,7 @@ import DownloadWindowsInstaller from '@site/src/components/DownloadWindowsInstal
 
 # Configure Rift Service
 
-Once you have configured the machine for either [Docker], [VM] or Bare Metal (coming soon) rental - install and configure
+Once you have configured the machine for either [Docker], [VM] or Bare Metal rental - install and configure
 Rift system service.
 
 ## Sign Up & Activate the Account
@@ -54,7 +54,13 @@ curl -L https://cloudrift.ai/install-rift.sh | sh
 
 #### 2. Configure Credentials
 
-The recommended way to authenticate a node is with an API key, which you can create in the CloudRift Console. Set the `CLOUDRIFT_API_KEY` environment variable for the rift service:
+The recommended way to authenticate a node is with an API key. You can create one in the CloudRift Console or with the CLI on a machine where you're logged in:
+
+```shell
+rift api-key add --name my-node-key
+```
+
+Set the `CLOUDRIFT_API_KEY` environment variable for the rift service:
 
 ```shell
 sudo systemctl edit rift
@@ -79,7 +85,7 @@ Node authentication with an account email/password, personal access token, or to
 
 :::
 
-You can also configure credentials interactively using the rift command line tool:
+You can also configure email/password credentials interactively using the rift command line tool. Note that this authentication method is deprecated for nodes:
 
 ```shell
 sudo rift configure

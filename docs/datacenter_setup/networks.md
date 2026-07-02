@@ -13,7 +13,7 @@ CloudRift allows providers and admins to manage networks within their datacenter
 
 - **Team-scoped networks** — Restrict a network to members of a specific team by assigning a team ID. Set `team_id` to null to make a network public.
 - **Per-datacenter configuration** — Networks are managed at the datacenter level. Providers and admins see full network details; regular users see only network names.
-- **IP management** — Each network includes IP ranges, gateway, netmask, and interface configuration.
+- **IP management** — Each network includes IP ranges, netmask, and interface configuration, plus an optional gateway. Networks can be created without specifying a gateway IP.
 
 ## Managing Networks
 
