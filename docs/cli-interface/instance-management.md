@@ -58,6 +58,16 @@ To rent a Docker container instance, use the `--docker-image` flag:
 rift instance rent --docker-image pytorch/pytorch:latest
 ```
 
+### Tagging Instances
+
+Use the `--tag` flag to attach free-form labels to an instance at rent time. The flag can be repeated:
+
+```shell
+rift instance rent --image ubuntu-22.04 --tag training --tag team-a
+```
+
+Tags appear on instance listings and can be used to filter instances through the [REST API](../extras/rest-api.md).
+
 ## Listing Instances and Failure Reasons
 
 To list your instances:
@@ -67,6 +77,12 @@ rift instance list
 ```
 
 Rentals that fail before becoming active are shown with the `Failed` status, and `rift instance list` displays the failure reason under the affected rental (for example a bad Docker image, a broken container command, or a VM boot failure). Terminating a `Failed` rental dismisses it: the status moves to `Inactive` and it disappears from the default listing. Its resources were already released when the failure was recorded.
+
+:::note
+
+Since v0.62.0, the server only accepts `rift instance rent`, `rift instance list`, and `rift instance terminate` from an up-to-date CLI. If these commands fail with an `unsupported version` error, [update the CLI](../setup/cli.mdx).
+
+:::
 
 :::info
 

@@ -113,10 +113,9 @@ Currently, there is no automatic notification when a reservation expires. Your i
 
 ### Google SSO account limitations
 
-If you registered with Google SSO, some CLI features that require email/password authentication may not work. You can:
+If you registered with Google or GitHub, choose the matching option when running `rift configure` to sign in through the browser (requires CLI v0.60.4 or newer). If sign-in still fails, you can:
 1. Use the CloudRift Console for management tasks.
 2. Use API keys for programmatic access.
-3. Contact support to set up password-based credentials for your account.
 
 ### Adding team members
 

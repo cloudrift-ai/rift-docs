@@ -195,6 +195,10 @@ If the huge page filesystem fails to mount:
 2. Check for mount errors: `dmesg | grep huge`
 3. Ensure kernel support is enabled: `grep CONFIG_HUGETLB_PAGE /boot/config-$(uname -r)`
 
+#### VM Fails to Boot with "unable to map backing store for guest RAM"
+
+VM memory is backed by the 1G huge page pool. Since v0.62.0, the server caps the RAM it offers on a node at the size of the reported huge page pool, so rentals no longer request more memory than the host can back. If you see this error on an older node, or the node offers less RAM than expected, check `HugePages_Total` and `HugePages_Free` in `/proc/meminfo` and allocate more huge pages as described above.
+
 ## Next Steps
 
 To test the node configuration and make your nodes rentable, proceed to the [System Service Setup](./system_service) guide.

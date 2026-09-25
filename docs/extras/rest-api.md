@@ -24,6 +24,9 @@ Beyond standard instance and cluster management, the API includes:
 - **Two-factor authentication** — TOTP-based 2FA endpoints for setting up, verifying, and managing two-factor authentication on accounts. See [Two-Factor Authentication](/features/two-factor-authentication).
 - **Admin user & team management** — Endpoints for listing, searching, creating users, and managing teams with financial settings. Supports team invite by email for users who don't yet have an account.
 - **Custom recipes** — Create and manage recipes for virtual machines and containers at the user or team level.
+- **Instance tags** — Attach free-form `tags` at rent time and filter `POST /api/v1/instances/list` with the `ByTags` selector (`all` / `any`).
+- **Opt-in instance credentials** — `POST /api/v1/instances/list` omits instance passwords unless you set `mask.with_credentials`. See [v0.61.0](/changelog/2026#v0.61.0).
+- **Saved environments** — `POST /api/v1/instances/saved-environments/list` lists terminated VM disks still within the node's erase grace window; pass `reuse_environment_id` on rent to re-attach one to a new rental on the same node.
 - **Team API key support** — `/api/v1/auth/me` supports team API key authentication in addition to user tokens. Also returns `totp_enabled` to indicate whether 2FA is active on the account.
 
 Refer to the [Swagger UI](https://api.cloudrift.ai/swagger-ui/) for the complete endpoint reference.

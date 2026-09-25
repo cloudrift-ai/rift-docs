@@ -20,12 +20,20 @@ If every `rift` command fails after a recent update:
    ```
 2. Re-run `rift configure` with your credentials.
 
-### Google SSO accounts cannot use `rift configure`
+### Commands fail with `unsupported version`
 
-The CLI currently requires email/password authentication. If you registered with Google SSO:
+The server rejects requests from outdated CLI builds when the protocol changes (most recently in v0.61.0 and v0.62.0 for `rift instance` commands). Run the installation script again to update:
 
-1. Use API keys for programmatic access instead.
-2. Contact support to set up password-based credentials for your account.
+```shell
+curl -L https://cloudrift.ai/install-rift.sh | sh
+```
+
+### Google or GitHub sign-in with `rift configure` fails
+
+`rift configure` supports signing in with Google or GitHub through the browser. If browser sign-in doesn't complete:
+
+1. **Update to the latest CLI** — CLI v0.60.4 fixed Google and GitHub sign-in and shows the failure reason in the terminal.
+2. Use API keys for programmatic access instead.
 
 ## Docker Command Limitations
 
