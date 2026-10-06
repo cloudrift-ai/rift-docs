@@ -28,6 +28,10 @@ Update team access on existing networks. You can:
 - Assign a network to a team (by ID or name) to restrict access to team members.
 - Set the team to null to make a network public.
 
+### Outbound Proxy
+
+If VMs in your datacenter must reach the internet through a proxy, you can set an optional outbound HTTP(S) proxy on a network, along with bypass targets for Docker and curl. New VMs that get an IP from that network are configured through cloud-init to use the proxy for APT, the Docker daemon, the Docker client, and curl. The proxy URL cannot contain credentials.
+
 ### Deleting a Network
 
 Remove networks that are no longer needed. Only providers, admins, and the datacenter owner can manage networks.

@@ -68,7 +68,7 @@ rift instance rent --image ubuntu-22.04 --tag training --tag team-a
 
 Tags appear on instance listings and can be used to filter instances through the [REST API](../extras/rest-api.md).
 
-## Listing Instances and Failure Reasons
+## Listing Instances
 
 To list your instances:
 
@@ -76,7 +76,48 @@ To list your instances:
 rift instance list
 ```
 
+By default the list covers every account you can rent from: your personal account and each team you belong to. Narrow it with a scope filter:
+
+```shell
+rift instance list --personal
+rift instance list --team <TEAM_UUID>
+```
+
+`--team` can be repeated to include several teams, and `--cluster` selects the cluster to list within each account (`default` if omitted). Add `--json` to print the API response as JSON, without credentials, for scripts and tools.
+
+Other display options: `-l` / `--show-limits` shows allocated memory and disk limits, `-c` / `--show-config` shows the instance configuration, `-g` / `--gpu-list` shows the allocated GPU PCI slots, and `-t` / `--truncate-id` shortens UUIDs.
+
+### Failure Reasons
+
 Rentals that fail before becoming active are shown with the `Failed` status, and `rift instance list` displays the failure reason under the affected rental (for example a bad Docker image, a broken container command, or a VM boot failure). Terminating a `Failed` rental dismisses it: the status moves to `Inactive` and it disappears from the default listing. Its resources were already released when the failure was recorded.
+
+## Inspecting an Instance
+
+To see the hardware and connection details of one rental:
+
+```shell
+rift instance inspect <INSTANCE>
+```
+
+`<INSTANCE>` is the instance name, its UUID, or an unambiguous UUID prefix. The output includes the instance's hardware and the SSH command to reach it. It accepts the same `--personal`, `--team`, and `--cluster` filters as `rift instance list`, and `--json` prints the API response as JSON without credentials.
+
+## Connecting with SSH
+
+To open an SSH session to a rental:
+
+```shell
+rift instance ssh <INSTANCE>
+```
+
+As with `inspect`, `<INSTANCE>` can be a name, a UUID, or an unambiguous UUID prefix, and the scope filters apply. Options:
+
+- `-u` / `--user` overrides the login user. It is required for Docker containers.
+- `-i` / `--identity-file` sets the SSH private key to use.
+- Anything after `--` runs as a remote command instead of opening a shell:
+
+```shell
+rift instance ssh my-vm -- nvidia-smi
+```
 
 :::note
 
@@ -86,6 +127,6 @@ Since v0.62.0, the server only accepts `rift instance rent`, `rift instance list
 
 :::info
 
-These commands interact with the CloudRift public API to rent instances from marketplace providers. For managing containers on your own cluster, see [Launching Jobs](./launching-jobs.md). For managing VM lifecycle (start/stop), see [VM Management](./vm-management.md).
+These commands interact with the CloudRift public API to rent instances from marketplace providers. For managing containers on your own cluster, see [Launching Jobs](./launching-jobs.md). For managing VM lifecycle (start/stop), see [VM Management](./vm-management.md). To let a coding agent use these commands, see [AI Agent Skills](./agent-skills.md).
 
 :::

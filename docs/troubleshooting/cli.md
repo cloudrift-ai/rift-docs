@@ -52,6 +52,10 @@ Container state cannot be saved with `docker commit` in container rental mode. I
 
 ## Command Errors
 
+### Renting a VM image fails because of the NVIDIA driver
+
+Since v0.62.1, renting a catalog VM image whose NVIDIA driver the node's GPUs cannot load is rejected with a `400` error before the VM is created. This happens with an open-driver image on pre-Turing GPUs (such as the V100, P100, or GTX 10 series) or with an `nvidia-driver-proprietary` image on Blackwell GPUs (such as the RTX 5090 or RTX PRO 6000). Pick an image that matches the GPU: the `nvidia_kernel_module_support` field on instance types tells you which driver flavor the hardware needs. Custom image URLs are not checked.
+
 ### CLI crashes with panic/backtrace
 
 If you see an error like `thread 'main' panicked at ...` with a stack backtrace:

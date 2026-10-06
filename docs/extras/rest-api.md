@@ -27,6 +27,9 @@ Beyond standard instance and cluster management, the API includes:
 - **Instance tags** — Attach free-form `tags` at rent time and filter `POST /api/v1/instances/list` with the `ByTags` selector (`all` / `any`).
 - **Opt-in instance credentials** — `POST /api/v1/instances/list` omits instance passwords unless you set `mask.with_credentials`. See [v0.61.0](/changelog/2026#v0.61.0).
 - **Saved environments** — `POST /api/v1/instances/saved-environments/list` lists terminated VM disks still within the node's erase grace window; pass `reuse_environment_id` on rent to re-attach one to a new rental on the same node.
+- **NVIDIA driver compatibility**: `nvidia_kernel_module_support` on GPUs, instance types, reservations and quotas tells you which NVIDIA driver flavor (open or proprietary) a VM image needs for that hardware. Renting an incompatible catalog image is rejected up front. See [v0.62.1](/changelog/2026#v0.62.1).
+- **Renter-scoped networks**: the `ByRenter` selector on `POST /api/v1/network/list` returns only the networks a rental by a given team or user can use.
+- **Unallocated capacity**: node info includes `unallocated`, the free capacity that no allocation holds and that other accounts can rent.
 - **Team API key support** — `/api/v1/auth/me` supports team API key authentication in addition to user tokens. Also returns `totp_enabled` to indicate whether 2FA is active on the account.
 
 Refer to the [Swagger UI](https://api.cloudrift.ai/swagger-ui/) for the complete endpoint reference.
