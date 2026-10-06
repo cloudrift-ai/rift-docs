@@ -42,28 +42,41 @@ rift instance-type list --service vm --datacenter us-east
 
 ## Renting an Instance
 
+Every rental needs `--instance-type`, set to one of the names in the `Variants` column of `rift instance-type list` (for example `generic-gpu.1`). Whether you pass `--image` or `--docker-image` decides between a VM and a Docker container.
+
 ### Renting a VM Instance
 
-To rent a virtual machine instance, use the `--image` flag to specify the VM image:
+To rent a virtual machine, pass the URL of the VM disk image with `--image`:
 
 ```shell
-rift instance rent --image ubuntu-22.04
+rift instance rent --instance-type <VARIANT> --image <VM_IMAGE_URL> --ssh-key <KEY_NAME>
 ```
+
+`--ssh-key` adds one of your saved SSH keys to the VM and can be repeated.
 
 ### Renting a Docker Instance
 
-To rent a Docker container instance, use the `--docker-image` flag:
+To rent a Docker container, pass the image with `--docker-image`:
 
 ```shell
-rift instance rent --docker-image pytorch/pytorch:latest
+rift instance rent --instance-type <VARIANT> --docker-image pytorch/pytorch:latest
 ```
+
+### Other Rent Options
+
+- `--name` sets the instance name, which `rift instance inspect` and `rift instance ssh` accept in place of the UUID.
+- `--datacenter` targets one or more datacenters and can be repeated.
+- `--port` exposes a port and can be repeated.
+- `--with-public-ip` allocates a public IP address.
+- `--env KEY=VALUE` and `--docker-command` set the container's environment and command arguments; both can be repeated.
+- `--cloudinit-url` points a VM at a cloud-init configuration.
 
 ### Tagging Instances
 
 Use the `--tag` flag to attach free-form labels to an instance at rent time. The flag can be repeated:
 
 ```shell
-rift instance rent --image ubuntu-22.04 --tag training --tag team-a
+rift instance rent --instance-type <VARIANT> --image <VM_IMAGE_URL> --tag training --tag team-a
 ```
 
 Tags appear on instance listings and can be used to filter instances through the [REST API](../extras/rest-api.md).
