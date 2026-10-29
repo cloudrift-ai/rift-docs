@@ -25,6 +25,10 @@ To stop a running virtual machine instance:
 rift virt stop <instance_id>
 ```
 
+A stopped VM stays in VM listings (since v0.63.0), so you can find it again to start it. If the provider's node reboots, running VMs start again automatically, while VMs you stopped stay stopped.
+
+To hard-reboot a rented VM that no longer responds, use [`rift instance reset`](./instance-management.md#resetting-an-instance).
+
 ## Pausing and Resuming a VM
 
 Pausing freezes vCPU execution while keeping the VM's resources allocated. You can address the VM by its id or its human-readable name:

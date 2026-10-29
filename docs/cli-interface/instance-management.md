@@ -132,6 +132,16 @@ As with `inspect`, `<INSTANCE>` can be a name, a UUID, or an unambiguous UUID pr
 rift instance ssh my-vm -- nvidia-smi
 ```
 
+## Resetting an Instance
+
+To hard-reboot a rented VM that no longer responds:
+
+```shell
+rift instance reset <INSTANCE>
+```
+
+This power-cycles the VM without a clean shutdown, so anything unsaved in memory is lost. The disk is kept. Prefer `sudo reboot` inside the VM while you can still reach it. Requires CLI v0.63.0 or later.
+
 :::note
 
 Since v0.62.0, the server only accepts `rift instance rent`, `rift instance list`, and `rift instance terminate` from an up-to-date CLI. If these commands fail with an `unsupported version` error, [update the CLI](../setup/cli.mdx).

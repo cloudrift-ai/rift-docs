@@ -13,6 +13,12 @@ You may have one of the following setups:
 - [Multiple disks setup](#multiple-disks-setup): One system disk and multiple additional disks that will be configured
   in a RAID array for VM allocation.
 
+:::info
+
+Rift Desktop allocates a VM's disk in full when a rental is provisioned (since v0.63.2). If the VM storage cannot hold the requested disk, the rental fails before the VM starts instead of running out of space later, so size the data disk for the full disks of the VMs you plan to host. Disks of stopped VMs stay on the node as reusable saved environments while space allows and are erased oldest-first when a new rental needs the room (since v0.63.3).
+
+:::
+
 
 ## Single Disk Setup
 

@@ -23,6 +23,8 @@ POST /api/v1/nodes/drain
 
 Allow existing instances to finish their work or be migrated. Users are notified and can take action to move their workloads.
 
+Disks of stopped VMs that the node keeps as saved environments are erased oldest-first while the node is draining or drained (since v0.63.3), so a drained node can be deleted once its instances are gone.
+
 ### 3. Force Drain (Optional)
 
 If instances do not terminate within an acceptable timeframe, force-drain the node to immediately terminate all remaining instances.

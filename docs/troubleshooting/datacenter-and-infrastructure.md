@@ -15,7 +15,7 @@ keywords: [CloudRift datacenter troubleshooting, GPU issues, nvidia-smi, CUDA er
 After deploying a VM, the GPU hardware is not detected.
 
 **Solutions:**
-1. **Reboot the instance** — This resolves most transient GPU detection issues.
+1. **Reboot the instance** — This resolves most transient GPU detection issues. Run `sudo reboot` inside the VM, or `rift instance reset <INSTANCE>` from the CLI if the VM no longer responds.
 2. If the issue persists after reboot, the GPU may have a hardware problem on the host. Try renting from a different provider or datacenter.
 
 ### "Failed to initialize NVML: Driver/library version mismatch"
@@ -125,3 +125,4 @@ sudo systemctl enable docker
 1. Verify the GPU is visible to the host: `nvidia-smi`
 2. Ensure you rebooted after installing or removing drivers.
 3. Check VFIO binding if running in VM mode: `lspci -k | grep -A 2 -i nvidia`
+4. Make sure `lspci` is installed (`sudo apt install pciutils`). Since v0.63.3 the node reports an error instead of zero GPUs when `lspci` is missing or fails, and the server retries node initialization after a failed GPU probe instead of recording the node as CPU-only.
